@@ -18,7 +18,7 @@ public class Model {
 		gradeBook = FXCollections.observableArrayList();
 	}
 	
-	Database getDatabase(){
+	public Database getDatabase(){
 		return database;
 	}
 	
