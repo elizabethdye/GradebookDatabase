@@ -37,7 +37,7 @@ public class LoginController {
 		//TODO:
 		ID = idField.getText();
 		password = passwordField.getText();
-		type = model.getDatabase().userType(ID, password);
-		return user;
+		type = model.getDatabase().getUserType(ID, password);
+		return type.toString();
 	}
 }

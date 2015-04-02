@@ -103,5 +103,6 @@ public class Database {
 		}
 		return gradeInfo;
 	}
+
 	//TODO: what happens if grade is not entered? is ''?
 }
