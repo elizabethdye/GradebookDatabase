@@ -4,28 +4,29 @@ import java.sql.SQLException;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.layout.HBox;
 import Database.Database;
 
 public class Model {
 	Database database;
 	private ObservableList<String> studentNames;
-	private ObservableList<String> gradebook;
+	private ObservableList<HBox> gradeBook;
 	
 	private void Model() throws ClassNotFoundException, SQLException{
 		database = new Database();
 		studentNames = FXCollections.observableArrayList();
-		gradebook = FXCollections.observableArrayList();
+		gradeBook = FXCollections.observableArrayList();
 	}
 	
 	Database getDatabase(){
 		return database;
 	}
 	
-	ObservableList<String>	getStudentNames(){
+	public ObservableList<String>	getStudentNames(){
 		return studentNames;
 	}
-	ObservableList<String>	getGradebook(){
-		return gradebook;
+	public ObservableList<HBox>	getGradebook(){
+		return gradeBook;
 	}
 	
 	public void addStudent(String value){
@@ -34,16 +35,15 @@ public class Model {
 		}
 	}
 	public void addGrade(String value){
-		if (value.length() > 0){
-			gradebook.add(value);
-		}
+		HBox newGrade = new HBox();
+		gradeBook.add(newGrade);
 	}
 	
 	public int numStudents(){
 		return studentNames.size();
 	}
 	public int numGrades(){
-		return gradebook.size();
+		return gradeBook.size();
 	}
 
 }

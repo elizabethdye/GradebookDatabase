@@ -1,5 +1,6 @@
 package GUI;
 
+import Model.Model;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -19,19 +20,11 @@ public class Controller {
 	@FXML
 	ListView<String> students;
 	@FXML
-	ListView<String> grades;
+	ListView<HBox> grades;
 	@FXML
-	Button studentAdd;
+	Button studentAdd, studentRem, gradesAdd, gradesRem;
 	@FXML
-	Button studentRem; 
-	@FXML
-	Button gradesAdd;
-	@FXML
-	Button gradesRem;
-	@FXML
-	Tab class1;
-	@FXML
-	Tab newClass;
+	Tab class1, newClass;
 	
 	private Model model = new Model();
 	
@@ -49,6 +42,7 @@ public class Controller {
 		Label nameField = new Label("Enter Student Name: ");
 		TextField studentName = new TextField();
 		HBox selection = new HBox();
+		selection.setSpacing(50);
 		Button okButton = new Button("OK");
 		Button closeButton = new Button("Cancel");
 		studentName.setOnAction(new EventHandler<ActionEvent>() {
@@ -91,6 +85,7 @@ public class Controller {
 		Label nameField = new Label("Enter Assignment Name: ");
 		TextField gradeName = new TextField();
 		HBox selection = new HBox();
+		selection.setSpacing(50);
 		Button okButton = new Button("OK");
 		Button closeButton = new Button("Cancel");
 		gradeName.setOnAction(new EventHandler<ActionEvent>() {
