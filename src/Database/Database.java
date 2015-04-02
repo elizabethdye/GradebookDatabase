@@ -105,6 +105,17 @@ public class Database {
 		}
 		return gradeInfo;
 	}
+	
+	public UserTypes getUserType(String ID, String password) throws SQLException{
+		stat.execute("SELECT FROM LoginTable WHERE Person = " + ID + " AND Password = " + password);
+		ResultSet results = stat.getResultSet();
+		if (results.next()) {
+			return UserTypes.fromString(results.getString("Type"));
+		}
+		else {
+			return UserTypes.fromString("INVALID");
+		}
+	}
 
 	public UserTypes getUserType(String ID, String password){
 		UserTypes userType;
