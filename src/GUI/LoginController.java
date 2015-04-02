@@ -31,11 +31,31 @@ public class LoginController {
 	
 	@FXML
 	private void login(){
-		String user = checkUserType();
-		if ( user == UserTypes.PROFESSOR. ) {
+		Enum user = checkUserType();
+		if (user == UserTypes.PROFESSOR){
+			startProfView();
+		}
+		else if (user == UserTypes.STUDENT){
+			startStudentView();
+		}
+		else{
+			sendError();
+		}
 	}
 	
-	private UserTypes checkUserType(){
+	private void startProfView(){
+		//TODO
+	}
+	
+	private void startStudentView(){
+		//TODO
+	}
+	
+	private void sendError(){
+		//TODO
+	}
+	
+	private Enum checkUserType(){
 		//TODO:
 		ID = idField.getText();
 		password = passwordField.getText();
