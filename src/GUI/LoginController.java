@@ -3,6 +3,7 @@ package GUI;
 import java.sql.SQLException;
 
 import Model.Model;
+import Model.UserTypes;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -31,13 +32,14 @@ public class LoginController {
 	@FXML
 	private void login(){
 		String user = checkUserType();
+		if ( user == UserTypes.PROFESSOR. ) {
 	}
 	
-	private String checkUserType(){
+	private UserTypes checkUserType(){
 		//TODO:
 		ID = idField.getText();
 		password = passwordField.getText();
 		type = model.getDatabase().getUserType(ID, password);
-		return type.toString();
+		return type;
 	}
 }
