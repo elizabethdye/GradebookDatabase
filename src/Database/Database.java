@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import Model.UserTypes;
+
 public class Database {
 	
 	Statement stat;
@@ -93,6 +95,12 @@ public class Database {
 		return students;
 	}
 	
+	public UserTypes getUserType(String ID, String password){
+		UserTypes userType;
+		//TODO: get usertype from table fromString()
+		return userType;
+	}
+
 	public ArrayList<ArrayList>
 	//TODO: what happens if grade is not entered? is ''?
 }
