@@ -4,6 +4,7 @@ public enum UserTypes {
 	PROFESSOR, STUDENT, INVALID;
 
     public static UserTypes fromString(String element){
+    	element = element.toUpperCase();
         switch (element){
             case "PROFESSOR":
                 return PROFESSOR;
