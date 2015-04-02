@@ -28,7 +28,7 @@ public class Controller {
 	
 	private Model model = new Model();
 	
-	@FXML
+	@FXML 
 	private void initialize(){
 		students.setItems(model.studentNames());
 		grades.setItems(model.gradeBook());

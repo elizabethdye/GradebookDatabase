@@ -13,7 +13,7 @@ public class Model {
 	private ObservableList<String> studentNames;
 	private ObservableList<HBox> gradeBook;
 	private HBox gradeBox;
-	private int numGrades = 0;
+	private int numGrades = 0; 
 	
 	private void Model() throws ClassNotFoundException, SQLException{
 		database = new Database();
