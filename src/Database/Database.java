@@ -78,7 +78,7 @@ public class Database {
 		ResultSet results = stat.getResultSet();
 		ArrayList<String> assignments = new ArrayList<String>();
 		while (results.next()) {
-			assignments.add("Assignment");
+			assignments.add(results.getString("Assignment"));
 		}
 		return assignments;
 	}
@@ -88,11 +88,20 @@ public class Database {
 		ResultSet results = stat.getResultSet();
 		ArrayList<String> students = new ArrayList<String>();
 		while (results.next()) {
-			students.add("Student");
+			students.add(results.getString("Student"));
 		}
 		return students;
 	}
 	
-	public ArrayList<ArrayList>
+	public ArrayList<Model.GradeInfo> getGradeInfo(String professorName, String courseName) throws SQLException {
+		stat.execute("SELECT FROM GradeTable WHERE Professor = " + professorName + " AND Course = " + courseName);
+		ResultSet results = stat.getResultSet();
+		ArrayList<Model.GradeInfo> gradeInfo = new ArrayList<Model.GradeInfo>(); 
+		while (results.next()) {
+			Model.GradeInfo gradeSet = new Model.GradeInfo(results.getString("Student"), results.getString("Assignment"), results.getDouble("Grade"));
+			gradeInfo.add(gradeSet);
+		}
+		return gradeInfo;
+	}
 	//TODO: what happens if grade is not entered? is ''?
 }
