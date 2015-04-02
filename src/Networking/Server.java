@@ -9,7 +9,7 @@ public class Server {
 	private ServerSocket accepter;
 	private Database db;
 
-	public Server(int port) throws IOException {
+	public Server(int port) throws IOException{
 		accepter = new ServerSocket(port);
 		System.out.println("Server IP address: " + accepter.getInetAddress());
 	}

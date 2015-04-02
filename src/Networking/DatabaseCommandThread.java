@@ -14,7 +14,7 @@ public class DatabaseCommandThread extends Thread {
         this.db = db;
     }
 
-    public void run() {
+    public void run(){
         try {
             BufferedReader responses = 
                 new BufferedReader
