@@ -117,10 +117,5 @@ public class Database {
 		}
 	}
 
-	public UserTypes getUserType(String ID, String password){
-		UserTypes userType;
-		//TODO: get usertype from table fromString()
-		return userType;
-	}
 	//TODO: what happens if grade is not entered? is ''?
 }

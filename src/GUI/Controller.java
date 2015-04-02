@@ -30,9 +30,8 @@ public class Controller {
 	
 	@FXML
 	private void initialize(){
-		students.setItems(model.getStudentNames());
-		grades.setItems(model.getGradebook());
-		model.addStudent(" ");
+		students.setItems(model.studentNames());
+		grades.setItems(model.gradeBook());
 	}
 	
 	@FXML
@@ -92,17 +91,16 @@ public class Controller {
 			@Override
 			public void handle(ActionEvent add){
 				newStage.close();
-				model.addStudent(gradeName.getText());
-				for(int i = 0; i < model.numStudents(); i++){
-					//stuff
-				}
+				System.out.println("Model addGrade");
+				model.addGrade(gradeName.getText());
 			}
 		});
 		okButton.setOnAction(new EventHandler<ActionEvent>(){
     		@Override
     		public void handle(ActionEvent close){
     			newStage.close();
-    			model.addStudent(gradeName.getText());
+    			System.out.println("Model addGrade");
+				model.addGrade(gradeName.getText());
 			}
     		
     	});

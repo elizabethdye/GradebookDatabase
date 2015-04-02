@@ -30,7 +30,7 @@ public class LoginController {
 	}
 	
 	@FXML
-	private void login(){
+	private void login() throws SQLException{
 		Enum user = checkUserType();
 		if (user == UserTypes.PROFESSOR){
 			startProfView();
@@ -55,7 +55,7 @@ public class LoginController {
 		//TODO
 	}
 	
-	private Enum checkUserType(){
+	private Enum checkUserType() throws SQLException{
 		//TODO:
 		ID = idField.getText();
 		password = passwordField.getText();
