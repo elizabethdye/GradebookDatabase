@@ -22,7 +22,14 @@ public class tempController {
 	
 	@FXML
 	public void add() throws SQLException {
+		db.addCourse("math", "carl");
 		db.addStudent("carl", textfield.getText(), "math");
-		System.out.println(db.getCourses("carl"));
+		db.addStudent("carl", "hey", "math");
+		db.addAssignment("carl", "math", "Assignment 1");
+		db.addAssignment("carl", "math", "Assignment 2");
+		db.addGrade("Assignment 1", textfield.getText(), 50.0, "carl", "math");
+		System.out.println(db.getAssignments("carl", "math"));
+		System.out.println(db.retrieveGrade("Assignment 1", textfield.getText()));
+		System.out.println(db.getStudents("carl", "math"));
 	}
 }

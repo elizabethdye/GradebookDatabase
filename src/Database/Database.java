@@ -34,6 +34,13 @@ public class Database {
 		stat.execute("INSERT INTO CourseTable VALUES ('" + professorName + "', '" + courseName + "')");
 	}
 	
+	public void addAssignment(String professorName, String courseName, String assignmentName) throws SQLException {
+		stat.execute("INSERT INTO AssignmentTable VALUES ('" + professorName + "' , '" + courseName + "' , '" + assignmentName + "' , -1)");
+		for (String student: getStudents(professorName, courseName)) {
+			stat.execute("INSERT INTO GradeTable VALUES ('" + student + "', '" + professorName + "', '" + courseName + "', '" + assignmentName + "', -1)");
+		}
+	}
+	
 	public void addStudent(String professorName, String studentName, String courseName) throws SQLException {
 		stat.execute("INSERT INTO CourseParticipantTable VALUES ('" + professorName + "', '" + courseName + "', '" + studentName + "', '')");
 		stat.execute("SELECT * FROM AssignmentTable WHERE Course = '" + courseName + "' AND Professor = '" + professorName + "'");
@@ -52,7 +59,7 @@ public class Database {
 	}
 	
 	public double retrieveGrade(String assignmentName, String studentName) throws SQLException {
-		stat.execute("SELECT * FROM AssignmentGradeTable WHERE Assignment = '" + assignmentName + "' AND Student = '" + studentName + "'");
+		stat.execute("SELECT * FROM GradeTable WHERE Assignment = '" + assignmentName + "' AND Student = '" + studentName + "'");
 		ResultSet results = stat.getResultSet();
 		return results.getDouble("Grade");
 		//TODO: do I need this method? I don't think so.
@@ -85,7 +92,7 @@ public class Database {
 	}
 	
 	public ArrayList<String> getStudents(String professorName, String courseName) throws SQLException {
-		stat.execute("SELECT * FROM CourseParticipants WHERE Professor = '" + professorName + "' AND Course = '" + courseName + "'");
+		stat.execute("SELECT * FROM CourseParticipantTable WHERE Professor = '" + professorName + "' AND Course = '" + courseName + "'");
 		ResultSet results = stat.getResultSet();
 		ArrayList<String> students = new ArrayList<String>();
 		while (results.next()) {
