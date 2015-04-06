@@ -25,8 +25,10 @@ public class ServerRequestThread extends Thread {
             
             try {
 				ServerRequest clientRequest = (ServerRequest) fromClientStream.readObject();
+				System.out.println("Got ServerRequest from client");
 				ServerRequestResult result = evaluateRequest(clientRequest);
 				toClientStream.writeObject(result);
+				System.out.println("Sent the ServerRequestResult back to user");
 				//TODO: not sure what this does or if it's needed, but copying class code structure
 				toClientStream.flush();
 			} catch (ClassNotFoundException e) {
@@ -75,6 +77,7 @@ public class ServerRequestThread extends Thread {
     		case GET_USER_TYPE:
     			result.setResult(db.getUserType(args[0], args[1]));
     	}
+    	System.out.println("Finished evaluating database command...");
     	return result;
     }
 }

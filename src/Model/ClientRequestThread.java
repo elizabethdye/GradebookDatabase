@@ -52,7 +52,9 @@ public class ClientRequestThread extends Thread {
             } catch (IOException ioe) {
                 System.out.println("error closing socket");
             }
-        }		
+        }
+		//TODO: no idea if this is right, just trying stuff
+		halt();
 	}
 	
 	public synchronized void halt() {
