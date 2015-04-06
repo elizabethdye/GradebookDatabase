@@ -133,7 +133,7 @@ public class Database {
 	}
 	
 	public void addUser(String ID, String password, UserTypes type) throws SQLException {
-		stat.execute("INSERT INTO LoginTable VALUES ('" + ID + "', '" + type.toString() + "', '" + password + "'");
+		stat.execute("INSERT INTO LoginTable VALUES ('" + ID + "', '" + type.toString() + "', '" + password + "')");
 	}
 
 	//TODO: what happens if grade is not entered? is ''?
