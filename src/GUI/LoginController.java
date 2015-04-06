@@ -39,6 +39,7 @@ public class LoginController {
 	@FXML
 	private void initialize() throws ClassNotFoundException, SQLException{
 		model = new LoginModel();
+		model.addUser("admin", "admin", UserTypes.PROFESSOR);
 	}
 	
 	@FXML
