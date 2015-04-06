@@ -37,19 +37,21 @@ public class Model {
 		gradeBook = FXCollections.observableArrayList();
 		this.gradeBox = gradeBox;
 		this.assignmentName = assign;
-		this.assignmentName.setSpacing(10);
+		this.assignmentName.setSpacing(30);
+		assignmentName.setMaxSize(70, 20);
+		assignmentName.setMinSize(70, 20);
 		this.scrollpane = scrollpane;
 		DoubleProperty wProperty = new SimpleDoubleProperty();
 		wProperty.bind(gradeBox.widthProperty());
 		studentNames.add(" ");
-		initiateGradebook("Assignment 1");
+		initiateGradebook("   Test 1     ");
 		System.out.println("Model set Up");
 	}
 	
 	private void initiateGradebook(String value){
 		Label name = new Label(value);
 		name.setMaxSize(70, 20);
-		name.setMinSize(70, 0);
+		name.setMinSize(50, 20);
 		assignmentName.getChildren().add(name);
 	}
 	
@@ -72,9 +74,9 @@ public class Model {
 	public void addGrade(String value){
 		if (value.length() > 0){
 		System.out.println("Running addGrade");
-		Label name = new Label(value);
+		Label name = new Label(value + "           ");
 		name.setMaxSize(70, 20);
-		name.setMinSize(70, 0);
+		name.setMinSize(50, 20);
 		assignmentName.setSpacing(10);
 		assignmentName.getChildren().add(name);
 		this.numGrades++;
@@ -91,7 +93,7 @@ public class Model {
 		textfield.setMaxSize(45, 20);
 		textfield.setMinSize(45, 20);
 		HBox box = new HBox();
-		box.setSpacing(10);
+		box.setSpacing(30);
 		box.getChildren().add(textfield);
 		assignmentGrades.add(box);
 		assignment.setOrientation(Orientation.HORIZONTAL);
@@ -137,6 +139,7 @@ public class Model {
 	public int getNumGrades(){
 		return gradeBook.size();
 	}
+	
 
 	public Database getDatabase() {
 		return database;
