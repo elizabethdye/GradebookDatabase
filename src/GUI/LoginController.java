@@ -40,6 +40,8 @@ public class LoginController {
 	private void initialize() throws ClassNotFoundException, SQLException{
 		model = new LoginModel();
 		model.addUser("admin", "admin", UserTypes.PROFESSOR);
+		idField.setText("Ferrer");
+		passwordField.setText("ILoveRobotics");
 	}
 	
 	@FXML

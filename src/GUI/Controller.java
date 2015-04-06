@@ -154,7 +154,6 @@ public class Controller {
 		newStage.requestFocus();
 		
 	}
-	@FXML
 	public void throwError(String message){
 		Stage newStage = new Stage();
 		VBox root = new VBox();
@@ -212,10 +211,14 @@ public class Controller {
     		public void handle(ActionEvent close){
     			String noDelete = model.getStudentNames().get(0).getChildren().get(0).toString();
     			String selected = students.getSelectionModel().getSelectedItem().getChildren().get(0).toString();
+    			int index = students.getSelectionModel().getSelectedIndex();
     			newStage.close();
     			System.out.println("Deleting student");
     			if(!selected.equals(noDelete)){
     				model.getStudentNames().remove(students.getSelectionModel().getSelectedItem());
+    				System.out.println(selected);
+    				System.out.println(index);
+    				gradeBox.getChildren().remove(index-1);
     			}
     			else{
     				throwError("Please make a valid selection");
