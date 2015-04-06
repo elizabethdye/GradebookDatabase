@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.ArrayList;
 import java.util.List;
+
 import Database.Database;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -17,6 +18,7 @@ import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 
 public class Model {
 	Database database;
@@ -24,7 +26,7 @@ public class Model {
 	String serverHost;
 	int serverPort;
 	ArrayBlockingQueue<ServerRequestResult> channel;
-	private ObservableList<String> studentNames;
+	private ObservableList<VBox> studentNames;
 	private int numGrades = 0;
 	private ObservableList<String> gradeBook;
 	List<List<HBox>> gradeList = new ArrayList<List<HBox>>();
@@ -45,7 +47,11 @@ public class Model {
 		this.scrollpane = scrollpane;
 		DoubleProperty wProperty = new SimpleDoubleProperty();
 		wProperty.bind(gradeBox.widthProperty());
-		studentNames.add(" ");
+		Text text = new Text(" ");
+		VBox box = new VBox();
+		box.setMinSize(0, 30);
+		box.getChildren().add(text);
+		studentNames.add(box);
 		initiateGradebook("   Test 1     ");
 		System.out.println("Model set Up");
 		//testingCode();
@@ -68,7 +74,7 @@ public class Model {
 		assignmentName.getChildren().add(name);
 	}
 	
-	public ObservableList<String>	getStudentNames(){
+	public ObservableList<VBox>	getStudentNames(){
 		return studentNames;
 		}
 	public ObservableList<String>	getGradeBook(){
@@ -77,7 +83,10 @@ public class Model {
 	
 	public void addStudent(String value){
 		if (value.length() > 0){
-			studentNames.add(value);
+			Text text = new Text(value);
+			VBox box = new VBox();
+			box.getChildren().add(text);
+			studentNames.add(box);
 			System.out.println("added student");
 			this.numStudents++;
 			addLineToGrades();

@@ -11,8 +11,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
@@ -24,7 +26,7 @@ import javafx.stage.Stage;
 public class Controller {
 
 	@FXML
-	ListView<String> students;
+	ListView<VBox> students;
 	@FXML
 	VBox gradeBox;
 	@FXML
@@ -35,6 +37,8 @@ public class Controller {
 	ScrollPane scrollpane;
 	@FXML
 	Button studentAdd, studentRem, gradesAdd, gradesRem;
+	@FXML
+	TabPane tabPane;
 	@FXML
 	Tab class1, newClass;
 	
@@ -50,9 +54,16 @@ public class Controller {
 		scrollpane.prefViewportWidthProperty().set(constraints.getWidth());
 		this.model = new Model(gradeBox, assignmentNames, scrollpane);
 		students.setItems(model.getStudentNames());
+		students.setFixedCellSize(30);
 		System.out.println("Initialized");
 	}
-	
+	/*
+	@FXML
+	public void newTab(){
+		SingleSelectionModel<Tab> selectionModel = tabPane.getSelectionModel();
+		newClass.setContent(selectionModel);
+	}
+	*/
 	@FXML
 	public void addStudent(){
 		Stage newStage = new Stage();
