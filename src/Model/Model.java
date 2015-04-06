@@ -1,16 +1,14 @@
 package Model;
 
 import java.sql.SQLException;
+import java.util.concurrent.ArrayBlockingQueue;
 import java.util.ArrayList;
 import java.util.List;
-
 import Database.Database;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.transformation.SortedList;
-import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -19,17 +17,20 @@ import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 
 public class Model {
 	Database database;
+	ClientRequestThread requestThread;
+	String serverHost;
+	int serverPort;
+	ArrayBlockingQueue<ServerRequestResult> channel;
 	private ObservableList<String> studentNames;
+	private int numGrades = 0;
 	private ObservableList<String> gradeBook;
 	List<List<HBox>> gradeList = new ArrayList<List<HBox>>();
 	private VBox gradeBox;
 	private HBox assignmentName;
 	private ScrollPane scrollpane;
-	private int numGrades = 0;
 	private int numStudents = 0;
 	
 	public Model(VBox gradeBox, HBox assign, ScrollPane scrollpane) throws ClassNotFoundException, SQLException{
@@ -138,8 +139,13 @@ public class Model {
 	}
 	/*
 	private void populateGradebook(){
+<<<<<<< HEAD
+		System.out.println("Populating gradebook");
+		for(int i = 0; i < numStudents(); i++){
+=======
 		System.out.println("Populating gradbook");
 		for(int i = 0; i < getNumStudents(); i++){
+>>>>>>> 09653dc415688631d1ee8326a63758e5f013d6f9
 			HBox studentGrades = new HBox();
 			studentGrades.setSpacing(20);
 			gradeBook.add(studentGrades);
@@ -157,10 +163,34 @@ public class Model {
 	public int getNumGrades(){
 		return gradeBook.size();
 	}
-	
-
 	public Database getDatabase() {
 		return database;
 	}
-
+	
+	public void sendServerRequest(ServerRequest request){
+		//TODO: Add a check for the ClientRequestThread to already exist and "be going" (?, trying
+		//to follow class code structure).
+		//TODO: Not sure why the argument to channel is 2 or if it matters; just following class.
+		channel = new ArrayBlockingQueue<ServerRequestResult>(2);
+		requestThread = new ClientRequestThread(request, serverHost, serverPort, channel);
+		new Receiver().start();
+		//TODO Once this thread finishes, the ServerRequestResults should be in channel. How do I know
+		//when?
+		requestThread.start();
+	}
+	
+	public class Receiver extends Thread {
+		public void run() {
+			while (requestThread.isGoing()) {
+				ServerRequestResult result;
+				try {
+					result = channel.take();
+					//TODO: need to do something with the result, but what?
+					//addMessage(line);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
 }

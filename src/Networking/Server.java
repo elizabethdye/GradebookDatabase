@@ -17,9 +17,9 @@ public class Server {
 	public void listen() throws IOException {
 		for (;;) {
 			Socket s = accepter.accept();
-			//SocketEchoThread echoer = new SocketEchoThread(s);
+			ServerRequestThread requestThread = new ServerRequestThread(s, db);
 			System.out.println("Connection accepted from " + s.getInetAddress());
-			//echoer.start();
+			requestThread.start();
 		}
 	}
 

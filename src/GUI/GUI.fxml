@@ -68,7 +68,7 @@
                                  </font>
                               </Button>
                               <Label layoutX="6.0" layoutY="16.0" text="Students: " />
-                              <Button fx:id="studentRem" layoutX="97.0" layoutY="11.0" mnemonicParsing="false" prefHeight="20.0" prefWidth="24.0" text="-" textAlignment="CENTER">
+                              <Button fx:id="studentRem" layoutX="97.0" layoutY="11.0" mnemonicParsing="false" prefHeight="22.0" prefWidth="24.0" text="-" textAlignment="CENTER">
                                  <font>
                                     <Font name="System Bold" size="10.0" />
                                  </font>
