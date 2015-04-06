@@ -36,7 +36,6 @@ public class Database {
 	
 	public void addStudent(String professorName, String studentName, String courseName) throws SQLException {
 		stat.execute("INSERT INTO CourseParticipantTable VALUES ('" + professorName + "', '" + courseName + "', '" + studentName + "', '')");
-		//TODO: for each assignment, add a thing.
 		stat.execute("SELECT * FROM AssignmentTable WHERE Course = '" + courseName + "' AND Professor = '" + professorName + "'");
 		ResultSet results = stat.getResultSet();
 		while (results.next()) {
