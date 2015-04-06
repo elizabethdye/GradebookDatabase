@@ -47,7 +47,12 @@ public class LoginController {
 //		showNewStage("GUI.fxml");
 		Enum user = checkUserType();
 		if (user == UserTypes.PROFESSOR){
-			startProfView();
+			if(ID.equals("admin")){
+				startAdminView();
+			}
+			else{
+				startProfView();
+			}
 		}
 		else if (user == UserTypes.STUDENT){
 			startStudentView();
@@ -64,7 +69,11 @@ public class LoginController {
 		app_stage.setScene(home_page_scene);
 		app_stage.show();
 	}
-	 
+	
+	private void startAdminView() throws IOException{
+		showNewStage("AddUserUI.fxml");
+	}
+	
 	private void startProfView() throws IOException{
 		showNewStage("GUI.fxml");
 //		TODO: once student view is created, rename - showNewStage("ProfGUI.fxml");
