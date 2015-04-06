@@ -3,14 +3,11 @@ package Model;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
 import Database.Database;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.transformation.SortedList;
-import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -18,7 +15,6 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 
 public class Model {
 	Database database;
@@ -30,9 +26,10 @@ public class Model {
 	private ScrollPane scrollpane;
 	private int numGrades = 0;
 	private int numStudents = 0;
+	private String filename = "jdbc:sqlite:db";
 	
 	public Model(VBox gradeBox, HBox assign, ScrollPane scrollpane) throws ClassNotFoundException, SQLException{
-		database = new Database();
+		database = new Database(filename);
 		studentNames = FXCollections.observableArrayList();
 		gradeBook = FXCollections.observableArrayList();
 		this.gradeBox = gradeBox;

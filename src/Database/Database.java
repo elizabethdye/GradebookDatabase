@@ -9,9 +9,9 @@ public class Database {
 	
 	Statement stat;
 	
-	public Database() throws ClassNotFoundException, SQLException {
+	public Database(String filename) throws ClassNotFoundException, SQLException {
 		Class.forName("org.sqlite.JDBC");
-        Connection con = DriverManager.getConnection("jdbc:sqlite:db");
+        Connection con = DriverManager.getConnection(filename);
         stat = con.createStatement();
         createTables();
 	}
@@ -27,6 +27,14 @@ public class Database {
 		catch (SQLException sq){
 			return;
 		}
+	}
+	
+	public void deleteTables() throws SQLException {
+		stat.execute("DELETE CourseParticipantTable");
+		stat.execute("DELETE AssignmentTable");
+		stat.execute("DELETE GradeTable");
+		stat.execute("DELETE LoginTable");
+		stat.execute("DELETE CourseTable");
 	}
 	
 	public void addCourse(String courseName, String professorName) throws SQLException {
@@ -124,7 +132,7 @@ public class Database {
 	}
 	
 	public void addUser(String ID, String password, UserTypes type) throws SQLException {
-		stat.execute("INSERT INTO LoginTable VALUES ('" + ID + "', '" + type.toString() + "', '" + password + "'");
+		stat.execute("INSERT INTO LoginTable VALUES ('" + ID + "', '" + type.toString() + "', '" + password + "')");
 	}
 
 	//TODO: what happens if grade is not entered? is ''?
