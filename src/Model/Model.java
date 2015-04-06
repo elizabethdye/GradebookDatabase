@@ -1,20 +1,14 @@
 package Model;
 
 import java.sql.SQLException;
-<<<<<<< HEAD
 import java.util.concurrent.ArrayBlockingQueue;
-=======
 import java.util.ArrayList;
 import java.util.List;
-
 import Database.Database;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
->>>>>>> 09653dc415688631d1ee8326a63758e5f013d6f9
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.transformation.SortedList;
-import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -22,7 +16,6 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 
 public class Model {
 	Database database;
@@ -31,19 +24,13 @@ public class Model {
 	int serverPort;
 	ArrayBlockingQueue<ServerRequestResult> channel;
 	private ObservableList<String> studentNames;
-<<<<<<< HEAD
-	private ObservableList<HBox> gradeBook;
-	private HBox gradeBox;
 	private int numGrades = 0;
-=======
 	private ObservableList<String> gradeBook;
 	List<List<String>> gradeList = new ArrayList<List<String>>();
 	private VBox gradeBox;
 	private HBox assignmentName;
 	private ScrollPane scrollpane;
-	private int numGrades = 0;
 	private int numStudents = 0;
->>>>>>> 09653dc415688631d1ee8326a63758e5f013d6f9
 	
 	public Model(VBox gradeBox, HBox assign, ScrollPane scrollpane) throws ClassNotFoundException, SQLException{
 		database = new Database();
@@ -158,8 +145,10 @@ public class Model {
 	public int getNumGrades(){
 		return gradeBook.size();
 	}
+	public Database getDatabase() {
+		return database;
+	}
 	
-<<<<<<< HEAD
 	public void sendServerRequest(ServerRequest request){
 		//TODO: Add a check for the ClientRequestThread to already exist and "be going" (?, trying
 		//to follow class code structure).
@@ -185,11 +174,5 @@ public class Model {
 				}
 			}
 		}
-=======
-
-	public Database getDatabase() {
-		return database;
->>>>>>> 09653dc415688631d1ee8326a63758e5f013d6f9
 	}
-
 }

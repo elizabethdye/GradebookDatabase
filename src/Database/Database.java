@@ -16,15 +16,7 @@ public class Database {
         createTables();
 	}
 	
-<<<<<<< HEAD
-	public void createTables() throws SQLException {
-		stat.execute("CREATE TABLE CourseParticipantTable (Professor TEXT, Course TEXT, Student TEXT, OverallGrade REAL)");
-		stat.execute("CREATE TABLE AssignmentTable (Professor TEXT, Course TEXT, Assignment TEXT, TotalPossible REAL)");
-		stat.execute("CREATE TABLE GradeTable (Student TEXT, Professor TEXT, Course TEXT, Assignment TEXT, Grade REAL)");
-		stat.execute("CREATE TABLE LoginTable (Person TEXT, Type TEXT, Password TEXT)");
-		stat.execute("CREATE TABLE CourseTable (Professor TEXT, Course TEXT)");
-=======
-	private void createTables() {
+	public void createTables(){
 		try {
 			stat.execute("CREATE TABLE CourseParticipantTable (Professor TEXT, Course TEXT, Student TEXT, OverallGrade REAL)");
 			stat.execute("CREATE TABLE AssignmentTable (Professor TEXT, Course TEXT, Assignment TEXT, TotalPossible REAL)");
@@ -35,7 +27,6 @@ public class Database {
 		catch (SQLException sq){
 			return;
 		}
->>>>>>> 09653dc415688631d1ee8326a63758e5f013d6f9
 	}
 	
 	public void addCourse(String courseName, String professorName) throws SQLException {
@@ -133,7 +124,7 @@ public class Database {
 	}
 	
 	public void addUser(String ID, String password, UserTypes type) throws SQLException {
-		stat.execute("INSERT INTO LoginTable VALUES ('" + ID + "', '" + type.toString() + "', '" + password + "'");
+		stat.execute("INSERT INTO LoginTable VALUES ('" + ID + "', '" + type.toString() + "', '" + password + "')");
 	}
 
 	//TODO: what happens if grade is not entered? is ''?
