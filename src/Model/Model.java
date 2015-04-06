@@ -1,7 +1,7 @@
 package Model;
 
 import java.sql.SQLException;
-
+import java.util.concurrent.ArrayBlockingQueue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Button;
@@ -10,10 +10,14 @@ import Database.Database;
 
 public class Model {
 	Database database;
+	ClientRequestThread requestThread;
+	String serverHost;
+	int serverPort;
+	ArrayBlockingQueue<ServerRequestResult> channel;
 	private ObservableList<String> studentNames;
 	private ObservableList<HBox> gradeBook;
 	private HBox gradeBox;
-	private int numGrades = 0; 
+	private int numGrades = 0;
 	
 	private void Model() throws ClassNotFoundException, SQLException{
 		database = new Database();
@@ -65,7 +69,7 @@ public class Model {
 	}
 	
 	private void populateGradebook(){
-		System.out.println("Populating gradbook");
+		System.out.println("Populating gradebook");
 		for(int i = 0; i < numStudents(); i++){
 			HBox studentGrades = new HBox();
 			studentGrades.setSpacing(20);
@@ -82,6 +86,33 @@ public class Model {
 	}
 	public int numGrades(){
 		return gradeBook.size();
+	}
+	
+	public void sendServerRequest(ServerRequest request){
+		//TODO: Add a check for the ClientRequestThread to already exist and "be going" (?, trying
+		//to follow class code structure).
+		//TODO: Not sure why the argument to channel is 2 or if it matters; just following class.
+		channel = new ArrayBlockingQueue<ServerRequestResult>(2);
+		requestThread = new ClientRequestThread(request, serverHost, serverPort, channel);
+		new Receiver().start();
+		//TODO Once this thread finishes, the ServerRequestResults should be in channel. How do I know
+		//when?
+		requestThread.start();
+	}
+	
+	public class Receiver extends Thread {
+		public void run() {
+			while (requestThread.isGoing()) {
+				ServerRequestResult result;
+				try {
+					result = channel.take();
+					//TODO: need to do something with the result, but what?
+					//addMessage(line);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 
 }
