@@ -14,6 +14,7 @@ public class Main extends Application {
 		try {
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(Main.class.getResource("LoginUI.fxml"));
+//			VBox root = (VBox) loader.load();
 			BorderPane root = (BorderPane) loader.load();
 			
 			Scene scene = new Scene(root,640,500);
