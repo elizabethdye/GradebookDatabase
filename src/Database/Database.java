@@ -46,7 +46,7 @@ public class Database {
 		stat.execute("SELECT * FROM AssignmentTable WHERE Course = '" + courseName + "' AND Professor = '" + professorName + "'");
 		ResultSet results = stat.getResultSet();
 		while (results.next()) {
-			stat.execute("INSERT INTO GradeTable VALUES ('" + studentName + "', '" + professorName + "', '" + courseName + "', '" + results.getString(3) + "', '')"); 
+			stat.execute("INSERT INTO GradeTable VALUES ('" + studentName + "', '" + professorName + "', '" + courseName + "', '" + results.getString(3) + "', -1)"); 
 		//TODO: not sure if the results.getString() part is done correctly
 		}
 	}
@@ -121,6 +121,10 @@ public class Database {
 		else {
 			return UserTypes.fromString("INVALID");
 		}
+	}
+	
+	public void addUser(String ID, String password, UserTypes type) throws SQLException {
+		stat.execute("INSERT INTO LoginTable VALUES ('" + ID + "', '" + type.toString() + "', '" + password + "'");
 	}
 
 	//TODO: what happens if grade is not entered? is ''?
