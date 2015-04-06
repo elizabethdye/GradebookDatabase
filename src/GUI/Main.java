@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 
 
@@ -12,8 +13,8 @@ public class Main extends Application {
 	public void start(Stage primaryStage) {
 		try {
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(Main.class.getResource("GUI.fxml"));
-			VBox root = (VBox) loader.load();
+			loader.setLocation(Main.class.getResource("LoginUI.fxml"));
+			BorderPane root = (BorderPane) loader.load();
 			
 			Scene scene = new Scene(root,640,500);
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
