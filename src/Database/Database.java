@@ -57,6 +57,7 @@ public class Database {
 			stat.execute("INSERT INTO GradeTable VALUES ('" + studentName + "', '" + professorName + "', '" + courseName + "', '" + results.getString(3) + "', -1)"); 
 		//TODO: not sure if the results.getString() part is done correctly
 		}
+		results.close();
 	}
 	
 	public void addGrade(String assignmentName, String studentName, Double grade, String professorName, String courseName) throws SQLException {
@@ -69,14 +70,18 @@ public class Database {
 	public double retrieveGrade(String assignmentName, String studentName) throws SQLException {
 		stat.execute("SELECT * FROM GradeTable WHERE Assignment = '" + assignmentName + "' AND Student = '" + studentName + "'");
 		ResultSet results = stat.getResultSet();
-		return results.getDouble("Grade");
+		Double val = results.getDouble("Grade");
+		results.close();
+		return val;
 		//TODO: do I need this method? I don't think so.
 	}
 	
 	public double retrieveOverallGrade(String professorName, String courseName, String studentName) throws SQLException {
 		stat.execute("SELECT * FROM CourseParticipantTable WHERE Professor = '" + professorName + "' AND Course = '" + courseName + "' AND Student = '" + studentName + "'");
 		ResultSet results = stat.getResultSet();
-		return results.getDouble("OverallGrade");
+		Double val = results.getDouble("OverallGrade");
+		results.close();
+		return val;
 	}
 	
 	public ArrayList<String> getCourses(String professorName) throws SQLException {
@@ -86,6 +91,7 @@ public class Database {
 		while (results.next()) {
 			courses.add(results.getString("Course"));
 		}
+		results.close();
 		return courses;
 	}
 	
@@ -96,6 +102,7 @@ public class Database {
 		while (results.next()) {
 			assignments.add(results.getString("Assignment"));
 		}
+		results.close();
 		return assignments;
 	}
 	
@@ -106,6 +113,7 @@ public class Database {
 		while (results.next()) {
 			students.add(results.getString("Student"));
 		}
+		results.close();
 		return students;
 	}
 	
@@ -117,6 +125,7 @@ public class Database {
 			Model.GradeInfo gradeSet = new Model.GradeInfo(results.getString("Student"), results.getString("Assignment"), results.getDouble("Grade"));
 			gradeInfo.add(gradeSet);
 		}
+		results.close();
 		return gradeInfo;
 	}
 	
@@ -124,10 +133,14 @@ public class Database {
 		stat.execute("SELECT * FROM LoginTable WHERE Person = '" + ID + "' AND Password = '" + password + "'");
 		ResultSet results = stat.getResultSet();
 		if (results.next()) {
-			return UserTypes.fromString(results.getString("Type"));
+			UserTypes type = UserTypes.fromString(results.getString("Type"));
+			results.close();
+			return type;
 		}
 		else {
-			return UserTypes.fromString("INVALID");
+			UserTypes type = UserTypes.fromString("INVALID");
+			results.close();
+			return type;
 		}
 	}
 	
