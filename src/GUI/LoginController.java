@@ -25,8 +25,8 @@ public class LoginController {
 	Model model;
 	
 	@FXML
-	private void initialize(){
-		model = new Model();
+	private void initialize() throws ClassNotFoundException, SQLException{
+		model = new Model(null, null, null);
 	}
 	
 	@FXML

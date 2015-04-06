@@ -1,5 +1,7 @@
 package GUI;
 
+import java.sql.SQLException;
+
 import Model.Model;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -34,15 +36,15 @@ public class Controller {
 	@FXML
 	Tab class1, newClass;
 	
-	private Model2 model;
+	private Model model;
 	
 	@FXML 
-	private void initialize(){
-		assignmentNames.setSpacing(20);
+	private void initialize() throws ClassNotFoundException, SQLException{
+		assignmentNames.setSpacing(10);
 		scrollpane.setFitToWidth(true);
 		scrollpane.setContent(constraints);
-		this.model = new Model2(gradeBox, assignmentNames, scrollpane);
-		students.setItems(model.studentNames());
+		this.model = new Model(gradeBox, assignmentNames, scrollpane);
+		students.setItems(model.getStudentNames());
 		System.out.println("Initialized");
 	}
 	
@@ -96,7 +98,7 @@ public class Controller {
 		Label nameField = new Label("Enter Assignment Name: ");
 		TextField gradeName = new TextField();
 		HBox selection = new HBox();
-		selection.setSpacing(50);
+		selection.setSpacing(10);
 		Button okButton = new Button("OK");
 		Button closeButton = new Button("Cancel");
 		gradeName.setOnAction(new EventHandler<ActionEvent>() {
