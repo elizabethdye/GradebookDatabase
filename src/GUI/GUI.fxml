@@ -51,7 +51,7 @@
     </MenuBar>
     <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
          <children>
-            <TabPane layoutY="14.0" prefHeight="356.0" prefWidth="640.0" tabClosingPolicy="UNAVAILABLE">
+            <TabPane fx:id="tabPane" layoutY="14.0" prefHeight="356.0" prefWidth="640.0" tabClosingPolicy="UNAVAILABLE">
               <tabs>
                 <Tab fx:id="class1" text="CSCI 150">
                   <content>
@@ -68,7 +68,7 @@
                                  </font>
                               </Button>
                               <Label layoutX="6.0" layoutY="16.0" text="Students: " />
-                              <Button fx:id="studentRem" layoutX="97.0" layoutY="11.0" mnemonicParsing="false" prefHeight="20.0" prefWidth="24.0" text="-" textAlignment="CENTER">
+                              <Button fx:id="studentRem" layoutX="97.0" layoutY="11.0" mnemonicParsing="false" prefHeight="22.0" prefWidth="24.0" text="-" textAlignment="CENTER">
                                  <font>
                                     <Font name="System Bold" size="10.0" />
                                  </font>
@@ -81,14 +81,14 @@
                               </Button>
                               <ListView fx:id="students" editable="true" layoutX="4.0" layoutY="34.0" prefHeight="280.0" prefWidth="118.0" />
                               <ScrollPane fx:id="scrollpane" hbarPolicy="ALWAYS" layoutX="125.0" layoutY="34.0" prefHeight="280.0" prefWidth="509.0">
-                                <content>
-                                  <AnchorPane fx:id="constraints" minHeight="0.0" minWidth="0.0" prefHeight="280.0" prefWidth="506.0">
+                                 <content>
+                                    <AnchorPane fx:id="constraints" prefHeight="262.0" prefWidth="509.0">
                                        <children>
-                                          <VBox fx:id="gradeBox" layoutY="29.0" maxHeight="-Infinity" prefHeight="232.0" prefWidth="493.0" />
-                                          <HBox fx:id="assignmentNames" minHeight="-Infinity" prefHeight="30.0" prefWidth="490.0" />
+                                          <HBox fx:id="assignmentNames" prefHeight="30.0" prefWidth="508.0" />
+                                          <VBox fx:id="gradeBox" layoutY="31.0" prefHeight="230.0" prefWidth="509.0" />
                                        </children>
                                     </AnchorPane>
-                                </content>
+                                 </content>
                               </ScrollPane>
                            </children>
                         </AnchorPane>

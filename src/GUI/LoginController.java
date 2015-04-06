@@ -3,6 +3,7 @@ package GUI;
 import java.io.IOException;
 import java.sql.SQLException;
 
+import Model.LoginModel;
 import Model.Model;
 import Model.UserTypes;
 import javafx.event.ActionEvent;
@@ -33,27 +34,33 @@ public class LoginController {
 	String ID;
 	String password;
 	Enum type;
-	Model model;
+	LoginModel model;
 	
 	@FXML
 	private void initialize() throws ClassNotFoundException, SQLException{
-//		model = new Model(null, null, null);
+		model = new LoginModel();
+		model.addUser("admin", "admin", UserTypes.PROFESSOR);
 	}
 	
 	@FXML
 	private void login() throws SQLException, IOException{
-		errorWindow();
+//		errorWindow();
 //		showNewStage("GUI.fxml");
-//		Enum user = checkUserType();
-//		if (user == UserTypes.PROFESSOR){
-//			startProfView();
-//		}
-//		else if (user == UserTypes.STUDENT){
-//			startStudentView();
-//		}
-//		else{
-//			sendError();
-//		}
+		Enum user = checkUserType();
+		if (user == UserTypes.PROFESSOR){
+			if(ID.equals("admin")){
+				startAdminView();
+			}
+			else{
+				startProfView();
+			}
+		}
+		else if (user == UserTypes.STUDENT){
+			startStudentView();
+		}
+		else{
+			sendError();
+		}
 	}
 	
 	private void showNewStage(String FXMLFile) throws IOException {
@@ -63,10 +70,14 @@ public class LoginController {
 		app_stage.setScene(home_page_scene);
 		app_stage.show();
 	}
-	 
+	
+	private void startAdminView() throws IOException{
+		showNewStage("AddUserUI.fxml");
+	}
+	
 	private void startProfView() throws IOException{
-		showNewStage("ProfGUI.fxml");
-		//TODO
+		showNewStage("GUI.fxml");
+//		TODO: once student view is created, rename - showNewStage("ProfGUI.fxml");
 	}
 	
 	private void startStudentView() throws IOException{
@@ -76,11 +87,9 @@ public class LoginController {
 	
 	private void sendError(){
 		errorWindow();
-		//TODO
 	}
 	
 	private Enum checkUserType() throws SQLException{
-		//TODO:
 		ID = idField.getText();
 		password = passwordField.getText();
 		type = model.getDatabase().getUserType(ID, password);
@@ -91,34 +100,14 @@ public class LoginController {
 	public void errorWindow(){
 		Stage newStage = new Stage();
 		VBox root = new VBox();
-		Label nameField = new Label("Error: Invalid username/password.");
-		HBox selection = new HBox();
-		selection.setSpacing(50);
-		Button okButton = new Button("OK");
-//		Button closeButton = new Button("Cancel");
-		okButton.setOnAction(new EventHandler<ActionEvent>(){
-			@Override
-    		public void handle(ActionEvent close){
-    			newStage.close();
-			}
-    		
-    	});
-//		closeButton.setOnAction(new EventHandler<ActionEvent>(){
-//    		@Override
-//    		public void handle(ActionEvent close){
-//    			newStage.close();
-//			}
-//    		
-//    	});
-		selection.getChildren().addAll(okButton);//, closeButton);
-		root.getChildren().addAll(nameField, selection);
-
+		Label nameField = new Label("\n     Invalid username/password.     \n ");
+		root.getChildren().addAll(nameField);
 		Scene stageScene = new Scene(root);
 		VBox.setVgrow(root, Priority.ALWAYS);
 		newStage.setScene(stageScene);
 		newStage.show();
 		newStage.requestFocus();
-		
+		newStage.setTitle("ERROR");
 	}
 
 }

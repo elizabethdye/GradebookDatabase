@@ -11,10 +11,14 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.SingleSelectionModel;
+import javafx.scene.control.SplitPane;
 import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -22,7 +26,7 @@ import javafx.stage.Stage;
 public class Controller {
 
 	@FXML
-	ListView<String> students;
+	ListView<VBox> students;
 	@FXML
 	VBox gradeBox;
 	@FXML
@@ -34,6 +38,8 @@ public class Controller {
 	@FXML
 	Button studentAdd, studentRem, gradesAdd, gradesRem;
 	@FXML
+	TabPane tabPane;
+	@FXML
 	Tab class1, newClass;
 	
 	private Model model;
@@ -42,12 +48,22 @@ public class Controller {
 	private void initialize() throws ClassNotFoundException, SQLException{
 		assignmentNames.setSpacing(10);
 		scrollpane.setFitToWidth(true);
+		scrollpane.setFitToHeight(true);
 		scrollpane.setContent(constraints);
+		scrollpane.prefViewportHeightProperty().set(constraints.getHeight());
+		scrollpane.prefViewportWidthProperty().set(constraints.getWidth());
 		this.model = new Model(gradeBox, assignmentNames, scrollpane);
 		students.setItems(model.getStudentNames());
+		students.setFixedCellSize(30);
 		System.out.println("Initialized");
 	}
-	
+	/*
+	@FXML
+	public void newTab(){
+		SingleSelectionModel<Tab> selectionModel = tabPane.getSelectionModel();
+		newClass.setContent(selectionModel);
+	}
+	*/
 	@FXML
 	public void addStudent(){
 		Stage newStage = new Stage();
