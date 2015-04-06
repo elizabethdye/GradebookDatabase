@@ -15,6 +15,7 @@ import javafx.geometry.Orientation;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -24,7 +25,7 @@ public class Model {
 	Database database;
 	private ObservableList<String> studentNames;
 	private ObservableList<String> gradeBook;
-	List<List<String>> gradeList = new ArrayList<List<String>>();
+	List<List<HBox>> gradeList = new ArrayList<List<HBox>>();
 	private VBox gradeBox;
 	private HBox assignmentName;
 	private ScrollPane scrollpane;
@@ -46,12 +47,23 @@ public class Model {
 		studentNames.add(" ");
 		initiateGradebook("   Test 1     ");
 		System.out.println("Model set Up");
+		//testingCode();
 	}
+	/*
+	private void testingCode(){
+		for(int i = 0; i < 10; i++){
+			addGrade("Test");
+		}
+		for(int i = 0; i<  20; i++){
+			addStudent("Test Student");
+		}
+	}
+	*/
 	
 	private void initiateGradebook(String value){
 		Label name = new Label(value);
 		name.setMaxSize(70, 20);
-		name.setMinSize(50, 20);
+		name.setMinSize(70, 20);
 		assignmentName.getChildren().add(name);
 	}
 	
@@ -73,16 +85,23 @@ public class Model {
 	
 	public void addGrade(String value){
 		if (value.length() > 0){
-		System.out.println("Running addGrade");
-		Label name = new Label(value + "           ");
-		name.setMaxSize(70, 20);
-		name.setMinSize(50, 20);
-		assignmentName.setSpacing(10);
-		assignmentName.getChildren().add(name);
-		this.numGrades++;
-		for(int i = 0; i < this.numStudents; i++){
-			
-		}
+			System.out.println("Running addGrade");
+			Label name = new Label(value + "     ");
+			name.setMaxSize(70, 20);
+			name.setMinSize(50, 20);
+			assignmentName.setSpacing(10);
+			assignmentName.getChildren().add(name);
+			this.numGrades++;
+			System.out.println("Num students is: " + this.numStudents);
+			System.out.println("gradelist is: " + this.gradeList);
+			for(int i = 0; i < this.numStudents; i++){
+				HBox newBox = new HBox();
+				TextField newField = new TextField();
+				newBox.getChildren().add(newField);
+				newField.setMaxSize(45, 20);
+				newField.setMinSize(45, 20);
+				this.gradeList.get(i).add(newBox);
+			}			
 		}
 	}
 	
@@ -93,7 +112,6 @@ public class Model {
 		textfield.setMaxSize(45, 20);
 		textfield.setMinSize(45, 20);
 		HBox box = new HBox();
-		box.setSpacing(30);
 		box.getChildren().add(textfield);
 		assignmentGrades.add(box);
 		assignment.setOrientation(Orientation.HORIZONTAL);
@@ -105,10 +123,10 @@ public class Model {
 		assignment.setMinHeight(30);
 		System.out.println("assignment List is: " + gradeList);
 		this.gradeBox.getChildren().add(assignment);
+		this.gradeList.add(assignmentGrades);
 		scrollpane.setHvalue(scrollpane.getHmax());
 		for(int i = 0; i < this.numGrades; i++){
 			HBox newBox = new HBox();
-			newBox.setSpacing(10);
 			TextField newField = new TextField();
 			newBox.getChildren().add(newField);
 			newField.setMaxSize(45, 20);
