@@ -6,6 +6,7 @@ import Model.Model;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -15,12 +16,14 @@ import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class Controller {
@@ -150,6 +153,83 @@ public class Controller {
 		newStage.show();
 		newStage.requestFocus();
 		
+	}
+	@FXML
+	public void throwError(String message){
+		Stage newStage = new Stage();
+		VBox root = new VBox();
+		Label nameField = new Label("\n     " + message + "     \n ");
+		HBox buttons = new HBox();
+		buttons.setSpacing(100);
+		buttons.setPadding(new Insets(10, 10, 10, 10));
+		Button okButton = new Button("OK");
+		Button closeButton = new Button("Cancel");
+		buttons.getChildren().addAll(okButton, closeButton);
+		okButton.translateXProperty().set(30);
+		root.getChildren().addAll(nameField, buttons);
+		Scene stageScene = new Scene(root);
+		VBox.setVgrow(root, Priority.ALWAYS);
+		newStage.setScene(stageScene);
+		newStage.show();
+		newStage.requestFocus();
+		newStage.setTitle("ERROR");
+		okButton.setOnAction(new EventHandler<ActionEvent>(){
+    		@Override
+    		public void handle(ActionEvent close){
+    			newStage.close();
+			}
+    		
+    	});
+		closeButton.setOnAction(new EventHandler<ActionEvent>(){
+    		@Override
+    		public void handle(ActionEvent close){
+    			newStage.close();
+			}
+    		
+    	});
+	}
+	@FXML
+	public void ConfirmDeleteWindow(){
+		Stage newStage = new Stage();
+		VBox root = new VBox();
+		Label nameField = new Label("\n     Are you sure you want to delete?     \n ");
+		HBox buttons = new HBox();
+		buttons.setSpacing(100);
+		buttons.setPadding(new Insets(10, 10, 10, 10));
+		Button okButton = new Button("OK");
+		Button closeButton = new Button("Cancel");
+		buttons.getChildren().addAll(okButton, closeButton);
+		okButton.translateXProperty().set(30);
+		root.getChildren().addAll(nameField, buttons);
+		Scene stageScene = new Scene(root);
+		VBox.setVgrow(root, Priority.ALWAYS);
+		newStage.setScene(stageScene);
+		newStage.show();
+		newStage.requestFocus();
+		newStage.setTitle("Confirm");
+		okButton.setOnAction(new EventHandler<ActionEvent>(){
+    		@Override
+    		public void handle(ActionEvent close){
+    			String noDelete = model.getStudentNames().get(0).getChildren().get(0).toString();
+    			String selected = students.getSelectionModel().getSelectedItem().getChildren().get(0).toString();
+    			newStage.close();
+    			System.out.println("Deleting student");
+    			if(!selected.equals(noDelete)){
+    				model.getStudentNames().remove(students.getSelectionModel().getSelectedItem());
+    			}
+    			else{
+    				throwError("Please make a valid selection");
+    			}
+			}
+    		
+    	});
+		closeButton.setOnAction(new EventHandler<ActionEvent>(){
+    		@Override
+    		public void handle(ActionEvent close){
+    			newStage.close();
+			}
+    		
+    	});
 	}
 	
 }
