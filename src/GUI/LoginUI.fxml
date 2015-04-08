@@ -26,7 +26,7 @@
             <HBox layoutX="10.0" layoutY="10.0" prefHeight="100.0" prefWidth="200.0">
                <children>
                   <Label text="Password" translateX="180.0" translateY="10.0" />
-                  <TextField fx:id="passwordField" translateX="190.0" translateY="5.0" />
+                  <PasswordField fx:id="passwordField" translateX="190.0" translateY="3.0" />
                </children>
             </HBox>
             <Button fx:id="login" mnemonicParsing="false" onAction="#login" text="Login" translateX="275.0" translateY="-30.0" />

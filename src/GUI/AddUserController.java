@@ -1,10 +1,12 @@
 package GUI;
 
 import java.sql.SQLException;
+
 import Model.LoginModel;
 import Model.UserTypes;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
 public class AddUserController {
@@ -17,7 +19,7 @@ public class AddUserController {
 	String ID;
 	
 	@FXML
-	TextField passwordField;
+	PasswordField passwordField;
 	String password;
 	
 	LoginModel model;
