@@ -11,10 +11,13 @@ import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Orientation;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Tab;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -35,11 +38,15 @@ public class Model {
 	private ScrollPane scrollpane;
 	private int numStudents = 0;
 	private String filename = "jdbc:sqlite:db";
+	private String userID;
+	private String userType;
+	private String courseName;
 	
-	public Model(VBox gradeBox, HBox assign, ScrollPane scrollpane) throws ClassNotFoundException, SQLException{
+	public Model(VBox gradeBox, HBox assign, ScrollPane scrollpane, Tab courseName) throws ClassNotFoundException, SQLException{
 		database = new Database(filename);
 		studentNames = FXCollections.observableArrayList();
 		gradeBook = FXCollections.observableArrayList();
+		this.courseName = courseName.getText();
 		this.gradeBox = gradeBox;
 		this.assignmentName = assign;
 		this.assignmentName.setSpacing(30);
@@ -55,8 +62,44 @@ public class Model {
 		studentNames.add(box);
 		initiateGradebook("   Test 1     ");
 		System.out.println("Model set Up");
+		//testLists();
+		printDatabase();
 		//testingCode();
 	}
+	private void testLists() throws SQLException{
+		for(int i = 0; i < 5; i++){
+			addAssignment("TestGrade	" + i);
+			System.out.println(this.numGrades);
+			//TextField txtfield = (TextField)gradeList.get(i).get(0).getChildren().get(0);
+			//System.out.println(txtfield.getText());
+		}
+		for(int i = 0; i < 5; i++){
+			//TextField txtfield = (TextField)gradeList.get(i).get(0).getChildren().get(0);
+			//System.out.println(txtfield.getText());
+		}
+		for(int i = 0; i<  5; i++){
+			addStudent("Test Student " + i);
+		}
+		Text txt = new Text();
+		System.out.println("StudentNames: ");
+		for(int i = 1; i < 6; i++){
+			txt = (Text)studentNames.get(i).getChildren().get(0);
+			System.out.println(txt.getText().toString());
+		}
+		for(int i = 0; i < this.numGrades; i++){
+			TextField txtfield = (TextField)gradeList.get(i).get(0).getChildren().get(0);
+			txt.setText(txtfield.getText());
+			System.out.println("Grade: " + txt.getText().toString());
+		}
+	}
+	
+	private void printDatabase() throws SQLException{
+		System.out.println("UserID: " + this.userID);
+		System.out.println("Grade info: " + database.getGradeInfo(this.userID, courseName));
+		System.out.println("Get Courses: " + database.getCourses(this.userID));
+		System.out.println(" Get Assignments: " + database.getAssignments(this.userID, courseName));
+	}
+	
 	/*
 	private void testingCode(){
 		for(int i = 0; i < 10; i++){
@@ -82,9 +125,9 @@ public class Model {
 		return gradeBook;
 		}
 	
-	public void addStudent(String value){
-		if (value.length() > 0){
-			Text text = new Text(value);
+	public void addStudent(String studentName) throws SQLException{
+		if (studentName.length() > 0){
+			Text text = new Text(studentName);
 			VBox box = new VBox();
 			box.getChildren().add(text);
 			studentNames.add(box);
@@ -92,9 +135,12 @@ public class Model {
 			this.numStudents++;
 			addLineToGrades();
 		}
+		database.addStudent(userID, studentName, courseName);
+		System.out.println(database.getStudents(userID, courseName));
+		System.out.println("num students: " + this.numStudents);
 	}
 	
-	public void addGrade(String value){
+	public void addAssignment(String value) throws SQLException{
 		if (value.length() > 0){
 			System.out.println("Running addGrade");
 			Label name = new Label(value + "     ");
@@ -112,7 +158,28 @@ public class Model {
 				newField.setMaxSize(45, 20);
 				newField.setMinSize(45, 20);
 				this.gradeList.get(i).add(newBox);
-			}			
+				database.addAssignment(this.userID, courseName, name.getText().toString());
+				newField.setOnAction(new EventHandler<ActionEvent>() {
+					@Override
+					public void handle(ActionEvent add){
+						try {
+							int studentIndex = gradeList.indexOf(newField.getParent());
+							System.out.println("Student index is: " + studentIndex);
+							Text txt = (Text)studentNames.get(1).getChildren().get(0);
+							String studentName = txt.getText().toString();
+							Double grade = Double.parseDouble(newField.getText());
+							String assignment = name.getText().toString();
+							System.out.println("Adding to the database: " + assignment + " " + studentName + " " + grade + " " + userID + " " + courseName);
+							database.addGrade(assignment, studentName, grade, userID, courseName);
+							System.out.println("Added Grade");
+						} catch (SQLException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+				});
+			}
+			System.out.println("Grade Info: " + database.getGradeInfo(userID, courseName));
 		}
 	}
 	
@@ -160,6 +227,8 @@ public class Model {
 	public Database getDatabase() {
 		return database;
 	}
-	
+	public void setUser(String name){
+		this.userID = name;
+	}
 	
 }

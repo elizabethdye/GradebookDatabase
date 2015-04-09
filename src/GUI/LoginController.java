@@ -39,6 +39,7 @@ public class LoginController {
 	LoginModel model;
 	Networker networker;
 	
+	
 	@FXML
 	private void initialize() throws ClassNotFoundException, SQLException{
 		model = new LoginModel();
@@ -64,25 +65,55 @@ public class LoginController {
 		}
 	}
 	
-	private void showNewStage(String FXMLFile) throws IOException {
-		Parent home_page_parent = FXMLLoader.load(getClass().getResource(FXMLFile));
+	private void showNewStage(String FXMLFile, UserTypes type) throws IOException {
+		FXMLLoader loader = new FXMLLoader(getClass().getResource(FXMLFile));
+		Parent home_page_parent = (Parent)loader.load();
+		
 		Scene home_page_scene = new Scene(home_page_parent);
 		Stage app_stage = (Stage) login.getScene().getWindow();
 		app_stage.setScene(home_page_scene);
 		app_stage.show();
+		Model controller = (Model)loader.getController();
+		controller.setUser(ID);
 	}
 	
 	private void startAdminView() throws IOException{
-		showNewStage("AdminUI.fxml");
+		//showNewStage("AdminUI.fxml", UserTypes.ADMIN);
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("AdminUI.fxml"));
+		Parent home_page_parent = (Parent)loader.load();
+		
+		Scene home_page_scene = new Scene(home_page_parent);
+		Stage app_stage = (Stage) login.getScene().getWindow();
+		app_stage.setScene(home_page_scene);
+		app_stage.show();
+		AdminController controller = (AdminController)loader.getController();
+		controller.setUser(ID);
 	}
 	
 	private void startProfView() throws IOException{
-		showNewStage("ProfessorUI.fxml");
+		//showNewStage("ProfessorUI.fxml", UserTypes.PROFESSOR);
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("ProfessorUI.fxml"));
+		Parent home_page_parent = (Parent)loader.load();
+		ProfessorController controller = (ProfessorController)loader.getController();
+		controller.setUser(idField.getText());
+		Scene home_page_scene = new Scene(home_page_parent);
+		Stage app_stage = (Stage) login.getScene().getWindow();
+		app_stage.setScene(home_page_scene);
+		app_stage.show();
 //		TODO: once student view is created, rename - showNewStage("ProfGUI.fxml");
 	}
 	
 	private void startStudentView() throws IOException{
-		showNewStage("StudentUI.fxml");
+		//showNewStage("StudentUI.fxml", UserTypes.STUDENT);
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("StudentUI.fxml"));
+		Parent home_page_parent = (Parent)loader.load();
+		
+		Scene home_page_scene = new Scene(home_page_parent);
+		Stage app_stage = (Stage) login.getScene().getWindow();
+		app_stage.setScene(home_page_scene);
+		app_stage.show();
+		StudentController controller = (StudentController)loader.getController();
+		controller.setUser(ID);
 		//TODO
 	}
 	
