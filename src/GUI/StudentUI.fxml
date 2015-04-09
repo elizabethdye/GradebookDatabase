@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<<<<<<< HEAD
 <?import java.lang.*?>
 <?import java.util.*?>
 <?import javafx.scene.control.*?>
@@ -59,3 +60,24 @@
     </AnchorPane>
   </children>
 </VBox>
+=======
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.BorderPane?>
+
+<BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.StudentController">
+   <center>
+      <BorderPane prefHeight="236.0" prefWidth="402.0" BorderPane.alignment="CENTER">
+         <center>
+            <Label text="Sorry, this view is under construction." BorderPane.alignment="CENTER">
+               <font>
+                  <Font name="System Italic" size="18.0" />
+               </font>
+            </Label>
+         </center>
+      </BorderPane>
+   </center>
+</BorderPane>
+>>>>>>> refs/remotes/origin/master
