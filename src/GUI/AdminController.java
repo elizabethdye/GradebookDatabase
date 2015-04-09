@@ -16,7 +16,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-public class AddUserController {
+public class AdminController {
 
 	@FXML
 	Button	add;
@@ -46,7 +46,7 @@ public class AddUserController {
 		ID = IDField.getText();
 		password = passwordField.getText();
 		type = userType.getSelectionModel().getSelectedItem();
-		model.addUser(ID, password, UserTypes.PROFESSOR);
+		model.addUser(ID, password, UserTypes.fromString(type));
 		showNewStage("LoginUI.fxml");
 	}
 	

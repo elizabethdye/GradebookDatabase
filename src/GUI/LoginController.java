@@ -73,16 +73,16 @@ public class LoginController {
 	}
 	
 	private void startAdminView() throws IOException{
-		showNewStage("AddUserUI.fxml");
+		showNewStage("AdminUI.fxml");
 	}
 	
 	private void startProfView() throws IOException{
-		showNewStage("GUI.fxml");
+		showNewStage("ProfessorUI.fxml");
 //		TODO: once student view is created, rename - showNewStage("ProfGUI.fxml");
 	}
 	
 	private void startStudentView() throws IOException{
-		showNewStage("StudentGUI.fxml");
+		showNewStage("StudentUI.fxml");
 		//TODO
 	}
 	
