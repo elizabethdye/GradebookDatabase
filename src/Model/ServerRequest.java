@@ -11,7 +11,6 @@ public class ServerRequest implements java.io.Serializable {
 	}
 	
 	public DatabaseCommand getCommand(){
-		//delete this comment; just for git stuff
 		return command;
 	}
 	

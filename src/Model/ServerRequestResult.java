@@ -1,6 +1,7 @@
 package Model;
 
-public class ServerRequestResult {
+public class ServerRequestResult implements java.io.Serializable {
+	private static final long serialVersionUID = -8541442557256279544L;
 	private Object result;
 	
 	public Object getResult(){

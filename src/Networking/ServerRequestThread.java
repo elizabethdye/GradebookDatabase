@@ -63,7 +63,7 @@ public class ServerRequestThread extends Thread {
     			db.addGrade(args[0], args[1], Double.valueOf(args[2]), args[3], args[4]);
     			result.setResult(null);
     		case RETRIEVE_GRADE:
-    			result.setResult(db.retrieveGrade(args[0], args[1]));
+    			result.setResult(db.retrieveGrade(args[0], args[1], args[2], args[3]));
     		case RETRIEVE_OVERALL_GRADE:
     			result.setResult(db.retrieveOverallGrade(args[0], args[1], args[2]));
     		case GET_COURSES:
