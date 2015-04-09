@@ -9,9 +9,10 @@ import Database.Database;
 public class Server {
 	private ServerSocket accepter;
 	private Database db;
+	private String filename = "jdbc:sqlite:db";
 	
 	public Server(int port) throws IOException, ClassNotFoundException, SQLException{
-		db = new Database();
+		db = new Database(filename);
 		accepter = new ServerSocket(port);
 		System.out.println("Server IP address: " + accepter.getInetAddress());
 	}
