@@ -40,23 +40,18 @@ public class LoginController {
 	@FXML
 	private void initialize() throws ClassNotFoundException, SQLException{
 		model = new LoginModel();
-		model.addUser("admin", "admin", UserTypes.PROFESSOR);
 		idField.setText("Ferrer");
 		passwordField.setText("ILoveRobotics");
 	}
 	
 	@FXML
 	private void login() throws SQLException, IOException{
-//		errorWindow();
-//		showNewStage("GUI.fxml");
 		Enum user = checkUserType();
 		if (user == UserTypes.PROFESSOR){
-			if(ID.equals("admin")){
-				startAdminView();
-			}
-			else{
-				startProfView();
-			}
+			startProfView();
+		}
+		else if ( user == UserTypes.ADMIN){
+			startAdminView();
 		}
 		else if (user == UserTypes.STUDENT){
 			startStudentView();
