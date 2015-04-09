@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import Model.LoginModel;
 import Model.Model;
 import Model.UserTypes;
+import Networking.Networker;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -36,10 +37,12 @@ public class LoginController {
 	String password;
 	Enum type;
 	LoginModel model;
+	Networker networker;
 	
 	@FXML
 	private void initialize() throws ClassNotFoundException, SQLException{
 		model = new LoginModel();
+		networker = model.getNetworker();
 		idField.setText("Ferrer");
 		passwordField.setText("ILoveRobotics");
 	}

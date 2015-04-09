@@ -3,7 +3,7 @@ package Model;
 public enum DatabaseCommand {
 	CREATE_TABLES, ADD_COURSE, ADD_STUDENT, ADD_GRADE, 
 	RETRIEVE_GRADE, RETRIEVE_OVERALL_GRADE, GET_COURSES,
-	GET_ASSIGNMENTS, GET_STUDENTS, GET_GRADE_INFO, GET_USER_TYPE;
+	GET_ASSIGNMENTS, GET_STUDENTS, GET_GRADE_INFO, GET_USER_TYPE, ADD_USER;
 	
 	public static DatabaseCommand fromString(String command){
     	command = command.toUpperCase();
@@ -30,6 +30,8 @@ public enum DatabaseCommand {
             	return GET_GRADE_INFO;
             case "GET_USER_TYPE":
             	return GET_USER_TYPE;
+            case "ADD_USER":
+            	return ADD_USER;
         }
         return null;
     }
