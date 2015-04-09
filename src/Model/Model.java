@@ -1,5 +1,8 @@
 package Model;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.ArrayList;
@@ -128,10 +131,7 @@ public class Model {
 		assignment.setOrientation(Orientation.HORIZONTAL);
 		System.out.println(assignment.getOrientation());
 		assignment.setItems(assignmentGrades);
-		assignment.setMinWidth(500);
-		assignment.setMaxWidth(500);
-		assignment.setMaxHeight(30);
-		assignment.setMinHeight(30);
+		setSize(assignment);
 		System.out.println("assignment List is: " + gradeList);
 		this.gradeBox.getChildren().add(assignment);
 		this.gradeList.add(assignmentGrades);
@@ -147,25 +147,12 @@ public class Model {
 			assignment.scrollTo(0);
 		}
 	}
-	/*
-	private void populateGradebook(){
-<<<<<<< HEAD
-		System.out.println("Populating gradebook");
-		for(int i = 0; i < numStudents(); i++){
-=======
-		System.out.println("Populating gradbook");
-		for(int i = 0; i < getNumStudents(); i++){
->>>>>>> 09653dc415688631d1ee8326a63758e5f013d6f9
-			HBox studentGrades = new HBox();
-			studentGrades.setSpacing(20);
-			gradeBook.add(studentGrades);
-			for(int j = 0; j < this.numGrades; i++){
-				HBox assignGrade = new HBox();
-				studentGrades.getChildren().add(assignGrade);
-			}
-		}
+	private void setSize(ListView<HBox> assgn){
+		assgn.setMinWidth(500);
+		assgn.setMaxWidth(500);
+		assgn.setMaxHeight(30);
+		assgn.setMinHeight(30);
 	}
-	*/
 	
 	public int getNumStudents(){
 		return studentNames.size();
