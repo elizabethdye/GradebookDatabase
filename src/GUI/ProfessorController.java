@@ -22,7 +22,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class Controller {
+public class ProfessorController {
 
 	@FXML
 	ListView<VBox> students;
