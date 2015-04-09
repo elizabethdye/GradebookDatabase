@@ -14,6 +14,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -26,7 +27,7 @@ public class LoginController {
 	TextField idField;
 	
 	@FXML
-	TextField passwordField;
+	PasswordField passwordField;
 	
 	@FXML
 	Button login;
@@ -39,23 +40,18 @@ public class LoginController {
 	@FXML
 	private void initialize() throws ClassNotFoundException, SQLException{
 		model = new LoginModel();
-		model.addUser("admin", "admin", UserTypes.PROFESSOR);
 		idField.setText("Ferrer");
 		passwordField.setText("ILoveRobotics");
 	}
 	
 	@FXML
 	private void login() throws SQLException, IOException{
-//		errorWindow();
-//		showNewStage("GUI.fxml");
 		Enum user = checkUserType();
 		if (user == UserTypes.PROFESSOR){
-			if(ID.equals("admin")){
-				startAdminView();
-			}
-			else{
-				startProfView();
-			}
+			startProfView();
+		}
+		else if ( user == UserTypes.ADMIN){
+			startAdminView();
 		}
 		else if (user == UserTypes.STUDENT){
 			startStudentView();

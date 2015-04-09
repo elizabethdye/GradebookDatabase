@@ -11,8 +11,6 @@ public class LoginModel {
 	
 	public LoginModel() throws ClassNotFoundException, SQLException{
 		database = new Database(filename);
-		database.addUser("admin", "admin", UserTypes.PROFESSOR);
-		database.addUser("Ferrer", "ILoveRobotics", UserTypes.PROFESSOR);
 	}
 	
 	public void addUser(String ID, String password, UserTypes type) throws SQLException{
