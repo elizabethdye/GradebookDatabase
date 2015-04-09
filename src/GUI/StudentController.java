@@ -1,25 +1,35 @@
 package GUI;
 
-import java.io.IOException;
 import java.sql.SQLException;
 
-import Model.LoginModel;
-import Model.UserTypes;
-import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
-import javafx.stage.Stage;
+import javafx.scene.control.ListView;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 
 public class StudentController {
+	@FXML
+	VBox constraints;
+	@FXML
+	TabPane tabs;
+	@FXML
+	Tab gradeReportTab;
+	@FXML
+	Tab detailedReportTab;
+	@FXML
+	ListView<VBox> gradeReport;
+	@FXML
+	ListView<VBox> courses;
+	@FXML
+	ListView<VBox> grades;
 	
 	@FXML
 	public void initialize() throws ClassNotFoundException, SQLException{
+		
 	}
+	
+	
 	
 }
