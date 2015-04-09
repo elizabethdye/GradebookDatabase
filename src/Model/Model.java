@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Database.Database;
+import Networking.ClientRequestThread;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.collections.FXCollections;
@@ -14,7 +15,6 @@ import javafx.geometry.Orientation;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -78,7 +78,7 @@ public class Model {
 	public ObservableList<VBox>	getStudentNames(){
 		return studentNames;
 		}
-	public ObservableList<String>	getGradeBook(){
+	public ObservableList<String> getGradeBook(){
 		return gradeBook;
 		}
 	
@@ -128,10 +128,7 @@ public class Model {
 		assignment.setOrientation(Orientation.HORIZONTAL);
 		System.out.println(assignment.getOrientation());
 		assignment.setItems(assignmentGrades);
-		assignment.setMinWidth(500);
-		assignment.setMaxWidth(500);
-		assignment.setMaxHeight(30);
-		assignment.setMinHeight(30);
+		setSize(assignment);
 		System.out.println("assignment List is: " + gradeList);
 		this.gradeBox.getChildren().add(assignment);
 		this.gradeList.add(assignmentGrades);
@@ -147,25 +144,12 @@ public class Model {
 			assignment.scrollTo(0);
 		}
 	}
-	/*
-	private void populateGradebook(){
-<<<<<<< HEAD
-		System.out.println("Populating gradebook");
-		for(int i = 0; i < numStudents(); i++){
-=======
-		System.out.println("Populating gradbook");
-		for(int i = 0; i < getNumStudents(); i++){
->>>>>>> 09653dc415688631d1ee8326a63758e5f013d6f9
-			HBox studentGrades = new HBox();
-			studentGrades.setSpacing(20);
-			gradeBook.add(studentGrades);
-			for(int j = 0; j < this.numGrades; i++){
-				HBox assignGrade = new HBox();
-				studentGrades.getChildren().add(assignGrade);
-			}
-		}
+	private void setSize(ListView<HBox> assgn){
+		assgn.setMinWidth(500);
+		assgn.setMaxWidth(500);
+		assgn.setMaxHeight(30);
+		assgn.setMinHeight(30);
 	}
-	*/
 	
 	public int getNumStudents(){
 		return studentNames.size();
@@ -177,30 +161,5 @@ public class Model {
 		return database;
 	}
 	
-	public void sendServerRequest(ServerRequest request){
-		//TODO: Add a check for the ClientRequestThread to already exist and "be going" (?, trying
-		//to follow class code structure).
-		//TODO: Not sure why the argument to channel is 2 or if it matters; just following class.
-		channel = new ArrayBlockingQueue<ServerRequestResult>(2);
-		requestThread = new ClientRequestThread(request, serverHost, serverPort, channel);
-		new Receiver().start();
-		//TODO Once this thread finishes, the ServerRequestResults should be in channel. How do I know
-		//when?
-		requestThread.start();
-	}
 	
-	public class Receiver extends Thread {
-		public void run() {
-			while (requestThread.isGoing()) {
-				ServerRequestResult result;
-				try {
-					result = channel.take();
-					//TODO: need to do something with the result, but what?
-					//addMessage(line);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-	}
 }

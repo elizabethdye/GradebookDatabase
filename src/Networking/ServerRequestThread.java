@@ -8,6 +8,7 @@ import Database.Database;
 import Model.DatabaseCommand;
 import Model.ServerRequest;
 import Model.ServerRequestResult;
+import Model.UserTypes;
 
 public class ServerRequestThread extends Thread {
     private Socket socket;
@@ -51,7 +52,6 @@ public class ServerRequestThread extends Thread {
     	
     	switch (command){
     		case CREATE_TABLES:
-    			db.createTables();
     			result.setResult(null);
     		case ADD_COURSE:
     			db.addCourse(args[0], args[1]);
@@ -76,6 +76,9 @@ public class ServerRequestThread extends Thread {
     			result.setResult(db.getGradeInfo(args[0], args[1]));
     		case GET_USER_TYPE:
     			result.setResult(db.getUserType(args[0], args[1]));
+    		case ADD_USER:
+    			db.addUser(args[0], args[1], UserTypes.fromString(args[2]));
+    			result.setResult(null);
     	}
     	System.out.println("Finished evaluating database command...");
     	return result;

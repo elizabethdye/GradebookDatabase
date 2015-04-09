@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import Model.LoginModel;
 import Model.Model;
 import Model.UserTypes;
+import Networking.Networker;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -14,6 +15,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -26,7 +28,7 @@ public class LoginController {
 	TextField idField;
 	
 	@FXML
-	TextField passwordField;
+	PasswordField passwordField;
 	
 	@FXML
 	Button login;
@@ -35,27 +37,24 @@ public class LoginController {
 	String password;
 	Enum type;
 	LoginModel model;
+	Networker networker;
 	
 	@FXML
 	private void initialize() throws ClassNotFoundException, SQLException{
 		model = new LoginModel();
-		model.addUser("admin", "admin", UserTypes.PROFESSOR);
+		networker = model.getNetworker();
 		idField.setText("Ferrer");
 		passwordField.setText("ILoveRobotics");
 	}
 	
 	@FXML
 	private void login() throws SQLException, IOException{
-//		errorWindow();
-//		showNewStage("GUI.fxml");
 		Enum user = checkUserType();
 		if (user == UserTypes.PROFESSOR){
-			if(ID.equals("admin")){
-				startAdminView();
-			}
-			else{
-				startProfView();
-			}
+			startProfView();
+		}
+		else if ( user == UserTypes.ADMIN){
+			startAdminView();
 		}
 		else if (user == UserTypes.STUDENT){
 			startStudentView();
@@ -74,16 +73,16 @@ public class LoginController {
 	}
 	
 	private void startAdminView() throws IOException{
-		showNewStage("AddUserUI.fxml");
+		showNewStage("AdminUI.fxml");
 	}
 	
 	private void startProfView() throws IOException{
-		showNewStage("GUI.fxml");
+		showNewStage("ProfessorUI.fxml");
 //		TODO: once student view is created, rename - showNewStage("ProfGUI.fxml");
 	}
 	
 	private void startStudentView() throws IOException{
-		showNewStage("StudentGUI.fxml");
+		showNewStage("StudentUI.fxml");
 		//TODO
 	}
 	
