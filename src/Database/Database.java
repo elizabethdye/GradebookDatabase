@@ -16,7 +16,7 @@ public class Database {
         createTables();
 	}
 	
-	private void createTables() {
+	public void createTables() {
 		try {
 			stat.execute("CREATE TABLE CourseParticipantTable (Professor TEXT, Course TEXT, Student TEXT, OverallGrade REAL)");
 			stat.execute("CREATE TABLE AssignmentTable (Professor TEXT, Course TEXT, Assignment TEXT, TotalPossible REAL)");
@@ -30,11 +30,11 @@ public class Database {
 	}
 	
 	public void deleteTables() throws SQLException {
-		stat.execute("DELETE CourseParticipantTable");
-		stat.execute("DELETE AssignmentTable");
-		stat.execute("DELETE GradeTable");
-		stat.execute("DELETE LoginTable");
-		stat.execute("DELETE CourseTable");
+		stat.execute("DROP TABLE CourseParticipantTable");
+		stat.execute("DROP TABLE AssignmentTable");
+		stat.execute("DROP TABLE GradeTable");
+		stat.execute("DROP TABLE LoginTable");
+		stat.execute("DROP TABLE CourseTable");
 	}
 	
 	public void addCourse(String courseName, String professorName) throws SQLException {
@@ -43,7 +43,7 @@ public class Database {
 	}
 	
 	public void addAssignment(String professorName, String courseName, String assignmentName) throws SQLException {
-		stat.execute("INSERT INTO AssignmentTable VALUES ('" + professorName + "' , '" + courseName + "' , '" + assignmentName + "' , -1)");
+		stat.execute("INSERT INTO AssignmentTable VALUES ('" + professorName + "', '" + courseName + "', '" + assignmentName + "', -1)");
 		for (String student: getStudents(professorName, courseName)) {
 			stat.execute("INSERT INTO GradeTable VALUES ('" + student + "', '" + professorName + "', '" + courseName + "', '" + assignmentName + "', -1)");
 		}
@@ -51,13 +51,11 @@ public class Database {
 	
 	public void addStudent(String professorName, String studentName, String courseName) throws SQLException {
 		stat.execute("INSERT INTO CourseParticipantTable VALUES ('" + professorName + "', '" + courseName + "', '" + studentName + "', '')");
-		stat.execute("SELECT * FROM AssignmentTable WHERE Course = '" + courseName + "' AND Professor = '" + professorName + "'");
-		ResultSet results = stat.getResultSet();
-		while (results.next()) {
-			stat.execute("INSERT INTO GradeTable VALUES ('" + studentName + "', '" + professorName + "', '" + courseName + "', '" + results.getString(3) + "', -1)"); 
-		//TODO: not sure if the results.getString() part is done correctly
+		ArrayList<String> assignments = getAssignments(professorName, courseName);
+		for (String assignment:assignments) {
+			stat.execute("INSERT INTO GradeTable VALUES ('" + studentName + "', '" + professorName + "', '" + courseName + "', '" + assignment + "', -1)"); 
 		}
-		results.close();
+		
 	}
 	
 	public void addGrade(String assignmentName, String studentName, Double grade, String professorName, String courseName) throws SQLException {
@@ -67,10 +65,12 @@ public class Database {
 		//TODO: I would recommend that whatever calls this value also uses it to compute the grade and updates that subsequently
 	}
 	
-	public double retrieveGrade(String assignmentName, String studentName) throws SQLException {
-		stat.execute("SELECT * FROM GradeTable WHERE Assignment = '" + assignmentName + "' AND Student = '" + studentName + "'");
+	public double retrieveGrade(String assignmentName, String studentName, String courseName, String profName) throws SQLException {
+		stat.execute("SELECT Grade FROM GradeTable WHERE Assignment = '" + assignmentName + 
+				"' AND Student = '" + studentName + "' AND Professor = '" + profName + 
+				"' AND Course = '" + courseName + "'");
 		ResultSet results = stat.getResultSet();
-		Double val = results.getDouble("Grade");
+		Double val = results.getDouble(1);
 		results.close();
 		return val;
 		//TODO: do I need this method? I don't think so.

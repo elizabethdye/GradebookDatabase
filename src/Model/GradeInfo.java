@@ -23,4 +23,10 @@ public class GradeInfo {
 	public double getGrade() {
 		return grade;
 	}
+	
+	public Boolean isEqual(GradeInfo other) {
+		return other.student.equals(this.student) 
+				&& other.assignment.equals(this.assignment)
+				&& other.grade == this.grade;
+	}
 }
