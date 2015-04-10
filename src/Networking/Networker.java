@@ -41,6 +41,7 @@ public class Networker {
 				try {
 					result = channel.take();
 					System.out.println("Got result from channel...");
+					System.out.println(result == null);
 					requestThread.halt();
 				} catch (InterruptedException e) {
 					e.printStackTrace();
