@@ -3,6 +3,7 @@ package GUI;
 import java.sql.SQLException;
 
 import Model.Model;
+import Networking.Networker;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -47,6 +48,7 @@ public class ProfessorController {
 	private String userType = "Professor";
 	
 	private Model model;
+	Networker networker;
 	
 	@FXML 
 	private void initialize() throws ClassNotFoundException, SQLException{
@@ -56,7 +58,7 @@ public class ProfessorController {
 		scrollpane.setContent(constraints);
 		scrollpane.prefViewportHeightProperty().set(constraints.getHeight());
 		scrollpane.prefViewportWidthProperty().set(constraints.getWidth());
-		this.model = new Model(gradeBox, assignmentNames, scrollpane, class1);
+		this.model = new Model(gradeBox, assignmentNames, scrollpane, class1, networker);
 		students.setItems(model.getStudentNames());
 		students.setFixedCellSize(30);
 		System.out.println("Initialized");
@@ -263,6 +265,10 @@ public class ProfessorController {
 			}
     		
     	});
+	}
+	
+	public void setNetworker(Networker net){
+		this.networker = net;
 	}
 	
 }

@@ -103,6 +103,7 @@ public class LoginController {
 		Stage app_stage = (Stage) login.getScene().getWindow();
 		app_stage.setScene(home_page_scene);
 		app_stage.show();
+		controller.setNetworker(networker);
 //		TODO: once student view is created, rename - showNewStage("ProfGUI.fxml");
 	}
 	

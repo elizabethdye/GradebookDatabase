@@ -96,6 +96,10 @@ public class ServerRequestThread extends Thread {
     		case GET_USER_TYPE:
     			result.setResult(db.getUserType(args[0], args[1]));
     			break;
+    		case ADD_ASSIGNMENT:
+    			db.addAssignment(args[0], args[1], args[2]);
+    			result.setResult(null);
+    			break;
     	}
     	System.out.println("Finished evaluating database command...");
     	return result;
