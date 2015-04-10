@@ -90,6 +90,7 @@ public class LoginController {
 		app_stage.show();
 		AdminController controller = (AdminController)loader.getController();
 		controller.setUser(ID);
+		controller.setModel(model);
 	}
 	
 	private void startProfView() throws IOException{
@@ -124,6 +125,7 @@ public class LoginController {
 	}
 	
 	private Enum checkUserType() throws SQLException{
+		System.out.println("in checkUserType");
 		ID = idField.getText();
 		password = passwordField.getText();
 		//type = model.getDatabase().getUserType(ID, password);

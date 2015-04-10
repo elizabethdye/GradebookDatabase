@@ -39,7 +39,6 @@ public class AdminController {
 	
 	@FXML
 	public void initialize() throws ClassNotFoundException, SQLException{
-		model = new LoginModel();
 		userType.setItems(FXCollections.observableArrayList("Student","Professor","Admin"));
 	}
 	
@@ -63,5 +62,9 @@ public class AdminController {
 	public void setUser(String name) {
 		this.userID = name;
 		
+	}
+	
+	public void setModel(LoginModel model) {
+		this.model = model;
 	}
 }

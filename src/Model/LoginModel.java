@@ -18,6 +18,7 @@ public class LoginModel {
 	}
 	
 	public void addUser(String ID, String password, UserTypes type) throws SQLException{
+		System.out.println("CALLING addUser!!!!");
 		//database.addUser(ID, password, type);
 		DatabaseCommand cmd = DatabaseCommand.ADD_USER;
 		String[] args = {ID, password, type.toString()};

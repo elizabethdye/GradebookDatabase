@@ -25,24 +25,41 @@ public class Networker {
 		//TODO: Add a check for the ClientRequestThread to already exist and "be going" (?, trying
 		//to follow class code structure).
 		requestThread = new ClientRequestThread(request, serverHost, serverPort, channel);
-		new Receiver().start();
+		new Receiver(this).start();
 		//TODO Once this thread finishes, the ServerRequestResults should be in channel. How do I know
 		//when?
 		requestThread.start();
 		//TODO the hackiest thing ever, but who cares?
-		while (received == false){System.out.println("");}
+		while (received == false){
+			try {
+				this.wait();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		System.out.println("Got our result and will now return it from the Networker");
 		received = false;
 		System.out.println("Returning from sendServerRequest...");
 		return result;
 	}
 	
+	private synchronized void alert(){
+		this.notifyAll();
+	}
+	
 	public class Receiver extends Thread {
+		Networker networker;
+		
+		public Receiver(Networker net){
+			networker = net;
+		}
 		public void run() {
 			while (requestThread.isGoing()) {
 				try {
 					result = channel.take();
 					received = true;
+					networker.alert();
 					System.out.println("Got result from channel...");
 					requestThread.halt();
 					System.out.println(requestThread.isGoing());
