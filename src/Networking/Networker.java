@@ -43,6 +43,7 @@ public class Networker {
 					System.out.println("Got result from channel...");
 					System.out.println(result == null);
 					requestThread.halt();
+					System.out.println(requestThread.isGoing());
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
