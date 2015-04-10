@@ -55,7 +55,7 @@ public class Controller {
 		scrollpane.setContent(constraints);
 		scrollpane.prefViewportHeightProperty().set(constraints.getHeight());
 		scrollpane.prefViewportWidthProperty().set(constraints.getWidth());
-		this.model = new Model(gradeBox, assignmentNames, scrollpane);
+		this.model = new Model(gradeBox, assignmentNames, scrollpane, class1);
 		students.setItems(model.getStudentNames());
 		students.setFixedCellSize(30);
 		System.out.println("Initialized");
@@ -81,14 +81,24 @@ public class Controller {
 			@Override
 			public void handle(ActionEvent add){
 				newStage.close();
-				model.addStudent(studentName.getText());
+				try {
+					model.addStudent(studentName.getText());
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		});
 		okButton.setOnAction(new EventHandler<ActionEvent>(){
     		@Override
     		public void handle(ActionEvent close){
     			newStage.close();
-    			model.addStudent(studentName.getText());
+    			try {
+					model.addStudent(studentName.getText());
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
     		
     	});
@@ -125,7 +135,12 @@ public class Controller {
 			public void handle(ActionEvent add){
 				newStage.close();
 				System.out.println("Model addGrade");
-				model.addGrade(gradeName.getText());
+				try {
+					model.addAssignment(gradeName.getText());
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		});
 		okButton.setOnAction(new EventHandler<ActionEvent>(){
@@ -133,7 +148,12 @@ public class Controller {
     		public void handle(ActionEvent close){
     			newStage.close();
     			System.out.println("Model addGrade");
-				model.addGrade(gradeName.getText());
+				try {
+					model.addAssignment(gradeName.getText());
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
     		
     	});
