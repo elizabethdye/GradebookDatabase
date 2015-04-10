@@ -26,7 +26,7 @@ public class ServerRequestThread extends Thread {
             
             try {
 				ServerRequest clientRequest = (ServerRequest) fromClientStream.readObject();
-				System.out.println("Got ServerRequest from client; command is " + clientRequest.toString());
+				System.out.println("Got ServerRequest from client; command is " + clientRequest.getCommand().toString());
 				ServerRequestResult result = evaluateRequest(clientRequest);
 				toClientStream.writeObject(result);
 				System.out.println("Sent the ServerRequestResult back to user");
