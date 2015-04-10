@@ -10,16 +10,18 @@ public class Networker {
 	String serverHost;
 	int serverPort;
 	ArrayBlockingQueue<ServerRequestResult> channel;
-	ServerRequestResult result = null;
+	ServerRequestResult result;
+	boolean received;
 	
 	public Networker(){
 		serverHost = "Merry";
 		serverPort = 8888;
 		//TODO: Not sure why the argument to channel is 2 or if it matters; just following class.
 		channel = new ArrayBlockingQueue<ServerRequestResult>(2);
+		received = false;
 	}
 	
-	public ServerRequestResult sendServerRequest(ServerRequest request){
+	public synchronized ServerRequestResult sendServerRequest(ServerRequest request){
 		//TODO: Add a check for the ClientRequestThread to already exist and "be going" (?, trying
 		//to follow class code structure).
 		requestThread = new ClientRequestThread(request, serverHost, serverPort, channel);
@@ -27,12 +29,12 @@ public class Networker {
 		//TODO Once this thread finishes, the ServerRequestResults should be in channel. How do I know
 		//when?
 		requestThread.start();
-		while (result == null){}
+		//TODO the hackiest thing ever, but who cares?
+		while (received == false){System.out.println("");}
 		System.out.println("Got our result and will now return it from the Networker");
-		ServerRequestResult ret = result;
-		result = null;
+		received = false;
 		System.out.println("Returning from sendServerRequest...");
-		return ret;
+		return result;
 	}
 	
 	public class Receiver extends Thread {
@@ -40,8 +42,8 @@ public class Networker {
 			while (requestThread.isGoing()) {
 				try {
 					result = channel.take();
+					received = true;
 					System.out.println("Got result from channel...");
-					System.out.println(result == null);
 					requestThread.halt();
 					System.out.println(requestThread.isGoing());
 				} catch (InterruptedException e) {
