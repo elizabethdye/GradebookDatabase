@@ -53,32 +53,44 @@ public class ServerRequestThread extends Thread {
     	switch (command){
     		case CREATE_TABLES:
     			result.setResult(null);
+    			break;
     		case ADD_COURSE:
     			db.addCourse(args[0], args[1]);
     			result.setResult(null);
+    			break;
     		case ADD_STUDENT:
     			db.addStudent(args[0], args[1], args[2]);
     			result.setResult(null);
+    			break;
     		case ADD_GRADE:
     			db.addGrade(args[0], args[1], Double.valueOf(args[2]), args[3], args[4]);
     			result.setResult(null);
+    			break;
     		case RETRIEVE_GRADE:
     			result.setResult(db.retrieveGrade(args[0], args[1], args[2], args[3]));
+    			break;
     		case RETRIEVE_OVERALL_GRADE:
     			result.setResult(db.retrieveOverallGrade(args[0], args[1], args[2]));
+    			break;
     		case GET_COURSES:
     			result.setResult(db.getCourses(args[0]));
+    			break;
     		case GET_ASSIGNMENTS:
     			result.setResult(db.getAssignments(args[0], args[1]));
+    			break;
     		case GET_STUDENTS:
     			result.setResult(db.getStudents(args[0], args[1]));
+    			break;
     		case GET_GRADE_INFO:
     			result.setResult(db.getGradeInfo(args[0], args[1]));
-    		case GET_USER_TYPE:
-    			result.setResult(db.getUserType(args[0], args[1]));
+    			break;
     		case ADD_USER:
     			db.addUser(args[0], args[1], UserTypes.fromString(args[2]));
     			result.setResult(null);
+    			break;
+    		case GET_USER_TYPE:
+    			result.setResult(db.getUserType(args[0], args[1]));
+    			break;
     	}
     	System.out.println("Finished evaluating database command...");
     	return result;
