@@ -3,8 +3,10 @@ package GUI;
 import java.io.IOException;
 import java.sql.SQLException;
 
+import Model.DatabaseCommand;
 import Model.LoginModel;
 import Model.Model;
+import Model.ServerRequest;
 import Model.UserTypes;
 import Networking.Networker;
 import javafx.event.ActionEvent;
@@ -124,7 +126,12 @@ public class LoginController {
 	private Enum checkUserType() throws SQLException{
 		ID = idField.getText();
 		password = passwordField.getText();
-		type = model.getDatabase().getUserType(ID, password);
+		//type = model.getDatabase().getUserType(ID, password);
+		DatabaseCommand cmd = DatabaseCommand.GET_USER_TYPE;
+		String[] args = {ID, password};
+		ServerRequest request = new ServerRequest(cmd, args);
+		type = (Enum) networker.sendServerRequest(request).getResult();
+		System.out.println("The type is " + type.toString());
 		return type;
 	}
 	
