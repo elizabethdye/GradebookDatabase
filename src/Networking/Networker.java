@@ -40,7 +40,7 @@ public class Networker {
 			while (requestThread.isGoing()) {
 				try {
 					result = channel.take();
-					System.out.println("Put result on channel...");
+					System.out.println("Got result from channel...");
 					requestThread.halt();
 				} catch (InterruptedException e) {
 					e.printStackTrace();
