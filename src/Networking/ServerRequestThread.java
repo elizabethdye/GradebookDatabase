@@ -20,6 +20,7 @@ public class ServerRequestThread extends Thread {
     }
 
     public void run(){
+    	System.out.println("*******STARTING SERVERREQUESTTHREAD***********");
         try {
             ObjectInputStream fromClientStream = new ObjectInputStream(socket.getInputStream());
             ObjectOutputStream toClientStream = new ObjectOutputStream(socket.getOutputStream());
@@ -27,6 +28,9 @@ public class ServerRequestThread extends Thread {
             try {
 				ServerRequest clientRequest = (ServerRequest) fromClientStream.readObject();
 				System.out.println("Got ServerRequest from client; command is " + clientRequest.getCommand().toString());
+				if (clientRequest.getCommand() == DatabaseCommand.ADD_USER){
+					System.out.println("add_user username arg: " + clientRequest.getArgs()[0]);
+				}
 				ServerRequestResult result = evaluateRequest(clientRequest);
 				toClientStream.writeObject(result);
 				System.out.println("Sent the ServerRequestResult back to user");
@@ -42,7 +46,8 @@ public class ServerRequestThread extends Thread {
             toClientStream.close();
         } catch (IOException ioe) {
             ioe.printStackTrace();
-        } 
+        }
+        System.out.println("-------------CLOSING SERVERREQUESTTHREAD-----------");
     }
     
     private ServerRequestResult evaluateRequest(ServerRequest request) throws SQLException{
