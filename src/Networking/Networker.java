@@ -28,8 +28,10 @@ public class Networker {
 		//when?
 		requestThread.start();
 		while (result == null){}
+		System.out.println("Got our result and will now return it from the Networker");
 		ServerRequestResult ret = result;
 		result = null;
+		System.out.println("Returning from sendServerRequest...");
 		return ret;
 	}
 	
@@ -38,6 +40,8 @@ public class Networker {
 			while (requestThread.isGoing()) {
 				try {
 					result = channel.take();
+					System.out.println("Put result on channel...");
+					requestThread.halt();
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
