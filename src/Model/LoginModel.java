@@ -14,6 +14,7 @@ public class LoginModel {
 	public LoginModel() throws ClassNotFoundException, SQLException{
 		networker = new Networker();
 		database = new Database(filename);
+		System.out.println("Calling addUser from LoginModel constructor!!!");
 		addUser("admin", "admin", UserTypes.ADMIN);
 	}
 	
