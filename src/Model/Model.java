@@ -228,6 +228,7 @@ public class Model {
 	}
 	
 	void addStudentToDatabase(String profName, String studentName, String courseName){
+		System.out.println("networker: " + networker == null);
 		DatabaseCommand cmd = DatabaseCommand.ADD_STUDENT;
 		String[] args = {profName, studentName, courseName};
 		ServerRequest request = new ServerRequest(cmd, args);
@@ -241,4 +242,7 @@ public class Model {
 		networker.sendServerRequest(request);
 	}
 	
+	public void setNetworker(Networker net){
+		this.networker = net;
+	}
 }

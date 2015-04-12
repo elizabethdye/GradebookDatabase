@@ -14,7 +14,7 @@ public class Networker {
 	boolean received;
 	
 	public Networker(){
-		serverHost = "Merry";
+		serverHost = "Bilbo";
 		serverPort = 8888;
 		//TODO: Not sure why the argument to channel is 2 or if it matters; just following class.
 		channel = new ArrayBlockingQueue<ServerRequestResult>(2);

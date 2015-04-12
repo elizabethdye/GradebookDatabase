@@ -104,6 +104,7 @@ public class LoginController {
 		app_stage.setScene(home_page_scene);
 		app_stage.show();
 		controller.setNetworker(networker);
+		System.out.println("Sent networker to ProfessorController...");
 //		TODO: once student view is created, rename - showNewStage("ProfGUI.fxml");
 	}
 	

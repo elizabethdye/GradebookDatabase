@@ -64,6 +64,7 @@ public class ProfessorController {
 		System.out.println("Initialized");
 		model.setUser(this.userID);
 		System.out.println("user is " + this.userID);
+		System.out.println("networker: " + this.networker == null);
 	}
 	
 	public void setUser(String name){
@@ -269,6 +270,7 @@ public class ProfessorController {
 	
 	public void setNetworker(Networker net){
 		this.networker = net;
+		this.model.setNetworker(net);
 	}
 	
 }
