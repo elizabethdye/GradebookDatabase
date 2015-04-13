@@ -115,7 +115,8 @@ public class LoginController {
 		app_stage.show();
 		StudentController controller = (StudentController)loader.getController();
 		controller.setUser(ID);
-		//TODO
+		controller.setNetworker(networker);
+		System.out.println("Sent networker to StudentController...");
 	}
 	
 	private void sendError(){

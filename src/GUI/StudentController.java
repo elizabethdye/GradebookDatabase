@@ -30,7 +30,7 @@ public class StudentController {
 	
 	Networker networker; 
 	
-	ArrayList<String, String> classes;
+	ArrayList< CourseInfo > courseList;
 	
 	ObservableList<String> classGrades;
 	
@@ -38,9 +38,10 @@ public class StudentController {
 	
 	@FXML
 	public void initialize() throws ClassNotFoundException, SQLException{
-		getClasses();
-		for ( String className : classes) {
-			String grade = getGrade(className);
+		getStudentInfo();
+		for ( CourseInfo courseInfo : courseList) {
+			
+			String grade = getGrade(courseInfo.getProfessor(), courseInfo.getCourse());
 			classGrades.add(className + "\t" + grade);
 		}
 	}
@@ -53,15 +54,27 @@ public class StudentController {
 		this.networker = networker;
 	}
 	
-	public void getClasses() {
+	public void getStudentInfo() {
 		//TODO
-		database.getClasses(userID);
+		database.getStudentInfo(userID);
 	}
 	
-	public String getGrade(String className) {
+	public String getGrade(String professor, String course) {
 		//TODO
-		ArrayList<Double> totGrades = database.getTotalGrades(className);
-		ArrayList<Double> posGrades = database.getStudentGrades(userID, className);
+		ArrayList<Double> totGrades = database.getTotalGrades(professor, course);
+		ArrayList<Double> stuGrades = database.getStudentGrades(userID, professor, course);
+		Double total;
+		for ( Double grade: totGrades){
+			total += grade;
+		}
+		Double stuTotal;
+		for ( Double grade: stuGrades){
+			if ( grade >= 0){
+				stuTotal += grade;
+			}
+		}
+		Double avgGrade = stuTotal / total;
+		return avgGrade.toString();
 	}
 	
 	
