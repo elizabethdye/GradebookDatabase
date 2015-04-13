@@ -42,6 +42,15 @@ public class DatabaseTest {
 	}
 	
 	@Test
+	public void testRemovingCourse() throws SQLException {
+		addTwoCourses();
+		db.removeCourse("Course1", "Prof1");
+		ArrayList<String> courses = new ArrayList<String>();
+		courses.add("Course2");
+		assertEquals(courses, db.getCourses("Prof1"));
+	}
+	
+	@Test
 	public void testCreatingAfterCreated() throws SQLException {
 		addTwoCourses();
 		db.createTables();
@@ -53,6 +62,26 @@ public class DatabaseTest {
 		addTwoCourses();
 		addTwoStudents();
 		assertEquals(studentList, db.getStudents("Prof1", "Course1"));
+	}
+	
+	@Test
+	public void testRemovingStudents() throws SQLException {
+		addTwoCourses();
+		addTwoStudents();
+		addTwoAssignments();
+		db.removeStudent("Prof1", "Stu1", "Course1");
+		ArrayList<String> students = new ArrayList<String>();
+		students.add("Stu2");
+		assertEquals(students, db.getStudents("Prof1", "Course1"));
+	}
+	
+	@Test
+	public void testAddingOverallGrade() throws SQLException {
+		addTwoCourses();
+		addTwoStudents();
+		db.setOverallGrade("Prof1", "Course1", "Stu1", 50.0);
+		assertEquals(50.0, db.retrieveOverallGrade("Prof1", "Course1", "Stu1"), 0.01);
+		assertEquals(-1, db.retrieveOverallGrade("Prof1", "Course1", "Stu2"), 0.01);
 	}
 	
 	@Test
@@ -72,6 +101,26 @@ public class DatabaseTest {
 		addTwoCourses();
 		addTwoAssignments();
 		assertEquals(assignmentList, db.getAssignments("Prof1", "Course1"));	
+	}
+	
+	@Test
+	public void testRemovingAssignments() throws SQLException {
+		addTwoCourses();
+		addTwoAssignments();
+		addTwoStudents();
+		db.removeAssignment("Prof1", "Course1", "Assign1");
+		assertEquals(2, db.getGradeInfo("Prof1", "Course1").size());
+		assertEquals("Test1", db.getAssignments("Prof1", "Course1").get(0));
+	}
+	
+	@Test
+	public void testAddingTotalPossible() throws SQLException {
+		addTwoCourses();
+		addTwoAssignments();
+		addTwoStudents();
+		db.setTotalPossible("Prof1", "Course1", "Assign1", 50.0);
+		assertEquals(50.0, db.getTotalPossible("Prof1", "Course1", "Assign1"), 0.01);
+		assertEquals(-1, db.getTotalPossible("Prof1", "Course1", "Test1"), 0.01);
 	}
 	
 	@Test

@@ -3,6 +3,7 @@ package Database;
 import java.sql.*;
 import java.util.ArrayList;
 
+import Model.CourseInfo;
 import Model.UserTypes;
 
 public class Database {
@@ -42,6 +43,10 @@ public class Database {
 		stat.execute("INSERT INTO CourseTable VALUES ('" + professorName + "', '" + courseName + "')");
 	}
 	
+	public void removeCourse(String courseName, String professorName) throws SQLException {
+		stat.execute("DELETE FROM CourseTable WHERE Professor = '" + professorName + "' AND Course = '" + courseName + "'");
+	}
+	
 	public void addAssignment(String professorName, String courseName, String assignmentName) throws SQLException {
 		stat.execute("INSERT INTO AssignmentTable VALUES ('" + professorName + "', '" + courseName + "', '" + assignmentName + "', -1)");
 		for (String student: getStudents(professorName, courseName)) {
@@ -49,13 +54,69 @@ public class Database {
 		}
 	}
 	
+	public void setTotalPossible(String professorName, String courseName, String assignmentName, Double totalPoints) throws SQLException {
+		stat.execute("UPDATE AssignmentTable SET TotalPossible = " + totalPoints.toString() + " WHERE Professor = '" + 
+				professorName + "' AND Course = '" + courseName + "' AND Assignment = '" + assignmentName + "'");
+	}
+	
+	public double getTotalPossible(String professorName, String courseName, String assignmentName) throws SQLException {
+		stat.execute("SELECT * FROM AssignmentTable WHERE Professor = '" + professorName + "' AND Course = '" + courseName + 
+				"' AND Assignment = '" + assignmentName + "'");
+		ResultSet results = stat.getResultSet();
+		double val = results.getDouble("TotalPossible");
+		results.close();
+		return val;
+	}
+	
+	public ArrayList<Double> getTotalGrades(String professorName, String courseName) throws SQLException {
+		stat.execute("SELECT * FROM AssignmentTable WHERE Professor = '" + professorName + "' AND Course = '" + courseName + "'");
+		ResultSet results = stat.getResultSet();
+		ArrayList<Double> grades = new ArrayList<Double>();
+		while (results.next()) {
+			grades.add(results.getDouble("TotalPossible"));
+		}
+		results.close();
+		return grades;
+	}
+	
+	public ArrayList<Double> getStudentGrades(String studentName, String professorName, String courseName) throws SQLException {
+		stat.execute("SELECT * FROM GradeTable WHERE Course = '" + courseName + "' AND Professor = '" + professorName + "' AND Student = '" + studentName + "'");
+		ResultSet results = stat.getResultSet();
+		ArrayList<Double> grades = new ArrayList<Double>();
+		while (results.next()) {
+			grades.add(results.getDouble("Grade"));
+		}
+		results.close();
+		return grades;
+	}
+	
+	public void removeAssignment(String professorName, String courseName, String assignmentName) throws SQLException {
+		stat.execute("DELETE FROM AssignmentTable WHERE Professor = '" + professorName + "' AND Course = '" + courseName + "' AND Assignment = '" + assignmentName + "'");
+		stat.execute("DELETE FROM GradeTable WHERE Professor = '" + professorName + "' AND Course = '" + courseName + "' AND Assignment = '" + assignmentName + "'");
+	}
+	
 	public void addStudent(String professorName, String studentName, String courseName) throws SQLException {
-		stat.execute("INSERT INTO CourseParticipantTable VALUES ('" + professorName + "', '" + courseName + "', '" + studentName + "', '')");
+		stat.execute("INSERT INTO CourseParticipantTable VALUES ('" + professorName + "', '" + courseName + "', '" + studentName + "', -1)");
 		ArrayList<String> assignments = getAssignments(professorName, courseName);
 		for (String assignment:assignments) {
 			stat.execute("INSERT INTO GradeTable VALUES ('" + studentName + "', '" + professorName + "', '" + courseName + "', '" + assignment + "', -1)"); 
 		}
-		
+	}
+	
+	public void removeStudent(String professorName, String studentName, String courseName) throws SQLException {
+		stat.execute("DELETE FROM CourseParticipantTable WHERE Professor = '" + professorName + "' AND Course = '" + courseName + "' AND Student = '" + studentName + "'");
+		stat.execute("DELETE FROM GradeTable WHERE Professor = '" + professorName + "' AND Course = '" + courseName + "' AND Student = '" + studentName + "'");
+	}
+	
+	public ArrayList<CourseInfo> getStudentInfo(String studentName) throws SQLException {
+		stat.execute("SELECT * FROM GradeTable WHERE Student = '" + studentName + "'");
+		ResultSet results = stat.getResultSet();
+		ArrayList<CourseInfo> courseInfo = new ArrayList<CourseInfo>();
+		while (results.next()) {
+			courseInfo.add(new CourseInfo(results.getString("Course"), results.getString("Professor")));
+		}
+		results.close();
+		return courseInfo;
 	}
 	
 	public void addGrade(String assignmentName, String studentName, Double grade, String professorName, String courseName) throws SQLException {
@@ -82,6 +143,11 @@ public class Database {
 		Double val = results.getDouble("OverallGrade");
 		results.close();
 		return val;
+	}
+	
+	public void setOverallGrade(String professorName, String courseName, String studentName, Double grade) throws SQLException {
+		stat.execute("UPDATE CourseParticipantTable SET OverallGrade = " + grade.toString() + " WHERE Professor = '" + 
+				professorName + "' AND Course = '" + courseName + "' AND Student = '" + studentName + "'");
 	}
 	
 	public ArrayList<String> getCourses(String professorName) throws SQLException {
