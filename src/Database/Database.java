@@ -3,6 +3,7 @@ package Database;
 import java.sql.*;
 import java.util.ArrayList;
 
+import Model.CourseInfo;
 import Model.UserTypes;
 
 public class Database {
@@ -105,6 +106,17 @@ public class Database {
 	public void removeStudent(String professorName, String studentName, String courseName) throws SQLException {
 		stat.execute("DELETE FROM CourseParticipantTable WHERE Professor = '" + professorName + "' AND Course = '" + courseName + "' AND Student = '" + studentName + "'");
 		stat.execute("DELETE FROM GradeTable WHERE Professor = '" + professorName + "' AND Course = '" + courseName + "' AND Student = '" + studentName + "'");
+	}
+	
+	public ArrayList<CourseInfo> getStudentInfo(String studentName) throws SQLException {
+		stat.execute("SELECT * FROM GradeTable WHERE Student = '" + studentName + "'");
+		ResultSet results = stat.getResultSet();
+		ArrayList<CourseInfo> courseInfo = new ArrayList<CourseInfo>();
+		while (results.next()) {
+			courseInfo.add(new CourseInfo(results.getString("Course"), results.getString("Professor"), results.getDouble("Grade")));
+		}
+		results.close();
+		return courseInfo;
 	}
 	
 	public void addGrade(String assignmentName, String studentName, Double grade, String professorName, String courseName) throws SQLException {
