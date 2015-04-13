@@ -43,6 +43,7 @@ public class ClientRequestThread extends Thread {
 			ServerRequestResult result = (ServerRequestResult) fromServerStream.readObject();
 			// TODO: Not sure if I'm using the channel correctly.
 			channel.put(result);
+			System.out.println("ClientRequestThread put result into channel...");
 		} catch (IOException ioe) {
 			ioe.printStackTrace();
 		} catch (InterruptedException e) {
@@ -57,7 +58,7 @@ public class ClientRequestThread extends Thread {
             }
         }
 		//TODO: no idea if this is right, just trying stuff
-		halt();
+		//halt();
 	}
 	
 	public synchronized void halt() {

@@ -35,9 +35,10 @@ public class AdminController {
 	
 	LoginModel model;
 	
+	private String userID;
+	
 	@FXML
 	public void initialize() throws ClassNotFoundException, SQLException{
-		model = new LoginModel();
 		userType.setItems(FXCollections.observableArrayList("Student","Professor","Admin"));
 	}
 	
@@ -56,5 +57,14 @@ public class AdminController {
 		Stage app_stage = (Stage) add.getScene().getWindow();
 		app_stage.setScene(home_page_scene);
 		app_stage.show();
+	}
+
+	public void setUser(String name) {
+		this.userID = name;
+		
+	}
+	
+	public void setModel(LoginModel model) {
+		this.model = model;
 	}
 }

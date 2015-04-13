@@ -3,8 +3,10 @@ package GUI;
 import java.io.IOException;
 import java.sql.SQLException;
 
+import Model.DatabaseCommand;
 import Model.LoginModel;
 import Model.Model;
+import Model.ServerRequest;
 import Model.UserTypes;
 import Networking.Networker;
 import javafx.event.ActionEvent;
@@ -39,6 +41,7 @@ public class LoginController {
 	LoginModel model;
 	Networker networker;
 	
+	
 	@FXML
 	private void initialize() throws ClassNotFoundException, SQLException{
 		model = new LoginModel();
@@ -60,29 +63,58 @@ public class LoginController {
 			startStudentView();
 		}
 		else{
-			sendError();
+			sendError(); 
 		}
 	}
 	
-	private void showNewStage(String FXMLFile) throws IOException {
-		Parent home_page_parent = FXMLLoader.load(getClass().getResource(FXMLFile));
+	private void showNewStage(String FXMLFile, UserTypes type) throws IOException {
+		FXMLLoader loader = new FXMLLoader(getClass().getResource(FXMLFile));
+		Parent home_page_parent = (Parent)loader.load();
+		
 		Scene home_page_scene = new Scene(home_page_parent);
 		Stage app_stage = (Stage) login.getScene().getWindow();
 		app_stage.setScene(home_page_scene);
 		app_stage.show();
+		Model controller = (Model)loader.getController();
+		controller.setUser(ID);
 	}
 	
 	private void startAdminView() throws IOException{
-		showNewStage("AdminUI.fxml");
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("AdminUI.fxml"));
+		Parent home_page_parent = (Parent)loader.load();
+		
+		Scene home_page_scene = new Scene(home_page_parent);
+		Stage app_stage = (Stage) login.getScene().getWindow();
+		app_stage.setScene(home_page_scene);
+		app_stage.show();
+		AdminController controller = (AdminController)loader.getController();
+		controller.setUser(ID);
+		controller.setModel(model);
 	}
 	
 	private void startProfView() throws IOException{
-		showNewStage("ProfessorUI.fxml");
-//		TODO: once student view is created, rename - showNewStage("ProfGUI.fxml");
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("ProfessorUI.fxml"));
+		Parent home_page_parent = (Parent)loader.load();
+		ProfessorController controller = (ProfessorController)loader.getController();
+		controller.setUser(idField.getText());
+		Scene home_page_scene = new Scene(home_page_parent);
+		Stage app_stage = (Stage) login.getScene().getWindow();
+		app_stage.setScene(home_page_scene);
+		app_stage.show();
+		controller.setNetworker(networker);
+		System.out.println("Sent networker to ProfessorController...");
 	}
 	
 	private void startStudentView() throws IOException{
-		showNewStage("StudentUI.fxml");
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("StudentUI.fxml"));
+		Parent home_page_parent = (Parent)loader.load();
+		
+		Scene home_page_scene = new Scene(home_page_parent);
+		Stage app_stage = (Stage) login.getScene().getWindow();
+		app_stage.setScene(home_page_scene);
+		app_stage.show();
+		StudentController controller = (StudentController)loader.getController();
+		controller.setUser(ID);
 		//TODO
 	}
 	
@@ -91,9 +123,15 @@ public class LoginController {
 	}
 	
 	private Enum checkUserType() throws SQLException{
+		System.out.println("in checkUserType");
 		ID = idField.getText();
 		password = passwordField.getText();
-		type = model.getDatabase().getUserType(ID, password);
+		//type = model.getDatabase().getUserType(ID, password);
+		DatabaseCommand cmd = DatabaseCommand.GET_USER_TYPE;
+		String[] args = {ID, password};
+		ServerRequest request = new ServerRequest(cmd, args);
+		type = (Enum) networker.sendServerRequest(request).getResult();
+		System.out.println("The type is " + type.toString());
 		return type;
 	}
 	

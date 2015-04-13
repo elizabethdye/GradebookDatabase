@@ -3,6 +3,7 @@ package GUI;
 import java.sql.SQLException;
 
 import Model.Model;
+import Networking.Networker;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -43,7 +44,11 @@ public class ProfessorController {
 	@FXML
 	MenuItem saveGradebook;
 	
-	private Model model;
+	private String userID;
+	private String userType = "Professor";
+	
+	private Model model; 
+	Networker networker;
 	
 	@FXML 
 	private void initialize() throws ClassNotFoundException, SQLException{
@@ -53,12 +58,22 @@ public class ProfessorController {
 		scrollpane.setContent(constraints);
 		scrollpane.prefViewportHeightProperty().set(constraints.getHeight());
 		scrollpane.prefViewportWidthProperty().set(constraints.getWidth());
-		this.model = new Model(gradeBox, assignmentNames, scrollpane);
+		this.model = new Model(gradeBox, assignmentNames, scrollpane, class1, networker);
 		students.setItems(model.getStudentNames());
 		students.setFixedCellSize(30);
 		System.out.println("Initialized");
+		model.setUser(this.userID);
+		System.out.println("user is " + this.userID);
+		System.out.println("networker: " + this.networker == null);
+	}
+	
+	public void setUser(String name){
+		this.userID = name;
+		model.setUser(name);
+		System.out.println("UserID is: " + name);
 	}
 	/*
+	 * TODO
 	@FXML
 	public void newTab(){
 		SingleSelectionModel<Tab> selectionModel = tabPane.getSelectionModel();
@@ -79,14 +94,24 @@ public class ProfessorController {
 			@Override
 			public void handle(ActionEvent add){
 				newStage.close();
-				model.addStudent(studentName.getText());
+				try {
+					model.addStudent(studentName.getText());
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		});
 		okButton.setOnAction(new EventHandler<ActionEvent>(){
     		@Override
     		public void handle(ActionEvent close){
     			newStage.close();
-    			model.addStudent(studentName.getText());
+    			try {
+					model.addStudent(studentName.getText());
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
     		
     	});
@@ -123,7 +148,12 @@ public class ProfessorController {
 			public void handle(ActionEvent add){
 				newStage.close();
 				System.out.println("Model addGrade");
-				model.addGrade(gradeName.getText());
+				try {
+					model.addAssignment(gradeName.getText());
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		});
 		okButton.setOnAction(new EventHandler<ActionEvent>(){
@@ -131,7 +161,12 @@ public class ProfessorController {
     		public void handle(ActionEvent close){
     			newStage.close();
     			System.out.println("Model addGrade");
-				model.addGrade(gradeName.getText());
+				try {
+					model.addAssignment(gradeName.getText());
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
     		
     	});
@@ -232,6 +267,11 @@ public class ProfessorController {
 			}
     		
     	});
+	}
+	
+	public void setNetworker(Networker net){
+		this.networker = net;
+		this.model.setNetworker(net);
 	}
 	
 }

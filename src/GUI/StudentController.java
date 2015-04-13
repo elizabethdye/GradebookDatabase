@@ -25,11 +25,17 @@ public class StudentController {
 	@FXML
 	ListView<VBox> grades;
 	
+	private String userID;
+	
 	@FXML
 	public void initialize() throws ClassNotFoundException, SQLException{
 		
 	}
-	
+
+	public void setUser(String name) {
+		this.userID = name;
+	}
+	 
 	
 	
 }
