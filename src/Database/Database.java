@@ -19,7 +19,7 @@ public class Database {
 	
 	public void createTables() {
 		try {
-			stat.execute("CREATE TABLE CourseParticipantTable (Professor TEXT, Course TEXT, Student TEXT, OverallGrade REAL)");
+			stat.execute("CREATE TABLE CourseParticipantTable (Professor TEXT, Course TEXT, Student TEXT)");
 			stat.execute("CREATE TABLE AssignmentTable (Professor TEXT, Course TEXT, Assignment TEXT, TotalPossible REAL)");
 			stat.execute("CREATE TABLE GradeTable (Student TEXT, Professor TEXT, Course TEXT, Assignment TEXT, Grade REAL)");
 			stat.execute("CREATE TABLE LoginTable (Person TEXT, Type TEXT, Password TEXT)");
@@ -96,7 +96,7 @@ public class Database {
 	}
 	
 	public void addStudent(String professorName, String studentName, String courseName) throws SQLException {
-		stat.execute("INSERT INTO CourseParticipantTable VALUES ('" + professorName + "', '" + courseName + "', '" + studentName + "', -1)");
+		stat.execute("INSERT INTO CourseParticipantTable VALUES ('" + professorName + "', '" + courseName + "', '" + studentName + "')");
 		ArrayList<String> assignments = getAssignments(professorName, courseName);
 		for (String assignment:assignments) {
 			stat.execute("INSERT INTO GradeTable VALUES ('" + studentName + "', '" + professorName + "', '" + courseName + "', '" + assignment + "', -1)"); 
@@ -135,19 +135,6 @@ public class Database {
 		results.close();
 		return val;
 		//TODO: do I need this method? I don't think so.
-	}
-	
-	public double retrieveOverallGrade(String professorName, String courseName, String studentName) throws SQLException {
-		stat.execute("SELECT * FROM CourseParticipantTable WHERE Professor = '" + professorName + "' AND Course = '" + courseName + "' AND Student = '" + studentName + "'");
-		ResultSet results = stat.getResultSet();
-		Double val = results.getDouble("OverallGrade");
-		results.close();
-		return val;
-	}
-	
-	public void setOverallGrade(String professorName, String courseName, String studentName, Double grade) throws SQLException {
-		stat.execute("UPDATE CourseParticipantTable SET OverallGrade = " + grade.toString() + " WHERE Professor = '" + 
-				professorName + "' AND Course = '" + courseName + "' AND Student = '" + studentName + "'");
 	}
 	
 	public ArrayList<String> getCourses(String professorName) throws SQLException {

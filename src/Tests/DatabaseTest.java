@@ -77,15 +77,6 @@ public class DatabaseTest {
 	}
 	
 	@Test
-	public void testAddingOverallGrade() throws SQLException {
-		addTwoCourses();
-		addTwoStudents();
-		db.setOverallGrade("Prof1", "Course1", "Stu1", 50.0);
-		assertEquals(50.0, db.retrieveOverallGrade("Prof1", "Course1", "Stu1"), 0.01);
-		assertEquals(-1, db.retrieveOverallGrade("Prof1", "Course1", "Stu2"), 0.01);
-	}
-	
-	@Test
 	public void testAddingStudentsAfterAssignments() throws SQLException {
 		addTwoCourses();
 		addTwoAssignments();
