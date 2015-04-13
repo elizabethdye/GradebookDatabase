@@ -91,11 +91,11 @@ public class StudentController {
 		ServerRequestResult resultStu = networker.sendServerRequest(rq);
 		ArrayList<Double> stuGrades = (ArrayList<Double>)result.getResult();
 		
-		Double total;
+		Double total = 0.0;
 		for ( Double grade: totGrades){
 			total += grade;
 		}
-		Double stuTotal;
+		Double stuTotal = 0.0;
 		for ( Double grade: stuGrades){
 			if ( grade >= 0){
 				stuTotal += grade;
