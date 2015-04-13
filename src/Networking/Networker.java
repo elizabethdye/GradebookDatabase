@@ -16,25 +16,18 @@ public class Networker {
 	public Networker(){
 		serverHost = "Bilbo";
 		serverPort = 8888;
-		//TODO: Not sure why the argument to channel is 2 or if it matters; just following class.
 		channel = new ArrayBlockingQueue<ServerRequestResult>(2);
 		received = false;
 	}
 	
 	public synchronized ServerRequestResult sendServerRequest(ServerRequest request){
-		//TODO: Add a check for the ClientRequestThread to already exist and "be going" (?, trying
-		//to follow class code structure).
 		requestThread = new ClientRequestThread(request, serverHost, serverPort, channel);
 		new Receiver(this).start();
-		//TODO Once this thread finishes, the ServerRequestResults should be in channel. How do I know
-		//when?
 		requestThread.start();
-		//TODO the hackiest thing ever, but who cares?
 		while (received == false){
 			try {
 				this.wait();
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}

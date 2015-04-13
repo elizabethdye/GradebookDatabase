@@ -20,7 +20,6 @@ public class ServerRequestThread extends Thread {
     }
 
     public void run(){
-    	System.out.println("*******STARTING SERVERREQUESTTHREAD***********");
         try {
             ObjectInputStream fromClientStream = new ObjectInputStream(socket.getInputStream());
             ObjectOutputStream toClientStream = new ObjectOutputStream(socket.getOutputStream());
@@ -34,7 +33,6 @@ public class ServerRequestThread extends Thread {
 				ServerRequestResult result = evaluateRequest(clientRequest);
 				toClientStream.writeObject(result);
 				System.out.println("Sent the ServerRequestResult back to user");
-				//TODO: not sure what this does or if it's needed, but copying class code structure
 				toClientStream.flush();
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
@@ -47,7 +45,6 @@ public class ServerRequestThread extends Thread {
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
-        System.out.println("-------------CLOSING SERVERREQUESTTHREAD-----------");
     }
     
     private ServerRequestResult evaluateRequest(ServerRequest request) throws SQLException{

@@ -16,6 +16,12 @@ public class Server {
 		accepter = new ServerSocket(port);
 		System.out.println("Server IP address: " + accepter.getInetAddress());
 	}
+	
+	public Server(int port, String dbName) throws ClassNotFoundException, SQLException, IOException{
+		db = new Database(dbName);
+		accepter = new ServerSocket(port);
+		System.out.println("Server IP address: " + accepter.getInetAddress());
+	}
 
 	public void listen() throws IOException {
 		for (;;) {
@@ -25,6 +31,18 @@ public class Server {
 			System.out.println("Starting the ServerRequestThread");
 			requestThread.start();
 		}
+	}
+	
+	public void clearDatabase() throws SQLException{
+		if (db != null){
+			System.out.println("CLEARING DB");
+			db.deleteTables();
+			db.createTables();
+		}
+	}
+	
+	public void close() throws IOException{
+		accepter.close();
 	}
 
 	public static void main(String[] args) throws IOException, ClassNotFoundException, SQLException {
