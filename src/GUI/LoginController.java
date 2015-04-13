@@ -5,7 +5,7 @@ import java.sql.SQLException;
 
 import Model.DatabaseCommand;
 import Model.LoginModel;
-import Model.Model;
+import Model.ProfModel;
 import Model.ServerRequest;
 import Model.UserTypes;
 import Networking.Networker;
@@ -75,7 +75,7 @@ public class LoginController {
 		Stage app_stage = (Stage) login.getScene().getWindow();
 		app_stage.setScene(home_page_scene);
 		app_stage.show();
-		Model controller = (Model)loader.getController();
+		ProfModel controller = (ProfModel)loader.getController();
 		controller.setUser(ID);
 	}
 	

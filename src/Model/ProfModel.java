@@ -27,7 +27,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
-public class Model {
+public class ProfModel {
 	Networker networker;
 	private ObservableList<VBox> studentNames;
 	private int numGrades = 0;
@@ -42,7 +42,7 @@ public class Model {
 	private String courseName;
 	private ProfessorController controller;
 	
-	public Model(ProfessorController controller) throws ClassNotFoundException, SQLException{
+	public ProfModel(ProfessorController controller) throws ClassNotFoundException, SQLException{
 		this.controller = controller;
 		this.assignmentName = controller.assignmentNames;
 		this.gradeBox = controller.gradeBox;

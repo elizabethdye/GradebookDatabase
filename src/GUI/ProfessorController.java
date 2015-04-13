@@ -5,7 +5,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import Model.DatabaseCommand;
-import Model.Model;
+import Model.ProfModel;
 import Model.ServerRequest;
 import Model.ServerRequestResult;
 import Networking.Networker;
@@ -59,7 +59,7 @@ public class ProfessorController{
 	public String userID;
 	private String userType = "Professor";
 	
-	private Model model;
+	private ProfModel model;
 	
 	Networker networker;
 	
@@ -77,7 +77,7 @@ public class ProfessorController{
 			scrollpane.prefViewportHeightProperty().set(constraints.getHeight());
 			scrollpane.prefViewportWidthProperty().set(constraints.getWidth());
 			this.networker = new Networker();
-			this.model = new Model(this);
+			this.model = new ProfModel(this);
 			students.setItems(model.getStudentNames());
 			students.setFixedCellSize(30);
 			System.out.println("Initialized");
