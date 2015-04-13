@@ -109,7 +109,7 @@ public class Database {
 	}
 	
 	public ArrayList<CourseInfo> getStudentInfo(String studentName) throws SQLException {
-		stat.execute("SELECT * FROM GradeTable WHERE Student = '" + studentName + "'");
+		stat.execute("SELECT * FROM CourseParticipantTable WHERE Student = '" + studentName + "'");
 		ResultSet results = stat.getResultSet();
 		ArrayList<CourseInfo> courseInfo = new ArrayList<CourseInfo>();
 		while (results.next()) {

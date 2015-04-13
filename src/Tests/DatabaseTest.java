@@ -11,6 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import Database.Database;
+import Model.CourseInfo;
 import Model.GradeInfo;
 import Model.UserTypes;
 
@@ -144,6 +145,41 @@ public class DatabaseTest {
 		addTwoAssignments();
 		addGrades();
 		assertEquals(70.0, db.retrieveGrade("Test1", "Stu1", "Course1", "Prof1"), 0.01);
+	}
+	
+	@Test
+	public void testGetStudentGrades() throws SQLException {
+		addTwoCourses();
+		addTwoAssignments();
+		addTwoStudents();
+		addGrades();
+		ArrayList<Double> grades = new ArrayList<Double>();
+		grades.add(90.0);
+		grades.add(70.0);
+		assertEquals(grades, db.getStudentGrades("Stu1", "Prof1", "Course1"));
+	}
+	
+	@Test
+	public void testGetTotalGrades() throws SQLException {
+		addTwoCourses();
+		addTwoAssignments();
+		db.setTotalPossible("Prof1", "Course1", "Assign1", 50.0);
+		ArrayList<Double> grades = new ArrayList<Double>();
+		grades.add(50.0);
+		grades.add(-1.0);
+		assertEquals(grades, db.getTotalGrades("Prof1", "Course1"));
+	}
+	
+	@Test
+	public void testStudentSide() throws SQLException {
+		addTwoCourses();
+		db.addStudent("Prof1", "Stu1", "Course1");
+		db.addStudent("Prof1", "Stu1", "Course2");
+		ArrayList<CourseInfo> courses = new ArrayList<CourseInfo>();
+		courses.add(new CourseInfo("Course1", "Prof1"));
+		courses.add(new CourseInfo("Course2", "Prof1"));
+		assertTrue(courses.get(0).isEqual(db.getStudentInfo("Stu1").get(0)));
+		assertTrue(courses.get(1).isEqual(db.getStudentInfo("Stu1").get(1)));
 	}
 	
 	@Test

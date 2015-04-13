@@ -17,5 +17,9 @@ public class CourseInfo {
 	public String getProfessor() {
 		return professor;
 	}
+	
+	public Boolean isEqual(CourseInfo other) {
+		return this.course.equals(other.course) && this.professor.equals(other.professor);
+	}
 
 }
