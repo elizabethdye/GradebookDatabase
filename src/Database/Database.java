@@ -58,13 +58,22 @@ public class Database {
 				professorName + "' AND Course = '" + courseName + "' AND Assignment = '" + assignmentName + "'");
 	}
 	
+	public double getTotalPossible(String professorName, String courseName, String assignmentName) throws SQLException {
+		stat.execute("SELECT * FROM AssignmentTable WHERE Professor = '" + professorName + "' AND Course = '" + courseName + 
+				"' AND Assignment = '" + assignmentName + "'");
+		ResultSet results = stat.getResultSet();
+		double val = results.getDouble("TotalPossible");
+		results.close();
+		return val;
+	}
+	
 	public void removeAssignment(String professorName, String courseName, String assignmentName) throws SQLException {
 		stat.execute("DELETE FROM AssignmentTable WHERE Professor = '" + professorName + "' AND Course = '" + courseName + "' AND Assignment = '" + assignmentName + "'");
 		stat.execute("DELETE FROM GradeTable WHERE Professor = '" + professorName + "' AND Course = '" + courseName + "' AND Assignment = '" + assignmentName + "'");
 	}
 	
 	public void addStudent(String professorName, String studentName, String courseName) throws SQLException {
-		stat.execute("INSERT INTO CourseParticipantTable VALUES ('" + professorName + "', '" + courseName + "', '" + studentName + "', '')");
+		stat.execute("INSERT INTO CourseParticipantTable VALUES ('" + professorName + "', '" + courseName + "', '" + studentName + "', -1)");
 		ArrayList<String> assignments = getAssignments(professorName, courseName);
 		for (String assignment:assignments) {
 			stat.execute("INSERT INTO GradeTable VALUES ('" + studentName + "', '" + professorName + "', '" + courseName + "', '" + assignment + "', -1)"); 
@@ -100,6 +109,11 @@ public class Database {
 		Double val = results.getDouble("OverallGrade");
 		results.close();
 		return val;
+	}
+	
+	public void setOverallGrade(String professorName, String courseName, String studentName, Double grade) throws SQLException {
+		stat.execute("UPDATE CourseParticipantTable SET OverallGrade = " + grade.toString() + " WHERE Professor = '" + 
+				professorName + "' AND Course = '" + courseName + "' AND Student = '" + studentName + "'");
 	}
 	
 	public ArrayList<String> getCourses(String professorName) throws SQLException {

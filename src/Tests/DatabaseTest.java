@@ -76,6 +76,15 @@ public class DatabaseTest {
 	}
 	
 	@Test
+	public void testAddingOverallGrade() throws SQLException {
+		addTwoCourses();
+		addTwoStudents();
+		db.setOverallGrade("Prof1", "Course1", "Stu1", 50.0);
+		assertEquals(50.0, db.retrieveOverallGrade("Prof1", "Course1", "Stu1"), 0.01);
+		assertEquals(-1, db.retrieveOverallGrade("Prof1", "Course1", "Stu2"), 0.01);
+	}
+	
+	@Test
 	public void testAddingStudentsAfterAssignments() throws SQLException {
 		addTwoCourses();
 		addTwoAssignments();
@@ -102,6 +111,16 @@ public class DatabaseTest {
 		db.removeAssignment("Prof1", "Course1", "Assign1");
 		assertEquals(2, db.getGradeInfo("Prof1", "Course1").size());
 		assertEquals("Test1", db.getAssignments("Prof1", "Course1").get(0));
+	}
+	
+	@Test
+	public void testAddingTotalPossible() throws SQLException {
+		addTwoCourses();
+		addTwoAssignments();
+		addTwoStudents();
+		db.setTotalPossible("Prof1", "Course1", "Assign1", 50.0);
+		assertEquals(50.0, db.getTotalPossible("Prof1", "Course1", "Assign1"), 0.01);
+		assertEquals(-1, db.getTotalPossible("Prof1", "Course1", "Test1"), 0.01);
 	}
 	
 	@Test
