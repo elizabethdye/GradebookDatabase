@@ -41,6 +41,15 @@ public class DatabaseTest {
 	}
 	
 	@Test
+	public void testRemovingCourse() throws SQLException {
+		addTwoCourses();
+		db.removeCourse("Course1", "Prof1");
+		ArrayList<String> courses = new ArrayList<String>();
+		courses.add("Course2");
+		assertEquals(courses, db.getCourses("Prof1"));
+	}
+	
+	@Test
 	public void testCreatingAfterCreated() throws SQLException {
 		addTwoCourses();
 		db.createTables();
@@ -52,6 +61,17 @@ public class DatabaseTest {
 		addTwoCourses();
 		addTwoStudents();
 		assertEquals(studentList, db.getStudents("Prof1", "Course1"));
+	}
+	
+	@Test
+	public void testRemovingStudents() throws SQLException {
+		addTwoCourses();
+		addTwoStudents();
+		addTwoAssignments();
+		db.removeStudent("Prof1", "Stu1", "Course1");
+		ArrayList<String> students = new ArrayList<String>();
+		students.add("Stu2");
+		assertEquals(students, db.getStudents("Prof1", "Course1"));
 	}
 	
 	@Test
@@ -71,6 +91,16 @@ public class DatabaseTest {
 		addTwoCourses();
 		addTwoAssignments();
 		assertEquals(assignmentList, db.getAssignments("Prof1", "Course1"));	
+	}
+	
+	@Test
+	public void testRemovingAssignments() throws SQLException {
+		addTwoCourses();
+		addTwoAssignments();
+		addTwoStudents();
+		db.removeAssignment("Prof1", "Course1", "Assign1");
+		assertEquals(2, db.getGradeInfo("Prof1", "Course1").size());
+		assertEquals("Test1", db.getAssignments("Prof1", "Course1").get(0));
 	}
 	
 	@Test

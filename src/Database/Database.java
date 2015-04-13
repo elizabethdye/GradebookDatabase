@@ -42,11 +42,25 @@ public class Database {
 		stat.execute("INSERT INTO CourseTable VALUES ('" + professorName + "', '" + courseName + "')");
 	}
 	
+	public void removeCourse(String courseName, String professorName) throws SQLException {
+		stat.execute("DELETE FROM CourseTable WHERE Professor = '" + professorName + "' AND Course = '" + courseName + "'");
+	}
+	
 	public void addAssignment(String professorName, String courseName, String assignmentName) throws SQLException {
 		stat.execute("INSERT INTO AssignmentTable VALUES ('" + professorName + "', '" + courseName + "', '" + assignmentName + "', -1)");
 		for (String student: getStudents(professorName, courseName)) {
 			stat.execute("INSERT INTO GradeTable VALUES ('" + student + "', '" + professorName + "', '" + courseName + "', '" + assignmentName + "', -1)");
 		}
+	}
+	
+	public void setTotalPossible(String professorName, String courseName, String assignmentName, Double totalPoints) throws SQLException {
+		stat.execute("UPDATE AssignmentTable SET TotalPossible = " + totalPoints.toString() + " WHERE Professor = '" + 
+				professorName + "' AND Course = '" + courseName + "' AND Assignment = '" + assignmentName + "'");
+	}
+	
+	public void removeAssignment(String professorName, String courseName, String assignmentName) throws SQLException {
+		stat.execute("DELETE FROM AssignmentTable WHERE Professor = '" + professorName + "' AND Course = '" + courseName + "' AND Assignment = '" + assignmentName + "'");
+		stat.execute("DELETE FROM GradeTable WHERE Professor = '" + professorName + "' AND Course = '" + courseName + "' AND Assignment = '" + assignmentName + "'");
 	}
 	
 	public void addStudent(String professorName, String studentName, String courseName) throws SQLException {
@@ -55,7 +69,11 @@ public class Database {
 		for (String assignment:assignments) {
 			stat.execute("INSERT INTO GradeTable VALUES ('" + studentName + "', '" + professorName + "', '" + courseName + "', '" + assignment + "', -1)"); 
 		}
-		
+	}
+	
+	public void removeStudent(String professorName, String studentName, String courseName) throws SQLException {
+		stat.execute("DELETE FROM CourseParticipantTable WHERE Professor = '" + professorName + "' AND Course = '" + courseName + "' AND Student = '" + studentName + "'");
+		stat.execute("DELETE FROM GradeTable WHERE Professor = '" + professorName + "' AND Course = '" + courseName + "' AND Student = '" + studentName + "'");
 	}
 	
 	public void addGrade(String assignmentName, String studentName, Double grade, String professorName, String courseName) throws SQLException {
