@@ -67,6 +67,28 @@ public class Database {
 		return val;
 	}
 	
+	public ArrayList<Double> getTotalGrades(String professorName, String courseName) throws SQLException {
+		stat.execute("SELECT * FROM AssignmentTable WHERE Professor = '" + professorName + "' AND Course = '" + courseName + "'");
+		ResultSet results = stat.getResultSet();
+		ArrayList<Double> grades = new ArrayList<Double>();
+		while (results.next()) {
+			grades.add(results.getDouble("TotalPossible"));
+		}
+		results.close();
+		return grades;
+	}
+	
+	public ArrayList<Double> getStudentGrades(String studentName, String professorName, String courseName) throws SQLException {
+		stat.execute("SELECT * FROM GradeTable WHERE Course = '" + courseName + "' AND Professor = '" + professorName + "' AND Student = '" + studentName + "'");
+		ResultSet results = stat.getResultSet();
+		ArrayList<Double> grades = new ArrayList<Double>();
+		while (results.next()) {
+			grades.add(results.getDouble("Grade"));
+		}
+		results.close();
+		return grades;
+	}
+	
 	public void removeAssignment(String professorName, String courseName, String assignmentName) throws SQLException {
 		stat.execute("DELETE FROM AssignmentTable WHERE Professor = '" + professorName + "' AND Course = '" + courseName + "' AND Assignment = '" + assignmentName + "'");
 		stat.execute("DELETE FROM GradeTable WHERE Professor = '" + professorName + "' AND Course = '" + courseName + "' AND Assignment = '" + assignmentName + "'");
