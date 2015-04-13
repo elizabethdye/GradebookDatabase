@@ -27,6 +27,7 @@ import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -34,66 +35,121 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class ProfessorController implements Cloneable{
+public class ProfessorController{
 
 	@FXML
 	ListView<VBox> students;
 	@FXML
-	VBox gradeBox;
+	public VBox gradeBox;
 	@FXML
-	HBox assignmentNames;
+	public HBox assignmentNames;
 	@FXML
 	AnchorPane constraints;
 	@FXML
-	ScrollPane scrollpane;
+	public ScrollPane scrollpane;
 	@FXML
 	Button studentAdd, studentRem, gradesAdd, gradesRem;
 	@FXML
-	TabPane tabPane;
+	public TabPane tabPane;
 	@FXML
-	Tab class1, newClass;
+	public Tab class1, newClass;
 	@FXML
 	MenuItem logout;
 	
-	private String userID;
+	public String userID;
 	private String userType = "Professor";
 	
 	private Model model;
 	
 	Networker networker;
 	
-	public Object clone(){  
-	    try{  
-	        return super.clone();  
-	    }catch(Exception e){ 
-	        return null; 
-	    }
-	}
 	
 	@FXML 
-	private void initialize() throws ClassNotFoundException, SQLException{
-		assignmentNames.setSpacing(10);
-		scrollpane.setFitToWidth(true);
-		scrollpane.setFitToHeight(true);
-		scrollpane.setContent(constraints);
-		scrollpane.prefViewportHeightProperty().set(constraints.getHeight());
-		scrollpane.prefViewportWidthProperty().set(constraints.getWidth());
-		this.networker = new Networker();
-		this.model = new Model(gradeBox, assignmentNames, scrollpane, class1, networker);
-		students.setItems(model.getStudentNames());
-		students.setFixedCellSize(30);
-		System.out.println("Initialized");
-		model.setUser(this.userID);
-		System.out.println("user is " + this.userID);
-		System.out.println("networker: " + this.networker == null);
-		model.populateGradebook();
+	private void initialize() throws ClassNotFoundException, SQLException, IOException{
+		Tab currentTab = tabPane.getSelectionModel().getSelectedItem();
+		setEditable(currentTab);
+		System.out.println(currentTab.getText());
+		if(!currentTab.getGraphic().equals("Course Name")){
+			assignmentNames.setSpacing(10);
+			scrollpane.setFitToWidth(true);
+			scrollpane.setFitToHeight(true);
+			scrollpane.setContent(constraints);
+			scrollpane.prefViewportHeightProperty().set(constraints.getHeight());
+			scrollpane.prefViewportWidthProperty().set(constraints.getWidth());
+			this.networker = new Networker();
+			this.model = new Model(this);
+			students.setItems(model.getStudentNames());
+			students.setFixedCellSize(30);
+			System.out.println("Initialized");
+			model.setUser(this.userID);
+			System.out.println("user is " + this.userID);
+			System.out.println("networker: " + this.networker == null);
+		}
+		setEditable(currentTab);
 	}
 	
+	private void setEditable(Tab tab){
+		tab.setText("");
+		Label label = new Label();
+		label.setText("Course Name");
+		tab.setGraphic(label);
+		label.setOnMouseClicked(new EventHandler<MouseEvent>() {  
+			  @Override  
+			  public void handle(MouseEvent event) {
+				  if (event.getClickCount()==2){
+					  Stage newStage = new Stage();
+					  VBox root = new VBox();
+					  Label nameField = new Label("Enter Course Name: ");
+					  TextField courseName = new TextField();
+					  HBox selection = new HBox();
+					  selection.setSpacing(50);
+					  Button okButton = new Button("OK");
+					  Button closeButton = new Button("Cancel");
+					  courseName.setOnAction(new EventHandler<ActionEvent>() {
+						  @Override
+						  public void handle(ActionEvent add){
+							  label.setText(courseName.getText());
+							  newStage.close();
+						  }
+					  });
+					okButton.setOnAction(new EventHandler<ActionEvent>(){
+			    		@Override
+			    		public void handle(ActionEvent close){
+			    			label.setText(courseName.getText());
+							newStage.close();
+						}
+			    		
+			    	});
+					closeButton.setOnAction(new EventHandler<ActionEvent>(){
+			    		@Override
+			    		public void handle(ActionEvent close){
+			    			newStage.close();
+						}
+			    		
+			    	});
+					selection.getChildren().addAll(okButton, closeButton);
+					root.getChildren().addAll(nameField, courseName, selection);
+
+					Scene stageScene = new Scene(root);
+					VBox.setVgrow(root, Priority.ALWAYS);
+					newStage.setScene(stageScene);
+					newStage.show();
+					newStage.requestFocus();
+				  }
+			  }
+		});
+	}
 	
-	public void setUser(String name){
+	public void setUser(String name) throws SQLException, IOException{
 		this.userID = name;
 		model.setUser(name);
-		System.out.println("UserID is: " + name);
+		System.out.println("UserID Has been set: " + name);
+		System.out.println("UserID Has been set: " + name);
+		System.out.println("UserID Has been set: " + name);
+		System.out.println("UserID Has been set: " + name);
+		System.out.println("UserID Has been set: " + name);
+		System.out.println("UserID Has been set: " + name);
+		model.populateGradebook();
 	}
 	
 	@FXML
@@ -118,6 +174,8 @@ public class ProfessorController implements Cloneable{
 					currentTab.setContent(content);
 					Tab newTab = new Tab();
 					currentTab.setText(courseName.getText());
+					System.out.println("Attempting to add course to database");
+					model.addCourseToDatabase(courseName.getText(), userID);
 					newTab.setText("new");
 					tabPane.getTabs().add(newTab);
 					newTab.setOnSelectionChanged(new EventHandler<Event>() {
@@ -126,6 +184,7 @@ public class ProfessorController implements Cloneable{
 					       newTab();
 					    }
 					});
+					setEditable(newTab);
 					newStage.close();
 					currentTab.setOnSelectionChanged(new EventHandler<Event>() {
 					    @Override
@@ -150,6 +209,7 @@ public class ProfessorController implements Cloneable{
 					currentTab.setContent(content);
 					Tab newTab = new Tab();
 					currentTab.setText(courseName.getText());
+					model.addCourseToDatabase(courseName.getText(), userID);
 					newTab.setText("new");
 					tabPane.getTabs().add(newTab);
 					newTab.setOnSelectionChanged(new EventHandler<Event>() {
@@ -158,6 +218,7 @@ public class ProfessorController implements Cloneable{
 					       newTab();
 					    }
 					});
+					setEditable(newTab);
 					newStage.close();
 					currentTab.setOnSelectionChanged(new EventHandler<Event>() {
 					    @Override
@@ -169,7 +230,6 @@ public class ProfessorController implements Cloneable{
 					e.printStackTrace();
 				}
 			}
-    		
     	});
 		closeButton.setOnAction(new EventHandler<ActionEvent>(){
     		@Override
@@ -343,7 +403,7 @@ public class ProfessorController implements Cloneable{
     	});
 	}
 	@FXML
-	public void ConfirmDeleteWindow(){
+	public void removeStudent(){
 		Stage newStage = new Stage();
 		VBox root = new VBox();
 		Label nameField = new Label("\n     Are you sure you want to delete?     \n ");
@@ -370,7 +430,9 @@ public class ProfessorController implements Cloneable{
     			newStage.close();
     			System.out.println("Deleting student");
     			if(!selected.equals(noDelete)){
+    				Tab currentTab = tabPane.getSelectionModel().getSelectedItem();
     				model.getStudentNames().remove(students.getSelectionModel().getSelectedItem());
+    				model.removeStudentFromDatabase(userID, selected, currentTab.getText());
     				System.out.println(selected);
     				System.out.println(index);
     				gradeBox.getChildren().remove(index-1);

@@ -92,7 +92,7 @@ public class LoginController {
 		controller.setModel(model);
 	}
 	
-	private void startProfView() throws IOException{
+	private void startProfView() throws IOException, SQLException{
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("ProfessorUI.fxml"));
 		Parent home_page_parent = (Parent)loader.load();
 		ProfessorController controller = (ProfessorController)loader.getController();

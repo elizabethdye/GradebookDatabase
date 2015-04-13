@@ -40,6 +40,7 @@ public class StudentController {
 	
 	@FXML
 	public void initialize() throws ClassNotFoundException, SQLException{
+		networker = new Networker();
 		getStudentInfo();
 		for ( CourseInfo courseInfo : courseList) {
 			String professor = courseInfo.getProfessor();
