@@ -5,6 +5,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import Model.CourseInfo;
+import Model.DatabaseCommand;
+import Model.ServerRequest;
+import Model.ServerRequestResult;
 import Networking.Networker;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -31,7 +34,7 @@ public class StudentController {
 	
 	ArrayList< CourseInfo > courseList;
 	
-	ObservableList<String> classGrades;
+	ObservableList< String > classGrades;
 	
 	private String userID;
 	
@@ -42,7 +45,7 @@ public class StudentController {
 			String professor = courseInfo.getProfessor();
 			String course = courseInfo.getCourse();
 			String grade = getGrade(professor, course);
-			classGrades.add(courseInfo.getCourse() + "\t" + grade);
+			classGrades.add(courseInfo.getCourse() + "     -     " + grade);
 		}
 	}
 
@@ -67,13 +70,27 @@ public class StudentController {
 	
 	public void getStudentInfo() {
 		//TODO
-		database.getStudentInfo(userID);
+		DatabaseCommand cmd = DatabaseCommand.GET_STUDENT_INFO;
+		String[] args = {userID};
+		ServerRequest rq = new ServerRequest(cmd, args);
+		ServerRequestResult result = networker.sendServerRequest(rq);
+		courseList = (ArrayList<CourseInfo>)result.getResult();
 	}
 	
 	public String getGrade(String professor, String course) {
 		//TODO
-		ArrayList<Double> totGrades = database.getTotalGrades(professor, course);
-		ArrayList<Double> stuGrades = database.getStudentGrades(userID, professor, course);
+		DatabaseCommand cmd = DatabaseCommand.GET_TOTAL_GRADES;
+		String[] args = {professor, course};
+		ServerRequest rq = new ServerRequest(cmd, args);
+		ServerRequestResult result = networker.sendServerRequest(rq);
+		ArrayList<Double> totGrades = (ArrayList<Double>)result.getResult();
+		
+		DatabaseCommand cmdStu = DatabaseCommand.GET_STUDENT_GRADES;
+		String[] argsStu = {userID, professor, course};
+		ServerRequest rqStu = new ServerRequest(cmdStu, argsStu);
+		ServerRequestResult resultStu = networker.sendServerRequest(rq);
+		ArrayList<Double> stuGrades = (ArrayList<Double>)result.getResult();
+		
 		Double total;
 		for ( Double grade: totGrades){
 			total += grade;
