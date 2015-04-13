@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<TabPane fx:id="tabPane" prefHeight="356.0" prefWidth="640.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.ProfessorController">
+   <tabs>
+      <Tab fx:id="class1" text="New Course">
+         <content>
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <Button fx:id="studentAdd" layoutX="71.0" layoutY="11.0" mnemonicParsing="false" onAction="#addStudent" prefHeight="22.0" prefWidth="24.0" text="+">
+                     <font>
+                        <Font size="10.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="gradesAdd" layoutX="184.0" layoutY="11.0" mnemonicParsing="false" onAction="#addGrade" prefHeight="22.0" prefWidth="24.0" text="+">
+                     <font>
+                        <Font size="10.0" />
+                     </font>
+                  </Button>
+                  <Label layoutX="6.0" layoutY="16.0" text="Students: " />
+                  <Button fx:id="studentRem" layoutX="97.0" layoutY="11.0" mnemonicParsing="false" onAction="#ConfirmDeleteWindow" prefHeight="22.0" prefWidth="24.0" text="-" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="10.0" />
+                     </font>
+                  </Button>
+                  <Label layoutX="130.0" layoutY="16.0" text="Grades: " />
+                  <Button fx:id="gradesRem" layoutX="211.0" layoutY="11.0" mnemonicParsing="false" prefHeight="22.0" prefWidth="24.0" text="-">
+                     <font>
+                        <Font size="10.0" />
+                     </font>
+                  </Button>
+                  <ListView fx:id="students" editable="true" layoutX="4.0" layoutY="34.0" prefHeight="280.0" prefWidth="118.0" />
+                  <ScrollPane fx:id="scrollpane" hbarPolicy="ALWAYS" layoutX="125.0" layoutY="34.0" prefHeight="280.0" prefWidth="509.0">
+                     <content>
+                        <AnchorPane fx:id="constraints" prefHeight="262.0" prefWidth="509.0">
+                           <children>
+                              <HBox fx:id="assignmentNames" prefHeight="30.0" prefWidth="508.0" />
+                              <VBox fx:id="gradeBox" layoutY="31.0" prefHeight="230.0" prefWidth="509.0" />
+                           </children>
+                        </AnchorPane>
+                     </content>
+                  </ScrollPane>
+               </children>
+            </AnchorPane>
+         </content>
+      </Tab>
+   </tabs>
+</TabPane>

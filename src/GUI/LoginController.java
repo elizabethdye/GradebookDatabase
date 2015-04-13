@@ -63,7 +63,7 @@ public class LoginController {
 			startStudentView();
 		}
 		else{
-			sendError();
+			sendError(); 
 		}
 	}
 	
@@ -80,7 +80,6 @@ public class LoginController {
 	}
 	
 	private void startAdminView() throws IOException{
-		//showNewStage("AdminUI.fxml", UserTypes.ADMIN);
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("AdminUI.fxml"));
 		Parent home_page_parent = (Parent)loader.load();
 		
@@ -94,7 +93,6 @@ public class LoginController {
 	}
 	
 	private void startProfView() throws IOException{
-		//showNewStage("ProfessorUI.fxml", UserTypes.PROFESSOR);
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("ProfessorUI.fxml"));
 		Parent home_page_parent = (Parent)loader.load();
 		ProfessorController controller = (ProfessorController)loader.getController();
@@ -103,13 +101,11 @@ public class LoginController {
 		Stage app_stage = (Stage) login.getScene().getWindow();
 		app_stage.setScene(home_page_scene);
 		app_stage.show();
-		controller.setNetworker(networker);
+		//controller.setNetworker(networker);
 		System.out.println("Sent networker to ProfessorController...");
-//		TODO: once student view is created, rename - showNewStage("ProfGUI.fxml");
 	}
 	
 	private void startStudentView() throws IOException{
-		//showNewStage("StudentUI.fxml", UserTypes.STUDENT);
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("StudentUI.fxml"));
 		Parent home_page_parent = (Parent)loader.load();
 		
@@ -119,7 +115,8 @@ public class LoginController {
 		app_stage.show();
 		StudentController controller = (StudentController)loader.getController();
 		controller.setUser(ID);
-		//TODO
+		controller.setNetworker(networker);
+		System.out.println("Sent networker to StudentController...");
 	}
 	
 	private void sendError(){

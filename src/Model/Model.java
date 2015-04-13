@@ -59,50 +59,15 @@ public class Model {
 		//printDatabase();
 		//testingCode();
 	}
-//	private void testLists() throws SQLException{
-//		for(int i = 0; i < 5; i++){
-//			addAssignment("TestGrade	" + i);
-//			System.out.println(this.numGrades);
-//			//TextField txtfield = (TextField)gradeList.get(i).get(0).getChildren().get(0);
-//			//System.out.println(txtfield.getText());
-//		}
-//		for(int i = 0; i < 5; i++){
-//			//TextField txtfield = (TextField)gradeList.get(i).get(0).getChildren().get(0);
-//			//System.out.println(txtfield.getText());
-//		}
-//		for(int i = 0; i<  5; i++){
-//			addStudent("Test Student " + i);
-//		}
-//		Text txt = new Text();
-//		System.out.println("StudentNames: ");
-//		for(int i = 1; i < 6; i++){
-//			txt = (Text)studentNames.get(i).getChildren().get(0);
-//			System.out.println(txt.getText().toString());
-//		}
-//		for(int i = 0; i < this.numGrades; i++){
-//			TextField txtfield = (TextField)gradeList.get(i).get(0).getChildren().get(0);
-//			txt.setText(txtfield.getText());
-//			System.out.println("Grade: " + txt.getText().toString());
-//		}
-//	}
 	
-//	private void printDatabase() throws SQLException{
-//		System.out.println("UserID: " + this.userID);
-//		System.out.println("Grade info: " + database.getGradeInfo(this.userID, courseName));
-//		System.out.println("Get Courses: " + database.getCourses(this.userID));
-//		System.out.println(" Get Assignments: " + database.getAssignments(this.userID, courseName));
-//	}
-	
-	/*
-	private void testingCode(){
-		for(int i = 0; i < 10; i++){
-			addGrade("Test");
-		}
-		for(int i = 0; i<  20; i++){
-			addStudent("Test Student");
-		}
+	public void populateGradebook(){
+		DatabaseCommand cmd = DatabaseCommand.GET_COURSES;
+		String[] args = {userID};
+		ServerRequest request = new ServerRequest(cmd, args);
+		ServerRequestResult result = networker.sendServerRequest(request);
+		ArrayList<String> courses = (ArrayList<String>) result.getResult();
+		System.out.println("List of courses: " + courses);
 	}
-	*/
 	
 	private void initiateGradebook(String value){
 		Label name = new Label(value);

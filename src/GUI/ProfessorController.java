@@ -1,29 +1,40 @@
 package GUI;
 
+import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
+import Model.DatabaseCommand;
 import Model.Model;
+import Model.ServerRequest;
+import Model.ServerRequestResult;
 import Networking.Networker;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class ProfessorController {
+public class ProfessorController implements Cloneable{
 
 	@FXML
 	ListView<VBox> students;
@@ -42,13 +53,22 @@ public class ProfessorController {
 	@FXML
 	Tab class1, newClass;
 	@FXML
-	MenuItem saveGradebook;
+	MenuItem logout;
 	
 	private String userID;
 	private String userType = "Professor";
 	
 	private Model model;
+	
 	Networker networker;
+	
+	public Object clone(){  
+	    try{  
+	        return super.clone();  
+	    }catch(Exception e){ 
+	        return null; 
+	    }
+	}
 	
 	@FXML 
 	private void initialize() throws ClassNotFoundException, SQLException{
@@ -58,6 +78,7 @@ public class ProfessorController {
 		scrollpane.setContent(constraints);
 		scrollpane.prefViewportHeightProperty().set(constraints.getHeight());
 		scrollpane.prefViewportWidthProperty().set(constraints.getWidth());
+		this.networker = new Networker();
 		this.model = new Model(gradeBox, assignmentNames, scrollpane, class1, networker);
 		students.setItems(model.getStudentNames());
 		students.setFixedCellSize(30);
@@ -65,20 +86,108 @@ public class ProfessorController {
 		model.setUser(this.userID);
 		System.out.println("user is " + this.userID);
 		System.out.println("networker: " + this.networker == null);
+		model.populateGradebook();
 	}
+	
 	
 	public void setUser(String name){
 		this.userID = name;
 		model.setUser(name);
 		System.out.println("UserID is: " + name);
 	}
-	/*
+	
 	@FXML
-	public void newTab(){
-		SingleSelectionModel<Tab> selectionModel = tabPane.getSelectionModel();
-		newClass.setContent(selectionModel);
+	private void newTab(){
+		Stage newStage = new Stage();
+		VBox root = new VBox();
+		Label nameField = new Label("Enter Course Name: ");
+		TextField courseName = new TextField();
+		HBox selection = new HBox();
+		selection.setSpacing(50);
+		Button okButton = new Button("OK");
+		Button closeButton = new Button("Cancel");
+		courseName.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent close){
+    			Tab currentTab = tabPane.getSelectionModel().getSelectedItem();
+    			try {
+    				FXMLLoader loader = new FXMLLoader();
+        			loader.setLocation(Main.class.getResource("Tab.fxml"));
+					TabPane root = (TabPane) loader.load();
+					Node content = root.getTabs().get(0).getContent();
+					currentTab.setContent(content);
+					Tab newTab = new Tab();
+					currentTab.setText(courseName.getText());
+					newTab.setText("new");
+					tabPane.getTabs().add(newTab);
+					newTab.setOnSelectionChanged(new EventHandler<Event>() {
+					    @Override
+					    public void handle(Event t) {
+					       newTab();
+					    }
+					});
+					newStage.close();
+					currentTab.setOnSelectionChanged(new EventHandler<Event>() {
+					    @Override
+					    public void handle(Event t) {
+					    }
+					});
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		});
+		okButton.setOnAction(new EventHandler<ActionEvent>(){
+    		@Override
+    		public void handle(ActionEvent close){
+    			Tab currentTab = tabPane.getSelectionModel().getSelectedItem();
+    			try {
+    				FXMLLoader loader = new FXMLLoader();
+        			loader.setLocation(Main.class.getResource("Tab.fxml"));
+					TabPane root = (TabPane) loader.load();
+					Node content = root.getTabs().get(0).getContent();
+					currentTab.setContent(content);
+					Tab newTab = new Tab();
+					currentTab.setText(courseName.getText());
+					newTab.setText("new");
+					tabPane.getTabs().add(newTab);
+					newTab.setOnSelectionChanged(new EventHandler<Event>() {
+					    @Override
+					    public void handle(Event t) {
+					       newTab();
+					    }
+					});
+					newStage.close();
+					currentTab.setOnSelectionChanged(new EventHandler<Event>() {
+					    @Override
+					    public void handle(Event t) {
+					    }
+					});
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+    		
+    	});
+		closeButton.setOnAction(new EventHandler<ActionEvent>(){
+    		@Override
+    		public void handle(ActionEvent close){
+    			newStage.close();
+			}
+    		
+    	});
+		selection.getChildren().addAll(okButton, closeButton);
+		root.getChildren().addAll(nameField, courseName, selection);
+
+		Scene stageScene = new Scene(root);
+		VBox.setVgrow(root, Priority.ALWAYS);
+		newStage.setScene(stageScene);
+		newStage.show();
+		newStage.requestFocus();		
 	}
-	*/
+	
 	@FXML
 	public void addStudent(){
 		Stage newStage = new Stage();
@@ -186,6 +295,19 @@ public class ProfessorController {
 		newStage.requestFocus();
 		
 	}
+	
+
+	@FXML
+	public void logout() throws IOException{
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("LoginUI.fxml"));
+		Parent home_page_parent = (Parent)loader.load();
+		Scene home_page_scene = new Scene(home_page_parent);
+		Stage app_stage = (Stage) constraints.getScene().getWindow();
+		app_stage.setScene(home_page_scene);
+		app_stage.show();
+		System.out.println("Sent networker to LoginController...");
+}
+
 	
 	public void throwError(String message){
 		Stage newStage = new Stage();
