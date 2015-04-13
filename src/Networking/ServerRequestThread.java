@@ -71,9 +71,6 @@ public class ServerRequestThread extends Thread {
     		case RETRIEVE_GRADE:
     			result.setResult(db.retrieveGrade(args[0], args[1], args[2], args[3]));
     			break;
-    		case RETRIEVE_OVERALL_GRADE:
-    			result.setResult(db.retrieveOverallGrade(args[0], args[1], args[2]));
-    			break;
     		case GET_COURSES:
     			result.setResult(db.getCourses(args[0]));
     			break;
@@ -96,6 +93,38 @@ public class ServerRequestThread extends Thread {
     		case ADD_ASSIGNMENT:
     			db.addAssignment(args[0], args[1], args[2]);
     			result.setResult(null);
+    			break;
+    		case DELETE_TABLES:
+    			db.deleteTables();
+    			result.setResult(null);
+    			break;
+    		case REMOVE_COURSE:
+    			db.removeCourse(args[0], args[1]);
+    			result.setResult(null);
+    			break;
+    		case SET_TOTAL_POSSIBLE:
+    			db.setTotalPossible(args[0], args[1], args[2], Double.valueOf(args[3]));
+    			result.setResult(null);
+    			break;
+    		case GET_TOTAL_POSSIBLE:
+    			result.setResult(db.getTotalPossible(args[0], args[1], args[2]));
+    			break;
+    		case GET_TOTAL_GRADES:
+    			result.setResult(db.getTotalGrades(args[0], args[1]));
+    			break;
+    		case GET_STUDENT_GRADES:
+    			result.setResult(db.getStudentGrades(args[0], args[1], args[2]));
+    			break;
+    		case REMOVE_ASSIGNMENT:
+    			db.removeAssignment(args[0], args[1], args[2]);
+    			result.setResult(null);
+    			break;
+    		case REMOVE_STUDENT:
+    			db.removeStudent(args[0], args[1], args[2]);
+    			result.setResult(null);
+    			break;
+    		case GET_STUDENT_INFO:
+    			result.setResult(db.getStudentInfo(args[0]));
     			break;
     	}
     	System.out.println("Finished evaluating database command...");

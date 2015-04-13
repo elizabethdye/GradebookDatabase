@@ -4,7 +4,9 @@ public enum DatabaseCommand {
 	CREATE_TABLES, ADD_COURSE, ADD_STUDENT, ADD_GRADE, 
 	RETRIEVE_GRADE, RETRIEVE_OVERALL_GRADE, GET_COURSES,
 	GET_ASSIGNMENTS, GET_STUDENTS, GET_GRADE_INFO, GET_USER_TYPE, ADD_USER,
-	ADD_ASSIGNMENT;
+	ADD_ASSIGNMENT, DELETE_TABLES, REMOVE_COURSE, SET_TOTAL_POSSIBLE, GET_TOTAL_POSSIBLE,
+	GET_TOTAL_GRADES, GET_STUDENT_GRADES, REMOVE_ASSIGNMENT, REMOVE_STUDENT,
+	GET_STUDENT_INFO;
 	
 	public static DatabaseCommand fromString(String command){
     	command = command.toUpperCase();
@@ -35,6 +37,24 @@ public enum DatabaseCommand {
             	return ADD_USER;
             case "ADD_ASSIGNMENT":
             	return ADD_ASSIGNMENT;
+            case "DELETE_TABLES":
+            	return DELETE_TABLES;
+            case "REMOVE_COURSE":
+            	return REMOVE_COURSE;
+            case "SET_TOTAL_POSSIBLE":
+            	return SET_TOTAL_POSSIBLE;
+            case "GET_TOTAL_POSSIBLE":
+            	return GET_TOTAL_POSSIBLE;
+            case "GET_TOTAL_GRADES":
+            	return GET_TOTAL_GRADES;
+            case "GET_STUDENT_GRADES":
+            	return GET_STUDENT_GRADES;
+            case "REMOVE_ASSIGNMENT":
+            	return REMOVE_ASSIGNMENT;
+            case "REMOVE_STUDENT":
+            	return REMOVE_STUDENT;
+            case "GET_STUDENT_INFO":
+            	return GET_STUDENT_INFO;
         }
         return null;
     }
