@@ -47,7 +47,7 @@ public class ProfessorController {
 	private String userID;
 	private String userType = "Professor";
 	
-	private Model model;
+	private Model model; 
 	Networker networker;
 	
 	@FXML 
@@ -73,6 +73,7 @@ public class ProfessorController {
 		System.out.println("UserID is: " + name);
 	}
 	/*
+	 * TODO
 	@FXML
 	public void newTab(){
 		SingleSelectionModel<Tab> selectionModel = tabPane.getSelectionModel();
