@@ -2,6 +2,7 @@ package Networking;
 
 import java.net.*;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.io.*;
 
 import Database.Database;
@@ -31,6 +32,12 @@ public class ServerRequestThread extends Thread {
 					System.out.println("add_user username arg: " + clientRequest.getArgs()[0]);
 				}
 				ServerRequestResult result = evaluateRequest(clientRequest);
+				if (clientRequest.getCommand() == DatabaseCommand.GET_STUDENTS){
+					System.out.println("here");
+					for (String student : (ArrayList<String>) result.getResult()){
+						System.out.println(student);
+					}
+				}
 				toClientStream.writeObject(result);
 				System.out.println("Sent the ServerRequestResult back to user");
 				toClientStream.flush();
@@ -79,6 +86,9 @@ public class ServerRequestThread extends Thread {
     			break;
     		case GET_STUDENTS:
     			result.setResult(db.getStudents(args[0], args[1]));
+    			for (String student : (ArrayList<String>)result.getResult()){
+    				System.out.println(student);
+    			}
     			break;
     		case GET_GRADE_INFO:
     			result.setResult(db.getGradeInfo(args[0], args[1]));
