@@ -113,7 +113,7 @@ public class Database {
 		ResultSet results = stat.getResultSet();
 		ArrayList<CourseInfo> courseInfo = new ArrayList<CourseInfo>();
 		while (results.next()) {
-			courseInfo.add(new CourseInfo(results.getString("Course"), results.getString("Professor"), results.getDouble("Grade")));
+			courseInfo.add(new CourseInfo(results.getString("Course"), results.getString("Professor")));
 		}
 		results.close();
 		return courseInfo;

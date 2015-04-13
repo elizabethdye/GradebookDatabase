@@ -4,12 +4,10 @@ public class CourseInfo {
 	
 	private String course;
 	private String professor;
-	private double grade;
 	
-	public CourseInfo (String course, String professor, double grade) {
+	public CourseInfo (String course, String professor) {
 		this.course = course;
 		this.professor = professor;
-		this.grade = grade;
 	}
 	
 	public String getCourse() {
@@ -19,9 +17,5 @@ public class CourseInfo {
 	public String getProfessor() {
 		return professor;
 	}
-	
-	public double getGrade() {
-		return grade;
-	}
-	
+
 }
