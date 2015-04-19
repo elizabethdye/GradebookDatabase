@@ -41,6 +41,7 @@ public class ProfModel {
 	//private String userType;
 	private String courseName;
 	private ProfessorController controller;
+	private String course;
 	
 	public ProfModel(ProfessorController controller) throws ClassNotFoundException, SQLException{
 		this.controller = controller;
@@ -66,6 +67,8 @@ public class ProfModel {
 		//testingCode();
 	}
 	
+	public void setCourse(String course){ this.course = course; }
+	
 	public void populateGradebook() throws SQLException, IOException{
 		System.out.println("Populating gradebook");
 		System.out.println("userID is: " + this.userID);
@@ -76,10 +79,10 @@ public class ProfModel {
 		ArrayList<String> courses = (ArrayList<String>) result.getResult();
 		System.out.println("Courses: " + courses);
 		for (String course : courses){
-			Tab newTab = new Tab();
-			newTab.setText(course);
-			controller.tabPane.getTabs().add(newTab);
-			createNewTab(newTab);
+//			Tab newTab = new Tab();
+//			newTab.setText(course);
+//			controller.tabPane.getTabs().add(newTab);
+//			createNewTab(newTab);
 			ArrayList<String> students = getListofStudents(userID, course);
 			System.out.println("List of students: " + students);
 			for(String student : students){
@@ -93,13 +96,13 @@ public class ProfModel {
 			
 		}
 	}
-	private void createNewTab(Tab currentTab) throws IOException{
-		FXMLLoader loader = new FXMLLoader();
-		loader.setLocation(Main.class.getResource("Tab.fxml"));
-		TabPane root = (TabPane) loader.load();
-		Node content = root.getTabs().get(0).getContent();
-		currentTab.setContent(content);
-	}
+//	private void createNewTab(Tab currentTab) throws IOException{
+//		FXMLLoader loader = new FXMLLoader();
+//		loader.setLocation(Main.class.getResource("Tab.fxml"));
+//		TabPane root = (TabPane) loader.load();
+//		Node content = root.getTabs().get(0).getContent();
+//		currentTab.setContent(content);
+//	}
 	
 	private void populateStudent(String studentName){
 		if (studentName.length() > 0){
@@ -167,10 +170,10 @@ public class ProfModel {
 			this.numStudents++;
 			addLineToGrades();
 		}
-		Tab courseTab = controller.tabPane.getSelectionModel().getSelectedItem();
-		String courseName = courseTab.getText();
+//		Tab courseTab = controller.tabPane.getSelectionModel().getSelectedItem();
+//		String courseName = courseTab.getText();
 		
-		addStudentToDatabase(this.userID, studentName, courseName);
+		addStudentToDatabase(this.userID, studentName, course);
 		//database.addStudent(userID, studentName, courseName);
 //		System.out.println(database.getStudents(userID, courseName));
 //		System.out.println("num students: " + this.numStudents);
@@ -194,9 +197,9 @@ public class ProfModel {
 				newField.setMaxSize(45, 20);
 				newField.setMinSize(45, 20);
 				this.gradeList.get(i).add(newBox);
-				Tab courseTab = controller.tabPane.getSelectionModel().getSelectedItem();
-				String courseName = courseTab.getText();
-				addAssignmentToDatabase(userID, courseName, name.getText().toString());
+//				Tab courseTab = controller.tabPane.getSelectionModel().getSelectedItem();
+//				String courseName = courseTab.getText();
+				addAssignmentToDatabase(userID, course, name.getText().toString());
 				//database.addAssignment(this.userID, courseName, name.getText().toString());
 				newField.setOnAction(new EventHandler<ActionEvent>() {
 					@Override
@@ -274,10 +277,10 @@ public class ProfModel {
 		networker.sendServerRequest(request);
 		System.out.println("Successfully added course to database");
 	}
-	
+	//TODO do we really want to do this vvvvvvvv
 	public void removeStudentFromDatabase(String professorName, String studentName, String coursename){
-		Tab courseTab = controller.tabPane.getSelectionModel().getSelectedItem();
-		String course = courseTab.getText();
+//		Tab courseTab = controller.tabPane.getSelectionModel().getSelectedItem();
+//		String course = courseTab.getText();
 		DatabaseCommand cmd = DatabaseCommand.REMOVE_STUDENT;
 		String[] args = {professorName, studentName, course};
 		ServerRequest request = new ServerRequest(cmd, args);
@@ -287,8 +290,8 @@ public class ProfModel {
 	//database.addGrade(assignment, studentName, grade, userID, courseName);
 	void addGradeToDatabase(String assignmentName, String studentName, Double grade, String professorName, String courseName){
 		professorName = controller.userID;
-		Tab courseTab = controller.tabPane.getSelectionModel().getSelectedItem();
-		String course = courseTab.getText();
+//		Tab courseTab = controller.tabPane.getSelectionModel().getSelectedItem();
+//		String course = courseTab.getText();
 		DatabaseCommand cmd = DatabaseCommand.ADD_GRADE;
 		String[] args = {assignmentName, studentName, grade.toString(), professorName, course};
 		ServerRequest request = new ServerRequest(cmd, args);
@@ -298,8 +301,8 @@ public class ProfModel {
 	void addStudentToDatabase(String professorName, String studentName, String courseName){
 		professorName = controller.userID;
 		System.out.println("Professor name is: " + professorName);
-		Tab courseTab = controller.tabPane.getSelectionModel().getSelectedItem();
-		String course = courseTab.getText();
+//		Tab courseTab = controller.tabPane.getSelectionModel().getSelectedItem();
+//		String course = courseTab.getText();
 		System.out.println("Sending student under " + professorName + " " + studentName + " " + course );
 		DatabaseCommand cmd = DatabaseCommand.ADD_STUDENT;
 		String[] args = {professorName, studentName, course};
@@ -311,8 +314,8 @@ public class ProfModel {
 	
 	void addAssignmentToDatabase(String professorName, String courseName, String assignmentName){
 		professorName = controller.userID;
-		Tab courseTab = controller.tabPane.getSelectionModel().getSelectedItem();
-		String course = courseTab.getText();
+//		Tab courseTab = controller.tabPane.getSelectionModel().getSelectedItem();
+//		String course = courseTab.getText();
 		DatabaseCommand cmd = DatabaseCommand.ADD_ASSIGNMENT;
 		String[] args = {professorName, course, assignmentName};
 		ServerRequest request = new ServerRequest(cmd, args);
@@ -322,8 +325,8 @@ public class ProfModel {
 	ArrayList<String> getListofStudents(String professorName, String courseName){
 		professorName = controller.userID;
 		System.out.println("Professor name is: " + professorName);
-		Tab courseTab = controller.tabPane.getSelectionModel().getSelectedItem();
-		String course = courseTab.getText();
+//		Tab courseTab = controller.tabPane.getSelectionModel().getSelectedItem();
+//		String course = courseTab.getText();
 		System.out.println("Get list of students from: " + professorName + " " + course);
 		DatabaseCommand cmd = DatabaseCommand.GET_STUDENTS;
 		String[] args = {professorName, course};
@@ -336,8 +339,8 @@ public class ProfModel {
 	
 	ArrayList<GradeInfo> getGradeInfo(String professorName, String courseName){
 		professorName = controller.userID;
-		Tab courseTab = controller.tabPane.getSelectionModel().getSelectedItem();
-		String course = courseTab.getText();
+//		Tab courseTab = controller.tabPane.getSelectionModel().getSelectedItem();
+//		String course = courseTab.getText();
 		DatabaseCommand cmd = DatabaseCommand.GET_GRADE_INFO;
 		String[] args = {professorName, course};
 		ServerRequest request = new ServerRequest(cmd, args);
@@ -349,8 +352,8 @@ public class ProfModel {
 	ArrayList<String> getAssignments(String professorName, String courseName){
 		professorName = controller.userID;
 		System.out.println("Professor name is: " + professorName);
-		Tab courseTab = controller.tabPane.getSelectionModel().getSelectedItem();
-		String course = courseTab.getText();
+//		Tab courseTab = controller.tabPane.getSelectionModel().getSelectedItem();
+//		String course = courseTab.getText();
 		DatabaseCommand cmd = DatabaseCommand.GET_ASSIGNMENTS;
 		String[] args = {professorName, course};
 		ServerRequest request = new ServerRequest(cmd, args);

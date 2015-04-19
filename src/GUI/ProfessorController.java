@@ -9,6 +9,8 @@ import Model.ProfModel;
 import Model.ServerRequest;
 import Model.ServerRequestResult;
 import Networking.Networker;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -25,8 +27,6 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SingleSelectionModel;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -51,18 +51,17 @@ public class ProfessorController{
 	@FXML
 	Button studentAdd, studentRem, gradesAdd, gradesRem;
 	@FXML
-	public TabPane tabPane;
-	@FXML
-	public Tab class1, newClass;
-	@FXML
 	MenuItem logout;
 	@FXML
-	ComboBox courseList;
+	MenuItem newCourse;
 	@FXML
-	Button addCourse;
+	public ComboBox courseList;
+	@FXML
+	public Button open, addCourse;
 	
 	public String userID;
 	private String userType = "Professor";
+	private String course;
 	
 	private ProfModel model;
 	
@@ -86,8 +85,9 @@ public class ProfessorController{
 			DatabaseCommand cmd = DatabaseCommand.GET_COURSES;
 			String[] args = {userID};
 			ServerRequest request = new ServerRequest (cmd, args);
-			networker.sendServerRequest(request);
-			courseList.setItems(ObservableList<String> );
+			ServerRequestResult ret = networker.sendServerRequest(request);
+			ArrayList<String> courses = (ArrayList<String>)ret.getResult();
+			courseList.setItems(FXCollections.observableArrayList(courses));
 			students.setItems(model.getStudentNames());
 			students.setFixedCellSize(30);
 			System.out.println("Initialized");
@@ -97,58 +97,75 @@ public class ProfessorController{
 //		}
 //		setEditable(currentTab);
 	}
-	
-	private void setEditable(Tab tab){
-		tab.setText("");
-		Label label = new Label();
-		label.setText("Course Name");
-		tab.setGraphic(label);
-		label.setOnMouseClicked(new EventHandler<MouseEvent>() {  
-			  @Override  
-			  public void handle(MouseEvent event) {
-				  if (event.getClickCount()==2){
-					  Stage newStage = new Stage();
-					  VBox root = new VBox();
-					  Label nameField = new Label("Enter Course Name: ");
-					  TextField courseName = new TextField();
-					  HBox selection = new HBox();
-					  selection.setSpacing(50);
-					  Button okButton = new Button("OK");
-					  Button closeButton = new Button("Cancel");
-					  courseName.setOnAction(new EventHandler<ActionEvent>() {
-						  @Override
-						  public void handle(ActionEvent add){
-							  label.setText(courseName.getText());
-							  newStage.close();
-						  }
-					  });
-					okButton.setOnAction(new EventHandler<ActionEvent>(){
-			    		@Override
-			    		public void handle(ActionEvent close){
-			    			label.setText(courseName.getText());
-							newStage.close();
-						}
-			    		
-			    	});
-					closeButton.setOnAction(new EventHandler<ActionEvent>(){
-			    		@Override
-			    		public void handle(ActionEvent close){
-			    			newStage.close();
-						}
-			    		
-			    	});
-					selection.getChildren().addAll(okButton, closeButton);
-					root.getChildren().addAll(nameField, courseName, selection);
-
-					Scene stageScene = new Scene(root);
-					VBox.setVgrow(root, Priority.ALWAYS);
-					newStage.setScene(stageScene);
-					newStage.show();
-					newStage.requestFocus();
-				  }
-			  }
-		});
+	@FXML
+	private void changeCourse(){
+		course = (String) courseList.getSelectionModel().getSelectedItem();
+		model.setCourse(course);
+		//TODO open the correct course
 	}
+	@FXML
+	private void addCourse(){
+		dbAddCourse();
+	}
+	
+	private void dbAddCourse(){
+		
+		DatabaseCommand cmd = DatabaseCommand.ADD_COURSE;
+		String[] args = {(String) courseList.getSelectionModel().getSelectedItem(),userID};
+		ServerRequest request = new ServerRequest (cmd, args);
+		networker.sendServerRequest(request);
+	}
+//	private void setEditable(Tab tab){
+//		tab.setText("");
+//		Label label = new Label();
+//		label.setText("Course Name");
+//		tab.setGraphic(label);
+//		label.setOnMouseClicked(new EventHandler<MouseEvent>() {  
+//			  @Override  
+//			  public void handle(MouseEvent event) {
+//				  if (event.getClickCount()==2){
+//					  Stage newStage = new Stage();
+//					  VBox root = new VBox();
+//					  Label nameField = new Label("Enter Course Name: ");
+//					  TextField courseName = new TextField();
+//					  HBox selection = new HBox();
+//					  selection.setSpacing(50);
+//					  Button okButton = new Button("OK");
+//					  Button closeButton = new Button("Cancel");
+//					  courseName.setOnAction(new EventHandler<ActionEvent>() {
+//						  @Override
+//						  public void handle(ActionEvent add){
+//							  label.setText(courseName.getText());
+//							  newStage.close();
+//						  }
+//					  });
+//					okButton.setOnAction(new EventHandler<ActionEvent>(){
+//			    		@Override
+//			    		public void handle(ActionEvent close){
+//			    			label.setText(courseName.getText());
+//							newStage.close();
+//						}
+//			    		
+//			    	});
+//					closeButton.setOnAction(new EventHandler<ActionEvent>(){
+//			    		@Override
+//			    		public void handle(ActionEvent close){
+//			    			newStage.close();
+//						}
+//			    		
+//			    	});
+//					selection.getChildren().addAll(okButton, closeButton);
+//					root.getChildren().addAll(nameField, courseName, selection);
+//
+//					Scene stageScene = new Scene(root);
+//					VBox.setVgrow(root, Priority.ALWAYS);
+//					newStage.setScene(stageScene);
+//					newStage.show();
+//					newStage.requestFocus();
+//				  }
+//			  }
+//		});
+//	}
 	
 	public void setUser(String name) throws SQLException, IOException{
 		this.userID = name;
@@ -162,101 +179,101 @@ public class ProfessorController{
 		model.populateGradebook();
 	}
 	
-	@FXML
-	private void newTab(){
-		Stage newStage = new Stage();
-		VBox root = new VBox();
-		Label nameField = new Label("Enter Course Name: ");
-		TextField courseName = new TextField();
-		HBox selection = new HBox();
-		selection.setSpacing(50);
-		Button okButton = new Button("OK");
-		Button closeButton = new Button("Cancel");
-		courseName.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent close){
-    			Tab currentTab = tabPane.getSelectionModel().getSelectedItem();
-    			try {
-    				FXMLLoader loader = new FXMLLoader();
-        			loader.setLocation(Main.class.getResource("Tab.fxml"));
-					TabPane root = (TabPane) loader.load();
-					Node content = root.getTabs().get(0).getContent();
-					currentTab.setContent(content);
-					Tab newTab = new Tab();
-					currentTab.setText(courseName.getText());
-					System.out.println("Attempting to add course to database");
-					model.addCourseToDatabase(courseName.getText(), userID);
-					newTab.setText("new");
-					tabPane.getTabs().add(newTab);
-					newTab.setOnSelectionChanged(new EventHandler<Event>() {
-					    @Override
-					    public void handle(Event t) {
-					       newTab();
-					    }
-					});
-					setEditable(newTab);
-					newStage.close();
-					currentTab.setOnSelectionChanged(new EventHandler<Event>() {
-					    @Override
-					    public void handle(Event t) {
-					    }
-					});
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-		});
-		okButton.setOnAction(new EventHandler<ActionEvent>(){
-    		@Override
-    		public void handle(ActionEvent close){
-    			Tab currentTab = tabPane.getSelectionModel().getSelectedItem();
-    			try {
-    				FXMLLoader loader = new FXMLLoader();
-        			loader.setLocation(Main.class.getResource("Tab.fxml"));
-					TabPane root = (TabPane) loader.load();
-					Node content = root.getTabs().get(0).getContent();
-					currentTab.setContent(content);
-					Tab newTab = new Tab();
-					currentTab.setText(courseName.getText());
-					model.addCourseToDatabase(courseName.getText(), userID);
-					newTab.setText("new");
-					tabPane.getTabs().add(newTab);
-					newTab.setOnSelectionChanged(new EventHandler<Event>() {
-					    @Override
-					    public void handle(Event t) {
-					       newTab();
-					    }
-					});
-					setEditable(newTab);
-					newStage.close();
-					currentTab.setOnSelectionChanged(new EventHandler<Event>() {
-					    @Override
-					    public void handle(Event t) {
-					    }
-					});
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-    	});
-		closeButton.setOnAction(new EventHandler<ActionEvent>(){
-    		@Override
-    		public void handle(ActionEvent close){
-    			newStage.close();
-			}
-    		
-    	});
-		selection.getChildren().addAll(okButton, closeButton);
-		root.getChildren().addAll(nameField, courseName, selection);
-
-		Scene stageScene = new Scene(root);
-		VBox.setVgrow(root, Priority.ALWAYS);
-		newStage.setScene(stageScene);
-		newStage.show();
-		newStage.requestFocus();		
-	}
+//	@FXML
+//	private void newTab(){
+//		Stage newStage = new Stage();
+//		VBox root = new VBox();
+//		Label nameField = new Label("Enter Course Name: ");
+//		TextField courseName = new TextField();
+//		HBox selection = new HBox();
+//		selection.setSpacing(50);
+//		Button okButton = new Button("OK");
+//		Button closeButton = new Button("Cancel");
+//		courseName.setOnAction(new EventHandler<ActionEvent>() {
+//			@Override
+//			public void handle(ActionEvent close){
+//    			Tab currentTab = tabPane.getSelectionModel().getSelectedItem();
+//    			try {
+//    				FXMLLoader loader = new FXMLLoader();
+//        			loader.setLocation(Main.class.getResource("Tab.fxml"));
+//					TabPane root = (TabPane) loader.load();
+//					Node content = root.getTabs().get(0).getContent();
+//					currentTab.setContent(content);
+//					Tab newTab = new Tab();
+//					currentTab.setText(courseName.getText());
+//					System.out.println("Attempting to add course to database");
+//					model.addCourseToDatabase(courseName.getText(), userID);
+//					newTab.setText("new");
+//					tabPane.getTabs().add(newTab);
+//					newTab.setOnSelectionChanged(new EventHandler<Event>() {
+//					    @Override
+//					    public void handle(Event t) {
+//					       newTab();
+//					    }
+//					});
+//					setEditable(newTab);
+//					newStage.close();
+//					currentTab.setOnSelectionChanged(new EventHandler<Event>() {
+//					    @Override
+//					    public void handle(Event t) {
+//					    }
+//					});
+//				} catch (IOException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
+//			}
+//		});
+//		okButton.setOnAction(new EventHandler<ActionEvent>(){
+//    		@Override
+//    		public void handle(ActionEvent close){
+//    			Tab currentTab = tabPane.getSelectionModel().getSelectedItem();
+//    			try {
+//    				FXMLLoader loader = new FXMLLoader();
+//        			loader.setLocation(Main.class.getResource("Tab.fxml"));
+//					TabPane root = (TabPane) loader.load();
+//					Node content = root.getTabs().get(0).getContent();
+//					currentTab.setContent(content);
+//					Tab newTab = new Tab();
+//					currentTab.setText(courseName.getText());
+//					model.addCourseToDatabase(courseName.getText(), userID);
+//					newTab.setText("new");
+//					tabPane.getTabs().add(newTab);
+//					newTab.setOnSelectionChanged(new EventHandler<Event>() {
+//					    @Override
+//					    public void handle(Event t) {
+//					       newTab();
+//					    }
+//					});
+//					setEditable(newTab);
+//					newStage.close();
+//					currentTab.setOnSelectionChanged(new EventHandler<Event>() {
+//					    @Override
+//					    public void handle(Event t) {
+//					    }
+//					});
+//				} catch (IOException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
+//			}
+//    	});
+//		closeButton.setOnAction(new EventHandler<ActionEvent>(){
+//    		@Override
+//    		public void handle(ActionEvent close){
+//    			newStage.close();
+//			}
+//    		
+//    	});
+//		selection.getChildren().addAll(okButton, closeButton);
+//		root.getChildren().addAll(nameField, courseName, selection);
+//
+//		Scene stageScene = new Scene(root);
+//		VBox.setVgrow(root, Priority.ALWAYS);
+//		newStage.setScene(stageScene);
+//		newStage.show();
+//		newStage.requestFocus();		
+//	}
 	
 	@FXML
 	public void addStudent(){
@@ -440,9 +457,9 @@ public class ProfessorController{
     			newStage.close();
     			System.out.println("Deleting student");
     			if(!selected.equals(noDelete)){
-    				Tab currentTab = tabPane.getSelectionModel().getSelectedItem();
+//    				Tab currentTab = tabPane.getSelectionModel().getSelectedItem();
     				model.getStudentNames().remove(students.getSelectionModel().getSelectedItem());
-    				model.removeStudentFromDatabase(userID, selected, currentTab.getText());
+//    				model.removeStudentFromDatabase(userID, selected, currentTab.getText());
     				System.out.println(selected);
     				System.out.println(index);
     				gradeBox.getChildren().remove(index-1);

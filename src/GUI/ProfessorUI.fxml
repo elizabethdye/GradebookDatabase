@@ -7,7 +7,7 @@
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.text.*?>
 
-<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.ProfessorController">
+<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
   <children>
     <MenuBar prefHeight="1.0" prefWidth="640.0" VBox.vgrow="NEVER">
       <menus>
@@ -24,10 +24,12 @@
         </Menu>
       </menus>
     </MenuBar>
-      <HBox prefHeight="100.0" prefWidth="200.0">
+      <HBox prefHeight="27.0" prefWidth="640.0">
          <children>
             <ComboBox prefWidth="150.0" promptText="Choose a Course" />
+            <Button fx:id="open" mnemonicParsing="false" onAction="#changeCourse" text="Open" />
             <Button mnemonicParsing="false" text="Add Course" translateX="50.0" />
+            <StackPane prefHeight="150.0" prefWidth="200.0" />
          </children>
       </HBox>
     <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
@@ -39,7 +41,7 @@
                         <Font size="10.0" />
                      </font>
                   </Button>
-                  <Button fx:id="gradesAdd" layoutX="184.0" layoutY="11.0" mnemonicParsing="false" onAction="#addGrade" prefHeight="22.0" prefWidth="24.0" text="+">
+                  <Button layoutX="184.0" layoutY="11.0" mnemonicParsing="false" onAction="#addGrade" prefHeight="22.0" prefWidth="24.0" text="+">
                      <font>
                         <Font size="10.0" />
                      </font>
