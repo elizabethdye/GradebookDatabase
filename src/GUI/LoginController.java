@@ -37,7 +37,7 @@ public class LoginController {
 	
 	String ID;
 	String password;
-	Enum type;
+	UserTypes type;
 	LoginModel model;
 	Networker networker;
 	
@@ -52,7 +52,7 @@ public class LoginController {
 	
 	@FXML
 	private void login() throws SQLException, IOException{
-		Enum user = checkUserType();
+		UserTypes user = checkUserType();
 		if (user == UserTypes.PROFESSOR){
 			startProfView();
 		}
@@ -123,7 +123,7 @@ public class LoginController {
 		errorWindow();
 	}
 	
-	private Enum checkUserType() throws SQLException{
+	private UserTypes checkUserType() throws SQLException{
 		System.out.println("in checkUserType");
 		ID = idField.getText();
 		password = passwordField.getText();
@@ -131,7 +131,7 @@ public class LoginController {
 		DatabaseCommand cmd = DatabaseCommand.GET_USER_TYPE;
 		String[] args = {ID, password};
 		ServerRequest request = new ServerRequest(cmd, args);
-		type = (Enum) networker.sendServerRequest(request).getResult();
+		type = (UserTypes) networker.sendServerRequest(request).getResult();
 		System.out.println("The type is " + type.toString());
 		return type;
 	}
