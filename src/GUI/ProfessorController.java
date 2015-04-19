@@ -19,6 +19,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuItem;
@@ -55,6 +56,10 @@ public class ProfessorController{
 	public Tab class1, newClass;
 	@FXML
 	MenuItem logout;
+	@FXML
+	ComboBox courseList;
+	@FXML
+	Button addCourse;
 	
 	public String userID;
 	private String userType = "Professor";
@@ -66,10 +71,10 @@ public class ProfessorController{
 	
 	@FXML 
 	private void initialize() throws ClassNotFoundException, SQLException, IOException{
-		Tab currentTab = tabPane.getSelectionModel().getSelectedItem();
-		setEditable(currentTab);
-		System.out.println(currentTab.getText());
-		if(!currentTab.getGraphic().equals("Course Name")){
+//		Tab currentTab = tabPane.getSelectionModel().getSelectedItem();
+//		setEditable(currentTab);
+//		System.out.println(currentTab.getText());
+//		if(!currentTab.getGraphic().equals("Course Name")){
 			assignmentNames.setSpacing(10);
 			scrollpane.setFitToWidth(true);
 			scrollpane.setFitToHeight(true);
@@ -78,14 +83,19 @@ public class ProfessorController{
 			scrollpane.prefViewportWidthProperty().set(constraints.getWidth());
 			this.networker = new Networker();
 			this.model = new ProfModel(this);
+			DatabaseCommand cmd = DatabaseCommand.GET_COURSES;
+			String[] args = {userID};
+			ServerRequest request = new ServerRequest (cmd, args);
+			networker.sendServerRequest(request);
+			courseList.setItems(ObservableList<String> );
 			students.setItems(model.getStudentNames());
 			students.setFixedCellSize(30);
 			System.out.println("Initialized");
 			model.setUser(this.userID);
 			System.out.println("user is " + this.userID);
 			System.out.println("networker: " + this.networker == null);
-		}
-		setEditable(currentTab);
+//		}
+//		setEditable(currentTab);
 	}
 	
 	private void setEditable(Tab tab){
