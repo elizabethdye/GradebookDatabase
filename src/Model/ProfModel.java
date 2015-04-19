@@ -67,6 +67,13 @@ public class ProfModel {
 		//testingCode();
 	}
 	
+	public void dbAddCourse(){
+		DatabaseCommand cmd = DatabaseCommand.ADD_COURSE;
+		String[] args = {course,userID};
+		ServerRequest request = new ServerRequest (cmd, args);
+		networker.sendServerRequest(request);
+	}
+	
 	public void setCourse(String course){ this.course = course; }
 	
 	public void populateGradebook() throws SQLException, IOException{
