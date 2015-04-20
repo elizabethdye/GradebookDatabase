@@ -36,7 +36,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class ProfessorController{
+public class ProfessorController {
 
 	@FXML
 	ListView<VBox> students;
@@ -142,7 +142,6 @@ public class ProfessorController{
 				try {
 					model.addStudent(studentName.getText());
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -154,7 +153,6 @@ public class ProfessorController{
     			try {
 					model.addStudent(studentName.getText());
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -196,7 +194,6 @@ public class ProfessorController{
 				try {
 					model.addAssignment(gradeName.getText());
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -209,7 +206,6 @@ public class ProfessorController{
 				try {
 					model.addAssignment(gradeName.getText());
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
