@@ -1,6 +1,11 @@
 package GUI;
 
+import java.util.ArrayList;
+
+import Model.DatabaseCommand;
 import Model.ProfessorModelNew;
+import Model.ServerRequest;
+import Model.ServerRequestResult;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -139,5 +144,7 @@ public class ProfessorControllerNew {
 	
 	public void setProfessorID(String professorID){
 		this.professorID = professorID;
+		model.callCourseListFromDB(professorID);
+		courseList.setItems(model.getCourseList());
 	}
 }
