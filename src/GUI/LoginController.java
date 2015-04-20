@@ -5,7 +5,6 @@ import java.sql.SQLException;
 
 import Model.DatabaseCommand;
 import Model.LoginModel;
-import Model.ProfModel;
 import Model.ServerRequest;
 import Model.UserTypes;
 import Networking.Networker;
@@ -67,18 +66,6 @@ public class LoginController {
 		}
 	}
 	
-	private void showNewStage(String FXMLFile, UserTypes type) throws IOException {
-		FXMLLoader loader = new FXMLLoader(getClass().getResource(FXMLFile));
-		Parent home_page_parent = (Parent)loader.load();
-		
-		Scene home_page_scene = new Scene(home_page_parent);
-		Stage app_stage = (Stage) login.getScene().getWindow();
-		app_stage.setScene(home_page_scene);
-		app_stage.show();
-		ProfModel controller = (ProfModel)loader.getController();
-		controller.setUser(ID);
-		controller.setNetworker(networker);
-	}
 	
 	private void startAdminView() throws IOException{
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("AdminUI.fxml"));
@@ -128,7 +115,6 @@ public class LoginController {
 		System.out.println("in checkUserType");
 		ID = idField.getText();
 		password = passwordField.getText();
-		//type = model.getDatabase().getUserType(ID, password);
 		DatabaseCommand cmd = DatabaseCommand.GET_USER_TYPE;
 		String[] args = {ID, password};
 		ServerRequest request = new ServerRequest(cmd, args);
