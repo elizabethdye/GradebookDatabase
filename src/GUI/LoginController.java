@@ -77,6 +77,7 @@ public class LoginController {
 		app_stage.show();
 		ProfModel controller = (ProfModel)loader.getController();
 		controller.setUser(ID);
+		controller.setNetworker(networker);
 	}
 	
 	private void startAdminView() throws IOException{
@@ -90,6 +91,7 @@ public class LoginController {
 		AdminController controller = (AdminController)loader.getController();
 		controller.setUser(ID);
 		controller.setModel(model);
+		controller.setNetworker(networker);
 	}
 	
 	private void startProfView() throws IOException, SQLException{
@@ -101,7 +103,7 @@ public class LoginController {
 		Stage app_stage = (Stage) login.getScene().getWindow();
 		app_stage.setScene(home_page_scene);
 		app_stage.show();
-		//controller.setNetworker(networker);
+		controller.setNetworker(networker);
 		System.out.println("Sent networker to ProfessorController...");
 	}
 	

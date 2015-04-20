@@ -57,7 +57,8 @@ public class ProfessorController{
 	@FXML
 	public ComboBox courseList;
 	@FXML
-	public Button open, addCourse;
+	public Button open;
+	public Button addCourse;
 	
 	public String userID;
 	private String userType = "Professor";
