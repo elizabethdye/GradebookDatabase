@@ -41,6 +41,7 @@ public class ProfessorControllerNew {
 	
 	void populateStudents(){
 		ObservableList<String> studentObsList = model.getStudents(professorID, currentCourse);
+		studentObsList.add(0, "");
 		studentListView.setItems(studentObsList);
 	}
 	
