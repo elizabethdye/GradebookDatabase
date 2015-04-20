@@ -49,7 +49,6 @@ public class StudentController {
 		Stage app_stage = (Stage) logout.getScene().getWindow();
 		app_stage.setScene(home_page_scene);
 		app_stage.show();
-		System.out.println("Sent networker to LoginController...");
 	}
 	
 	public void setUser(String name) {
@@ -65,7 +64,6 @@ public class StudentController {
 	}
 	
 	public void getStudentInfo() {
-		//TODO
 		DatabaseCommand cmd = DatabaseCommand.GET_STUDENT_INFO;
 		String[] args = {userID};
 		ServerRequest rq = new ServerRequest(cmd, args);
@@ -74,7 +72,6 @@ public class StudentController {
 	}
 	
 	public String getGrade(String professor, String course) {
-		//TODO
 		DatabaseCommand cmd = DatabaseCommand.GET_TOTAL_GRADES;
 		String[] args = {professor, course};
 		ServerRequest rq = new ServerRequest(cmd, args);
