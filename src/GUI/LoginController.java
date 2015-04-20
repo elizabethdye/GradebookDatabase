@@ -101,7 +101,7 @@ public class LoginController {
 		Stage app_stage = (Stage) login.getScene().getWindow();
 		app_stage.setScene(home_page_scene);
 		app_stage.show();
-		//controller.setNetworker(networker);
+		controller.setNetworker(networker);
 		System.out.println("Sent networker to ProfessorController...");
 	}
 	

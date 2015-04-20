@@ -26,8 +26,8 @@
     </MenuBar>
       <HBox prefHeight="100.0" prefWidth="200.0">
          <children>
-            <ComboBox prefWidth="150.0" promptText="Choose a Course" />
-            <Button mnemonicParsing="false" text="Add Course" translateX="50.0" />
+            <ComboBox fx:id="courseList" prefWidth="150.0" promptText="Choose a Course" />
+            <Button fx:id = "addCourse" mnemonicParsing="false" onAction = "#addCourse" text="Add Course" translateX="50.0" />
          </children>
       </HBox>
     <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">

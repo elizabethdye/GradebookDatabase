@@ -3,7 +3,6 @@ package GUI;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
-
 import Model.CourseInfo;
 import Model.DatabaseCommand;
 import Model.ServerRequest;
@@ -16,9 +15,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 

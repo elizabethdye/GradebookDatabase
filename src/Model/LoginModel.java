@@ -1,8 +1,6 @@
 package Model;
 
 import java.sql.SQLException;
-
-import Database.Database;
 import Networking.Networker;
 
 public class LoginModel {

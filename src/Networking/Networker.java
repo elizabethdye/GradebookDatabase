@@ -14,7 +14,7 @@ public class Networker {
 	boolean received;
 	
 	public Networker(){
-		serverHost = "Bilbo";
+		serverHost = "localhost";
 		serverPort = 8888;
 		channel = new ArrayBlockingQueue<ServerRequestResult>(2);
 		received = false;
