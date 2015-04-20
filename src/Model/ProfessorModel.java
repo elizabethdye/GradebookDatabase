@@ -7,7 +7,7 @@ import javafx.collections.ObservableList;
 import Networking.Networker;
 import Model.DatabaseCommand;
 
-public class ProfessorModelNew {
+public class ProfessorModel {
 	Networker net = new Networker();
 	ObservableList<String> courseList = FXCollections.observableArrayList();
 	
@@ -17,6 +17,13 @@ public class ProfessorModelNew {
 		ArrayList<String> students = (ArrayList<String>) res.getResult();
 		ObservableList<String> studentList = FXCollections.observableArrayList(students);
 		return studentList;	
+	}
+	
+	public ArrayList<String> getAssignments(String professorName, String courseName) {
+		String[] args = {professorName, courseName};
+		ServerRequestResult res = net.sendServerRequest(DatabaseCommand.GET_ASSIGNMENTS, args);
+		ArrayList<String> assignments = (ArrayList<String>) res.getResult();
+		return assignments;	
 	}
 	
 	public void addCourse(String courseName, String professorName){
@@ -32,6 +39,17 @@ public class ProfessorModelNew {
 	
 	public ObservableList<String> getCourseList(){
 		return courseList;
+	}
+	
+	public void removeStudent(String professorName, String studentName, String courseName){
+		String[] args = {professorName, studentName, courseName};
+		net.sendServerRequest(DatabaseCommand.REMOVE_STUDENT, args);
+	}
+	
+	
+	public void addAssignment(String professorName, String courseName, String assignmentName){
+		String[] args = {professorName, courseName, assignmentName};
+		net.sendServerRequest(DatabaseCommand.ADD_ASSIGNMENT, args);
 	}
 	
 	public void callCourseListFromDB(String professorName) {

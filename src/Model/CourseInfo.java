@@ -1,7 +1,8 @@
 package Model;
 
-public class CourseInfo {
-	
+public class CourseInfo implements java.io.Serializable {
+
+	private static final long serialVersionUID = -4022043567991970815L;
 	private String course;
 	private String professor;
 	

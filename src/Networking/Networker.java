@@ -32,9 +32,7 @@ public class Networker {
 				e.printStackTrace();
 			}
 		}
-		System.out.println("Got our result and will now return it from the Networker");
 		received = false;
-		System.out.println("Returning from sendServerRequest...");
 		return result;
 	}
 	
@@ -50,9 +48,7 @@ public class Networker {
 				e.printStackTrace();
 			}
 		}
-		System.out.println("Got our result and will now return it from the Networker");
 		received = false;
-		System.out.println("Returning from sendServerRequest...");
 		return result;
 	}
 	
@@ -72,9 +68,7 @@ public class Networker {
 					result = channel.take();
 					received = true;
 					networker.alert();
-					System.out.println("Got result from channel...");
 					requestThread.halt();
-					System.out.println(requestThread.isGoing());
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}

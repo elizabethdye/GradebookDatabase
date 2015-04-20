@@ -28,16 +28,7 @@ public class ServerRequestThread extends Thread {
             try {
 				ServerRequest clientRequest = (ServerRequest) fromClientStream.readObject();
 				System.out.println("Got ServerRequest from client; command is " + clientRequest.getCommand().toString());
-				if (clientRequest.getCommand() == DatabaseCommand.ADD_USER){
-					System.out.println("add_user username arg: " + clientRequest.getArgs()[0]);
-				}
 				ServerRequestResult result = evaluateRequest(clientRequest);
-				if (clientRequest.getCommand() == DatabaseCommand.GET_STUDENTS){
-					System.out.println("here");
-					for (String student : (ArrayList<String>) result.getResult()){
-						System.out.println(student);
-					}
-				}
 				toClientStream.writeObject(result);
 				System.out.println("Sent the ServerRequestResult back to user");
 				toClientStream.flush();
@@ -137,7 +128,6 @@ public class ServerRequestThread extends Thread {
     			result.setResult(db.getStudentInfo(args[0]));
     			break;
     	}
-    	System.out.println("Finished evaluating database command...");
     	return result;
     }
 }

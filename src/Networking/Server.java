@@ -28,14 +28,12 @@ public class Server {
 			Socket s = accepter.accept();
 			ServerRequestThread requestThread = new ServerRequestThread(s, db);
 			System.out.println("Connection accepted from " + s.getInetAddress());
-			System.out.println("Starting the ServerRequestThread");
 			requestThread.start();
 		}
 	}
 	
 	public void clearDatabase() throws SQLException{
 		if (db != null){
-			System.out.println("CLEARING DB");
 			db.deleteTables();
 			db.createTables();
 		}

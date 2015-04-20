@@ -1,122 +1,73 @@
 package GUI;
 
-import java.io.IOException;
-import java.sql.SQLException;
 import java.util.ArrayList;
+
 import Model.DatabaseCommand;
-import Model.ProfModel;
+import Model.ProfessorModel;
 import Model.ServerRequest;
 import Model.ServerRequestResult;
-import Networking.Networker;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class ProfessorController{
+public class ProfessorController {
+	ProfessorModel model = new ProfessorModel();
+	String professorID;
+	String currentCourse;
+	ArrayList<String> currentCourseAssignments = new ArrayList<String>();
+	
+	@FXML
+	ComboBox<String> courseListComboBox;
+	@FXML
+	ListView<String> studentListView;
+	@FXML
+	TableView<String> gradeTableView;
+	
+	
+	@FXML
+	void handleOpenCourse() {
+		String selectedCourse = courseListComboBox.getSelectionModel().getSelectedItem();
+		currentCourse = selectedCourse;
+		populateGradebook();
 
-	@FXML
-	public ListView<VBox> students;
-	@FXML
-	public VBox gradeBox;
-	@FXML
-	public HBox assignmentNames;
-	@FXML
-	public AnchorPane constraints;
-	@FXML
-	public ScrollPane scrollpane;
-	@FXML
-	public Button studentAdd, studentRem, gradesAdd, gradesRem;
-	@FXML
-	public MenuItem logout;
-	@FXML
-	public ComboBox<String> courseList;
-	@FXML
-	public Button addCourse;
-	
-	public String userID;
-	public ProfModel model;
-	public Networker networker;
-	public ObservableList<String> courses = FXCollections.observableArrayList();
-	
-	
-	@FXML 
-	private void initialize() throws ClassNotFoundException, SQLException, IOException{
-		assignmentNames.setSpacing(10);
-		scrollpane.setFitToWidth(true);
-		scrollpane.setFitToHeight(true);
-		scrollpane.setContent(constraints);
-		scrollpane.prefViewportHeightProperty().set(constraints.getHeight());
-		scrollpane.prefViewportWidthProperty().set(constraints.getWidth());
-		this.networker = new Networker();
-		this.model = new ProfModel(this);
-		System.out.println("user is " + this.userID);
-		System.out.println("networker: " + this.networker == null);
-		
-		courseList.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
-            @Override
-            public void changed(ObservableValue ov, Object t, Object t1) {
-                try {
-					switchValues();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-            }
-        });
 	}
-
-	private void switchValues() throws SQLException, IOException {
-		if (courseList.getSelectionModel().getSelectedIndex() != -1) {
-			model.populateGradebook();
+	
+	void populateGradebook(){
+		populateStudents();
+		populateAssignments();
+	}
+	
+	void populateStudents(){
+		ObservableList<String> studentObsList = model.getStudents(professorID, currentCourse);
+		studentObsList.add(0, "");
+		studentListView.setItems(studentObsList);
+	}
+	
+	void populateAssignments(){
+		currentCourseAssignments = model.getAssignments(professorID, currentCourse);
+		ArrayList<TableColumn<String, Double>> cols = new ArrayList<TableColumn<String, Double>>();
+		for (String assignment : currentCourseAssignments){
+			TableColumn<String, Double> col = new TableColumn<String, Double>(assignment);
+			cols.add(col);
 		}
-	}
-	
-	public void setUser(String name) throws SQLException, IOException{
-		this.userID = name;
-		model.setUser(name);
-		DatabaseCommand cmd = DatabaseCommand.GET_COURSES;
-		String[] args = {userID};
-		ServerRequest request = new ServerRequest (cmd, args);
-		ServerRequestResult result = networker.sendServerRequest(request);
-		ArrayList<String> course = (ArrayList<String>) result.getResult();
-		for (String c: course) {
-			courses.add(c);
-		}
-		courseList.setItems(courses);
-		
-		
-		System.out.println("UserID Has been set: " + name);
-		System.out.println("UserID Has been set: " + name);
-		System.out.println("UserID Has been set: " + name);
-		System.out.println("UserID Has been set: " + name);
-		System.out.println("UserID Has been set: " + name);
-		System.out.println("UserID Has been set: " + name);
+		gradeTableView.getColumns().setAll(cols);
 	}
 	
 	@FXML
-	private void addCourse() {
+	void handleAddCourse() {
 		Stage newStage = new Stage();
 		VBox root = new VBox();
 		Label nameField = new Label("Enter Course Name: ");
@@ -127,19 +78,20 @@ public class ProfessorController{
 		Button closeButton = new Button("Cancel");
 		courseName.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
-			public void handle(ActionEvent close){
-				model.addCourseToDatabase(courseName.getText(), userID);
-				courses.add(courseName.getText());
+			public void handle(ActionEvent add){
 				newStage.close();
+				model.addCourse(courseName.getText(), professorID);
+				courseListComboBox.setItems(model.getCourseList());
 			}
 		});
 		okButton.setOnAction(new EventHandler<ActionEvent>(){
     		@Override
     		public void handle(ActionEvent close){
-				model.addCourseToDatabase(courseName.getText(), userID);
-				courses.add(courseName.getText());
-				newStage.close();
+    			newStage.close();
+    			model.addCourse(courseName.getText(), professorID);
+				courseListComboBox.setItems(model.getCourseList());
 			}
+    		
     	});
 		closeButton.setOnAction(new EventHandler<ActionEvent>(){
     		@Override
@@ -155,16 +107,12 @@ public class ProfessorController{
 		VBox.setVgrow(root, Priority.ALWAYS);
 		newStage.setScene(stageScene);
 		newStage.show();
-		newStage.requestFocus();		
-	}
-	
-	@FXML
-	private void newTab(){
+		newStage.requestFocus();
 		
 	}
 	
 	@FXML
-	public void addStudent(){
+	void handleAddStudent() {
 		Stage newStage = new Stage();
 		VBox root = new VBox();
 		Label nameField = new Label("Enter Student Name: ");
@@ -177,24 +125,16 @@ public class ProfessorController{
 			@Override
 			public void handle(ActionEvent add){
 				newStage.close();
-				try {
-					model.addStudent(studentName.getText());
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				model.addStudent(professorID, studentName.getText(), currentCourse);
+				populateStudents();
 			}
 		});
 		okButton.setOnAction(new EventHandler<ActionEvent>(){
     		@Override
     		public void handle(ActionEvent close){
     			newStage.close();
-    			try {
-					model.addStudent(studentName.getText());
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+    			model.addStudent(professorID, studentName.getText(), currentCourse);
+				populateStudents();
 			}
     		
     	});
@@ -213,43 +153,32 @@ public class ProfessorController{
 		newStage.setScene(stageScene);
 		newStage.show();
 		newStage.requestFocus();
-		
 	}
 	
 	@FXML
-	public void addGrade(){
+	void handleAddAssignment() {
 		Stage newStage = new Stage();
 		VBox root = new VBox();
 		Label nameField = new Label("Enter Assignment Name: ");
-		TextField gradeName = new TextField();
+		TextField assignmentName = new TextField();
 		HBox selection = new HBox();
-		selection.setSpacing(10);
+		selection.setSpacing(50);
 		Button okButton = new Button("OK");
 		Button closeButton = new Button("Cancel");
-		gradeName.setOnAction(new EventHandler<ActionEvent>() {
+		assignmentName.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent add){
 				newStage.close();
-				System.out.println("Model addGrade");
-				try {
-					model.addAssignment(gradeName.getText());
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				model.addAssignment(professorID, currentCourse, assignmentName.getText());
+				addAssignmentColumn(assignmentName.getText());
 			}
 		});
 		okButton.setOnAction(new EventHandler<ActionEvent>(){
     		@Override
     		public void handle(ActionEvent close){
     			newStage.close();
-    			System.out.println("Model addGrade");
-				try {
-					model.addAssignment(gradeName.getText());
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+    			model.addAssignment(professorID, currentCourse, assignmentName.getText());
+    			addAssignmentColumn(assignmentName.getText());
 			}
     		
     	});
@@ -261,7 +190,7 @@ public class ProfessorController{
     		
     	});
 		selection.getChildren().addAll(okButton, closeButton);
-		root.getChildren().addAll(nameField, gradeName, selection);
+		root.getChildren().addAll(nameField, assignmentName, selection);
 
 		Scene stageScene = new Scene(root);
 		VBox.setVgrow(root, Priority.ALWAYS);
@@ -271,104 +200,26 @@ public class ProfessorController{
 		
 	}
 	
-
 	@FXML
-	public void logout() throws IOException{
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("LoginUI.fxml"));
-		Parent home_page_parent = (Parent)loader.load();
-		Scene home_page_scene = new Scene(home_page_parent);
-		Stage app_stage = (Stage) constraints.getScene().getWindow();
-		app_stage.setScene(home_page_scene);
-		app_stage.show();
-		System.out.println("Sent networker to LoginController...");
-}
-
-	
-	public void throwError(String message){
-		Stage newStage = new Stage();
-		VBox root = new VBox();
-		Label nameField = new Label("\n     " + message + "     \n ");
-		HBox buttons = new HBox();
-		buttons.setSpacing(100);
-		buttons.setPadding(new Insets(10, 10, 10, 10));
-		Button okButton = new Button("OK");
-		Button closeButton = new Button("Cancel");
-		buttons.getChildren().addAll(okButton, closeButton);
-		okButton.translateXProperty().set(30);
-		root.getChildren().addAll(nameField, buttons);
-		Scene stageScene = new Scene(root);
-		VBox.setVgrow(root, Priority.ALWAYS);
-		newStage.setScene(stageScene);
-		newStage.show();
-		newStage.requestFocus();
-		newStage.setTitle("Error");
-		okButton.setOnAction(new EventHandler<ActionEvent>(){
-    		@Override
-    		public void handle(ActionEvent close){
-    			newStage.close();
-			}
-    		
-    	});
-		closeButton.setOnAction(new EventHandler<ActionEvent>(){
-    		@Override
-    		public void handle(ActionEvent close){
-    			newStage.close();
-			}
-    		
-    	});
-	}
-	@FXML
-	public void removeStudent(){
-		Stage newStage = new Stage();
-		VBox root = new VBox();
-		Label nameField = new Label("\n     Are you sure you want to delete?     \n ");
-		HBox buttons = new HBox();
-		buttons.setSpacing(100);
-		buttons.setPadding(new Insets(10, 10, 10, 10));
-		Button okButton = new Button("OK");
-		Button closeButton = new Button("Cancel");
-		buttons.getChildren().addAll(okButton, closeButton);
-		okButton.translateXProperty().set(30);
-		root.getChildren().addAll(nameField, buttons);
-		Scene stageScene = new Scene(root);
-		VBox.setVgrow(root, Priority.ALWAYS);
-		newStage.setScene(stageScene);
-		newStage.show();
-		newStage.requestFocus();
-		newStage.setTitle("Confirm");
-		okButton.setOnAction(new EventHandler<ActionEvent>(){
-    		@Override
-    		public void handle(ActionEvent close){
-    			String noDelete = model.getStudentNames().get(0).getChildren().get(0).toString();
-    			String selected = students.getSelectionModel().getSelectedItem().getChildren().get(0).toString();
-    			int index = students.getSelectionModel().getSelectedIndex();
-    			newStage.close();
-    			System.out.println("Deleting student");
-    			if(!selected.equals(noDelete)){
-    				model.getStudentNames().remove(students.getSelectionModel().getSelectedItem());
-    				model.removeStudentFromDatabase(userID, selected, courseList.getSelectionModel().getSelectedItem());
-    				System.out.println(selected);
-    				System.out.println(index);
-    				gradeBox.getChildren().remove(index-1);
-    			}
-    			else{
-    				throwError("Please make a valid selection");
-    			}
-			}
-    		
-    	});
-		closeButton.setOnAction(new EventHandler<ActionEvent>(){
-    		@Override
-    		public void handle(ActionEvent close){
-    			newStage.close();
-			}
-    		
-    	});
+	void handleRemoveStudent() {
+		String student = studentListView.getSelectionModel().getSelectedItem();
+		model.removeStudent(professorID, student, currentCourse);
+		populateStudents();
 	}
 	
-	public void setNetworker(Networker net){
-		this.networker = net;
-		this.model.setNetworker(net);
+	
+	void addAssignmentColumn(String assignmentName){
+		TableColumn<String, Double> newColumn = new TableColumn<String, Double>(assignmentName);
+		gradeTableView.getColumns().add(newColumn);
 	}
 	
+	public void setProfessorID(String professorID){
+		this.professorID = professorID;
+		model.callCourseListFromDB(professorID);
+		courseListComboBox.setItems(model.getCourseList());
+	}
+	
+	public void setTableEditable(){
+		gradeTableView.getSelectionModel().setCellSelectionEnabled(true);
+	}
 }

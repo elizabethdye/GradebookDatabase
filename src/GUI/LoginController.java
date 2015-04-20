@@ -5,7 +5,6 @@ import java.sql.SQLException;
 
 import Model.DatabaseCommand;
 import Model.LoginModel;
-import Model.ProfModel;
 import Model.ServerRequest;
 import Model.UserTypes;
 import Networking.Networker;
@@ -67,19 +66,6 @@ public class LoginController {
 		}
 	}
 	
-	private void showNewStage(String FXMLFile, UserTypes type) throws IOException {
-		FXMLLoader loader = new FXMLLoader(getClass().getResource(FXMLFile));
-		Parent home_page_parent = (Parent)loader.load();
-		
-		Scene home_page_scene = new Scene(home_page_parent);
-		Stage app_stage = (Stage) login.getScene().getWindow();
-		app_stage.setScene(home_page_scene);
-		app_stage.show();
-		ProfModel controller = (ProfModel)loader.getController();
-		controller.setUser(ID);
-		controller.setNetworker(networker);
-	}
-	
 	private void startAdminView() throws IOException{
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("AdminUI.fxml"));
 		Parent home_page_parent = (Parent)loader.load();
@@ -98,8 +84,9 @@ public class LoginController {
 		System.out.println("*****IN STARTPROFVIEW******");
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("ProfessorUI.fxml"));
 		Parent home_page_parent = (Parent)loader.load();
-		ProfessorControllerNew controller = (ProfessorControllerNew)loader.getController();
+		ProfessorController controller = (ProfessorController)loader.getController();
 		controller.setProfessorID(idField.getText());
+		controller.setTableEditable();
 		Scene home_page_scene = new Scene(home_page_parent);
 		Stage app_stage = (Stage) login.getScene().getWindow();
 		app_stage.setScene(home_page_scene);
