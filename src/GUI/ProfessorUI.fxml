@@ -16,7 +16,7 @@
                   <Menu mnemonicParsing="false" text="File">
                      <items>
                         <MenuItem mnemonicParsing="false" text="New Course" />
-                        <MenuItem mnemonicParsing="false" text="Logout" />
+                        <MenuItem mnemonicParsing="false" text="Logout" onAction = "#showNewStage" />
                      </items>
                   </Menu>
                   <Menu mnemonicParsing="false" text="Help">
@@ -28,7 +28,7 @@
             </MenuBar>
             <HBox prefHeight="27.0" prefWidth="640.0">
                <children>
-                  <ComboBox fx:id="courseList" prefWidth="150.0" promptText="Choose Course" />
+                  <ComboBox fx:id="courseListComboBox" prefWidth="150.0" promptText="Choose Course" />
                   <Button mnemonicParsing="false" onAction="#handleOpenCourse" text="Open" />
                   <Button mnemonicParsing="false" onAction="#handleAddCourse" text="Add Course" translateX="50.0" />
                   <StackPane prefHeight="150.0" prefWidth="200.0" />

@@ -1,10 +1,13 @@
 package GUI;
 
+import java.io.IOException;
 import Model.ProfessorModelNew;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -141,6 +144,15 @@ public class ProfessorControllerNew {
 	public void setProfessorID(String professorID){
 		this.professorID = professorID;
 		model.callCourseListFromDB(professorID);
-		courseList.setItems(model.getCourseList());
+		courseListComboBox.setItems(model.getCourseList());
+	}
+	
+	@FXML
+	private void showNewStage() throws IOException {
+		Parent home_page_parent = FXMLLoader.load(getClass().getResource("LoginUI.fxml"));
+		Scene home_page_scene = new Scene(home_page_parent);
+		Stage app_stage = (Stage) studentListView.getScene().getWindow();
+		app_stage.setScene(home_page_scene);
+		app_stage.show();
 	}
 }

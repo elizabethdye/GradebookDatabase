@@ -9,6 +9,7 @@ import Model.DatabaseCommand;
 import Model.ServerRequest;
 import Model.ServerRequestResult;
 import Networking.Networker;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -22,29 +23,22 @@ import javafx.stage.Stage;
 public class StudentController {
 	
 	@FXML
-	ListView<VBox> gradeReport;
+	ListView<String> gradeReport;
 	
 	@FXML
 	Button logout;
 	
 	Networker networker; 
 	
-	ArrayList< CourseInfo > courseList;
+	ArrayList< String > courseList;
 	
-	ObservableList< String > classGrades;
+	ObservableList< String > classGrades = FXCollections.observableArrayList();
 	
 	private String userID;
 	
 	@FXML
-	public void initialize() throws ClassNotFoundException, SQLException{
-		networker = new Networker();
-		getStudentInfo();
-		for ( CourseInfo courseInfo : courseList) {
-			String professor = courseInfo.getProfessor();
-			String course = courseInfo.getCourse();
-			String grade = getGrade(professor, course);
-			classGrades.add(courseInfo.getCourse() + "     -     " + grade);
-		}
+	private void initialize() {
+		gradeReport.setItems(classGrades);
 	}
 
 	@FXML
@@ -60,6 +54,10 @@ public class StudentController {
 	
 	public void setUser(String name) {
 		this.userID = name;
+		getStudentInfo();
+		for ( String course : courseList) {
+			classGrades.add(course);
+		}
 	}
 	
 	public void setNetworker(Networker networker){
@@ -72,7 +70,7 @@ public class StudentController {
 		String[] args = {userID};
 		ServerRequest rq = new ServerRequest(cmd, args);
 		ServerRequestResult result = networker.sendServerRequest(rq);
-		courseList = (ArrayList<CourseInfo>)result.getResult();
+		courseList = (ArrayList<String>) result.getResult();
 	}
 	
 	public String getGrade(String professor, String course) {

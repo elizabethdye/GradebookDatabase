@@ -102,8 +102,8 @@ public class LoginController {
 		app_stage.setScene(home_page_scene);
 		app_stage.show();
 		StudentController controller = (StudentController)loader.getController();
-		controller.setUser(ID);
 		controller.setNetworker(networker);
+		controller.setUser(ID);
 		System.out.println("Sent networker to StudentController...");
 	}
 	
