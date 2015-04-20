@@ -22,13 +22,13 @@ public class ProfessorControllerNew {
 	String currentCourse;
 	
 	@FXML
-	ComboBox<String> courseList;
+	ComboBox<String> courseListComboBox;
 	@FXML
 	ListView<String> studentListView;
 	
 	@FXML
 	void handleOpenCourse() {
-		String selectedCourse = courseList.getSelectionModel().getSelectedItem();
+		String selectedCourse = courseListComboBox.getSelectionModel().getSelectedItem();
 		currentCourse = selectedCourse;
 		populateGradebook();
 
@@ -63,7 +63,7 @@ public class ProfessorControllerNew {
 			public void handle(ActionEvent add){
 				newStage.close();
 				model.addCourse(courseName.getText(), professorID);
-				courseList.setItems(model.getCourseList());
+				courseListComboBox.setItems(model.getCourseList());
 			}
 		});
 		okButton.setOnAction(new EventHandler<ActionEvent>(){
@@ -71,7 +71,7 @@ public class ProfessorControllerNew {
     		public void handle(ActionEvent close){
     			newStage.close();
     			model.addCourse(courseName.getText(), professorID);
-				courseList.setItems(model.getCourseList());
+				courseListComboBox.setItems(model.getCourseList());
 			}
     		
     	});
