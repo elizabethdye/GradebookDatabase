@@ -1,11 +1,6 @@
 package GUI;
 
-import java.util.ArrayList;
-
-import Model.DatabaseCommand;
 import Model.ProfessorModelNew;
-import Model.ServerRequest;
-import Model.ServerRequestResult;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
