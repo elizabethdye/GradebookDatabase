@@ -22,7 +22,7 @@
                <menus>
                   <Menu mnemonicParsing="false" text="File">
                      <items>
-                        <MenuItem mnemonicParsing="false" text="New Course" />
+                        <MenuItem mnemonicParsing="false" onAction="#addCourse" text="New Course" />
                         <MenuItem fx:id="logout" mnemonicParsing="false" onAction="#logout" text="Logout" />
                      </items>
                   </Menu>
@@ -35,9 +35,9 @@
             </MenuBar>
             <HBox prefHeight="27.0" prefWidth="640.0">
                <children>
-                  <ComboBox prefWidth="150.0" promptText="Choose a Course" />
+                  <ComboBox fx:id="courseList" prefWidth="150.0" promptText="Choose a Course" />
                   <Button fx:id="open" mnemonicParsing="false" onAction="#changeCourse" text="Open" />
-                  <Button mnemonicParsing="false" text="Add Course" translateX="50.0" />
+                  <Button fx:id="addCourse" mnemonicParsing="false" onAction="#addCourse" text="Add Course" translateX="50.0" />
                   <StackPane prefHeight="150.0" prefWidth="200.0" />
                </children>
             </HBox>
