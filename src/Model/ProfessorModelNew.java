@@ -33,4 +33,15 @@ public class ProfessorModelNew {
 	public ObservableList<String> getCourseList(){
 		return courseList;
 	}
+	
+	public void callCourseListFromDB(String professorName) {
+		DatabaseCommand cmd = DatabaseCommand.GET_COURSES;
+		String[] args = {professorName};
+		ServerRequest request = new ServerRequest (cmd, args);
+		ServerRequestResult result = net.sendServerRequest(request);
+		ArrayList<String> course = (ArrayList<String>) result.getResult();
+		for (String c: course) {
+			courseList.add(c);
+		}
+	}
 }
