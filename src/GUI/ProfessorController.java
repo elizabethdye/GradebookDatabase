@@ -36,7 +36,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class ProfessorController{
+public class ProfessorController {
 
 	@FXML
 	ListView<VBox> students;
@@ -55,7 +55,7 @@ public class ProfessorController{
 	@FXML
 	MenuItem newCourse;
 	@FXML
-	public ComboBox courseList;
+	public ComboBox<String> courseList;
 	@FXML
 	public Button open;
 	public Button addCourse;
@@ -98,17 +98,17 @@ public class ProfessorController{
 //		}
 //		setEditable(currentTab);
 	}
-	@FXML
-	private void changeCourse(){
-		course = (String) courseList.getSelectionModel().getSelectedItem();
-		model.setCourse(course);
-		//TODO open the correct course
-	}
-	@FXML
-	private void addCourse(){
-		changeCourse();
-		model.dbAddCourse();
-	}
+//	@FXML
+//	private void changeCourse(){
+//		course = (String) courseList.getSelectionModel().getSelectedItem();
+//		model.setCourse(course);
+//		//TODO open the correct course
+//	}
+//	@FXML
+//	private void addCourse(){
+//		changeCourse();
+//		model.dbAddCourse();
+//	}
 	
 	
 	public void setUser(String name) throws SQLException, IOException{
@@ -177,6 +177,60 @@ public class ProfessorController{
 		newStage.requestFocus();
 		
 	}
+	
+	@FXML
+	public void addCourse(){
+		Stage newStage = new Stage();
+		VBox root = new VBox();
+		Label nameField = new Label("Enter Course Name: ");
+		TextField courseName = new TextField();
+		HBox selection = new HBox();
+		selection.setSpacing(50);
+		Button okButton = new Button("OK");
+		Button closeButton = new Button("Cancel");
+		courseName.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent add){
+				newStage.close();
+				try {
+					model.addCourse(courseName.getText());
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		});
+		okButton.setOnAction(new EventHandler<ActionEvent>(){
+    		@Override
+    		public void handle(ActionEvent close){
+    			newStage.close();
+    			try {
+					model.addStudent(courseName.getText());
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+    		
+    	});
+		closeButton.setOnAction(new EventHandler<ActionEvent>(){
+    		@Override
+    		public void handle(ActionEvent close){
+    			newStage.close();
+			}
+    		
+    	});
+		selection.getChildren().addAll(okButton, closeButton);
+		root.getChildren().addAll(nameField, courseName, selection);
+
+		Scene stageScene = new Scene(root);
+		VBox.setVgrow(root, Priority.ALWAYS);
+		newStage.setScene(stageScene);
+		newStage.show();
+		newStage.requestFocus();
+		
+	}
+	
 	
 	@FXML
 	public void addGrade(){

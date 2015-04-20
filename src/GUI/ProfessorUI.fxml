@@ -7,7 +7,7 @@
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="409.0" prefWidth="654.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.ProfessorController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="409.0" prefWidth="654.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.ProfessorControllerNew">
    <children>
       <VBox layoutX="10.0" layoutY="10.0" prefHeight="400.0" prefWidth="640.0">
          <children>
@@ -16,7 +16,7 @@
                   <Menu mnemonicParsing="false" text="File">
                      <items>
                         <MenuItem mnemonicParsing="false" text="New Course" />
-                        <MenuItem fx:id="logout" mnemonicParsing="false" onAction="#logout" text="Logout" />
+                        <MenuItem mnemonicParsing="false" text="Logout" />
                      </items>
                   </Menu>
                   <Menu mnemonicParsing="false" text="Help">
@@ -28,9 +28,9 @@
             </MenuBar>
             <HBox prefHeight="27.0" prefWidth="640.0">
                <children>
-                  <ComboBox prefWidth="150.0" promptText="Choose a Course" />
-                  <Button fx:id="open" mnemonicParsing="false" onAction="#changeCourse" text="Open" />
-                  <Button mnemonicParsing="false" text="Add Course" translateX="50.0" />
+                  <ComboBox fx:id="courseList" prefWidth="150.0" promptText="Choose Course" />
+                  <Button mnemonicParsing="false" onAction="#handleOpenCourse" text="Open" />
+                  <Button mnemonicParsing="false" onAction="#handleAddCourse" text="Add Course" translateX="50.0" />
                   <StackPane prefHeight="150.0" prefWidth="200.0" />
                </children>
             </HBox>
@@ -38,35 +38,35 @@
                <children>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <Button fx:id="studentAdd" layoutX="71.0" layoutY="11.0" mnemonicParsing="false" onAction="#addStudent" prefHeight="22.0" prefWidth="24.0" text="+">
+                        <Button layoutX="71.0" layoutY="11.0" mnemonicParsing="false" onAction="#handleAddStudent" prefHeight="22.0" prefWidth="24.0" text="+">
                            <font>
                               <Font size="10.0" />
                            </font>
                         </Button>
-                        <Button layoutX="184.0" layoutY="11.0" mnemonicParsing="false" onAction="#addGrade" prefHeight="22.0" prefWidth="24.0" text="+">
+                        <Button layoutX="184.0" layoutY="11.0" mnemonicParsing="false" prefHeight="22.0" prefWidth="24.0" text="+">
                            <font>
                               <Font size="10.0" />
                            </font>
                         </Button>
                         <Label layoutX="6.0" layoutY="16.0" text="Students: " />
-                        <Button fx:id="studentRem" layoutX="97.0" layoutY="11.0" mnemonicParsing="false" onAction="#removeStudent" prefHeight="22.0" prefWidth="24.0" text="-" textAlignment="CENTER">
+                        <Button layoutX="97.0" layoutY="11.0" mnemonicParsing="false" prefHeight="22.0" prefWidth="24.0" text="-" textAlignment="CENTER">
                            <font>
                               <Font name="System Bold" size="10.0" />
                            </font>
                         </Button>
                         <Label layoutX="130.0" layoutY="16.0" text="Grades: " />
-                        <Button fx:id="gradesRem" layoutX="211.0" layoutY="11.0" mnemonicParsing="false" prefHeight="22.0" prefWidth="24.0" text="-">
+                        <Button layoutX="211.0" layoutY="11.0" mnemonicParsing="false" prefHeight="22.0" prefWidth="24.0" text="-">
                            <font>
                               <Font size="10.0" />
                            </font>
                         </Button>
-                        <ListView fx:id="students" editable="true" layoutX="4.0" layoutY="34.0" prefHeight="280.0" prefWidth="118.0" />
-                        <ScrollPane fx:id="scrollpane" hbarPolicy="ALWAYS" layoutX="125.0" layoutY="34.0" prefHeight="280.0" prefWidth="509.0">
+                        <ListView fx:id="studentListView" editable="true" layoutX="4.0" layoutY="34.0" prefHeight="280.0" prefWidth="118.0" />
+                        <ScrollPane hbarPolicy="ALWAYS" layoutX="125.0" layoutY="34.0" prefHeight="280.0" prefWidth="509.0">
                            <content>
-                              <AnchorPane fx:id="constraints" prefHeight="262.0" prefWidth="509.0">
+                              <AnchorPane prefHeight="262.0" prefWidth="509.0">
                                  <children>
-                                    <HBox fx:id="assignmentNames" prefHeight="30.0" prefWidth="508.0" />
-                                    <VBox fx:id="gradeBox" layoutY="31.0" prefHeight="230.0" prefWidth="509.0" />
+                                    <HBox prefHeight="30.0" prefWidth="508.0" />
+                                    <VBox layoutY="31.0" prefHeight="230.0" prefWidth="509.0" />
                                  </children>
                               </AnchorPane>
                            </content>

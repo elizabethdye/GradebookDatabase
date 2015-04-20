@@ -95,16 +95,15 @@ public class LoginController {
 	}
 	
 	private void startProfView() throws IOException, SQLException{
+		System.out.println("*****IN STARTPROFVIEW******");
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("ProfessorUI.fxml"));
 		Parent home_page_parent = (Parent)loader.load();
-		ProfessorController controller = (ProfessorController)loader.getController();
-		controller.setUser(idField.getText());
+		ProfessorControllerNew controller = (ProfessorControllerNew)loader.getController();
+		controller.setProfessorID(idField.getText());
 		Scene home_page_scene = new Scene(home_page_parent);
 		Stage app_stage = (Stage) login.getScene().getWindow();
 		app_stage.setScene(home_page_scene);
 		app_stage.show();
-		controller.setNetworker(networker);
-		System.out.println("Sent networker to ProfessorController...");
 	}
 	
 	private void startStudentView() throws IOException{

@@ -67,6 +67,12 @@ public class ProfModel {
 		//testingCode();
 	}
 	
+	void addCourse(String courseName){
+		course = courseName;
+		dbAddCourse();
+		
+	}
+	
 	public void dbAddCourse(){
 		DatabaseCommand cmd = DatabaseCommand.ADD_COURSE;
 		String[] args = {course,userID};

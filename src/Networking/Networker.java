@@ -2,6 +2,7 @@ package Networking;
 
 import java.util.concurrent.ArrayBlockingQueue;
 
+import Model.DatabaseCommand;
 import Model.ServerRequest;
 import Model.ServerRequestResult;
 
@@ -21,6 +22,24 @@ public class Networker {
 	}
 	
 	public synchronized ServerRequestResult sendServerRequest(ServerRequest request){
+		requestThread = new ClientRequestThread(request, serverHost, serverPort, channel);
+		new Receiver(this).start();
+		requestThread.start();
+		while (received == false){
+			try {
+				this.wait();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		System.out.println("Got our result and will now return it from the Networker");
+		received = false;
+		System.out.println("Returning from sendServerRequest...");
+		return result;
+	}
+	
+	public synchronized ServerRequestResult sendServerRequest(DatabaseCommand cmd, String[] args){
+		ServerRequest request = new ServerRequest(cmd, args);
 		requestThread = new ClientRequestThread(request, serverHost, serverPort, channel);
 		new Receiver(this).start();
 		requestThread.start();
