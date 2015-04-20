@@ -1,8 +1,6 @@
 package Model;
 
 import java.sql.SQLException;
-
-import Database.Database;
 import Networking.Networker;
 
 public class LoginModel {
@@ -11,7 +9,6 @@ public class LoginModel {
 	
 	public LoginModel() throws ClassNotFoundException, SQLException{
 		networker = new Networker();
-		System.out.println("Calling addUser from LoginModel constructor!!!");
 		addUser("admin", "admin", UserTypes.ADMIN);
 	}
 	

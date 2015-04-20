@@ -81,7 +81,6 @@ public class LoginController {
 	}
 	
 	private void startProfView() throws IOException, SQLException{
-		System.out.println("*****IN STARTPROFVIEW******");
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("ProfessorUI.fxml"));
 		Parent home_page_parent = (Parent)loader.load();
 		ProfessorController controller = (ProfessorController)loader.getController();
@@ -102,9 +101,8 @@ public class LoginController {
 		app_stage.setScene(home_page_scene);
 		app_stage.show();
 		StudentController controller = (StudentController)loader.getController();
-		controller.setUser(ID);
 		controller.setNetworker(networker);
-		System.out.println("Sent networker to StudentController...");
+		controller.setUser(ID);
 	}
 	
 	private void sendError(){
@@ -112,15 +110,12 @@ public class LoginController {
 	}
 	
 	private UserTypes checkUserType() throws SQLException{
-		System.out.println("in checkUserType");
 		ID = idField.getText();
 		password = passwordField.getText();
-		//type = model.getDatabase().getUserType(ID, password);
 		DatabaseCommand cmd = DatabaseCommand.GET_USER_TYPE;
 		String[] args = {ID, password};
 		ServerRequest request = new ServerRequest(cmd, args);
 		type = (UserTypes) networker.sendServerRequest(request).getResult();
-		System.out.println("The type is " + type.toString());
 		return type;
 	}
 	

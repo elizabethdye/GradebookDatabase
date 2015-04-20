@@ -116,14 +116,14 @@ public class Database {
 				"' AND Student = '" + studentName + "'");
 	}
 	
-	public ArrayList<CourseInfo> getStudentInfo(String studentName) throws SQLException {
+	public ArrayList<String> getStudentInfo(String studentName) throws SQLException {
 		ResultSet results = stat.executeQuery("SELECT * FROM CourseParticipantTable WHERE Student = '" + studentName + "'");
-		ArrayList<CourseInfo> courseInfo = new ArrayList<CourseInfo>();
+		ArrayList<String> courses = new ArrayList<String>();
 		while (results.next()) {
-			courseInfo.add(new CourseInfo(results.getString("Course"), results.getString("Professor")));
+			courses.add(results.getString("Course"));
 		}
 		results.close();
-		return courseInfo;
+		return courses;
 	}
 	
 	public void addGrade(String assignmentName, String studentName, Double grade, String professorName, String courseName) throws SQLException {

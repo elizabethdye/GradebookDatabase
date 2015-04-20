@@ -9,6 +9,7 @@ import Model.DatabaseCommand;
 import Model.ServerRequest;
 import Model.ServerRequestResult;
 import Networking.Networker;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,38 +17,28 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class StudentController {
 	
 	@FXML
-	ListView<VBox> gradeReport;
+	ListView<String> gradeReport;
 	
 	@FXML
 	Button logout;
 	
 	Networker networker; 
 	
-	ArrayList< CourseInfo > courseList;
+	ArrayList< String > courseList;
 	
-	ObservableList< String > classGrades;
+	ObservableList< String > classGrades = FXCollections.observableArrayList();
 	
 	private String userID;
 	
 	@FXML
-	public void initialize() throws ClassNotFoundException, SQLException{
-		networker = new Networker();
-		getStudentInfo();
-		for ( CourseInfo courseInfo : courseList) {
-			String professor = courseInfo.getProfessor();
-			String course = courseInfo.getCourse();
-			String grade = getGrade(professor, course);
-			classGrades.add(courseInfo.getCourse() + "     -     " + grade);
-		}
+	private void initialize() {
+		gradeReport.setItems(classGrades);
 	}
 
 	@FXML
@@ -58,11 +49,14 @@ public class StudentController {
 		Stage app_stage = (Stage) logout.getScene().getWindow();
 		app_stage.setScene(home_page_scene);
 		app_stage.show();
-		System.out.println("Sent networker to LoginController...");
 	}
 	
 	public void setUser(String name) {
 		this.userID = name;
+		getStudentInfo();
+		for ( String course : courseList) {
+			classGrades.add(course);
+		}
 	}
 	
 	public void setNetworker(Networker networker){
@@ -70,16 +64,14 @@ public class StudentController {
 	}
 	
 	public void getStudentInfo() {
-		//TODO
 		DatabaseCommand cmd = DatabaseCommand.GET_STUDENT_INFO;
 		String[] args = {userID};
 		ServerRequest rq = new ServerRequest(cmd, args);
 		ServerRequestResult result = networker.sendServerRequest(rq);
-		courseList = (ArrayList<CourseInfo>)result.getResult();
+		courseList = (ArrayList<String>) result.getResult();
 	}
 	
 	public String getGrade(String professor, String course) {
-		//TODO
 		DatabaseCommand cmd = DatabaseCommand.GET_TOTAL_GRADES;
 		String[] args = {professor, course};
 		ServerRequest rq = new ServerRequest(cmd, args);

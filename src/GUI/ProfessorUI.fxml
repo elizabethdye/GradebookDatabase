@@ -16,7 +16,7 @@
                   <Menu mnemonicParsing="false" text="File">
                      <items>
                         <MenuItem mnemonicParsing="false" text="New Course" />
-                        <MenuItem mnemonicParsing="false" text="Logout" />
+                        <MenuItem mnemonicParsing="false" text="Logout" onAction = "#showNewStage" />
                      </items>
                   </Menu>
                   <Menu mnemonicParsing="false" text="Help">
