@@ -66,6 +66,15 @@ public class ProfModel {
 		//testingCode();
 	}
 	
+	public void dbAddCourse(){
+		DatabaseCommand cmd = DatabaseCommand.ADD_COURSE;
+		String[] args = {course,userID};
+		ServerRequest request = new ServerRequest (cmd, args);
+		networker.sendServerRequest(request);
+	}
+	
+	public void setCourse(String course){ this.course = course; }
+	
 	public void populateGradebook() throws SQLException, IOException{
 		String course = controller.courseList.getSelectionModel().getSelectedItem();
 		ArrayList<String> students = getListofStudents(userID, course);
@@ -78,7 +87,15 @@ public class ProfModel {
 		for(String assign : assignments){
 			populateAssignment(assign);
 		}
-		
+		System.out.println("Populating gradebook");
+		System.out.println("userID is: " + this.userID);
+		DatabaseCommand cmd = DatabaseCommand.GET_COURSES;
+		String[] args = {userID};
+		ServerRequest request = new ServerRequest(cmd, args);
+		ServerRequestResult result = networker.sendServerRequest(request);
+		ArrayList<String> courses = (ArrayList<String>) result.getResult();
+		System.out.println("Courses: " + courses);
+		System.out.println("List of students: " + students);
 	}
 	
 	private void populateStudent(String studentName){	
@@ -149,10 +166,7 @@ public class ProfModel {
 		}
 		String courseName = controller.courseList.getSelectionModel().getSelectedItem();
 		addStudentToDatabase(this.userID, studentName, courseName);
-		System.out.println(courseName);
-		//database.addStudent(userID, studentName, courseName);
-//		System.out.println(database.getStudents(userID, courseName));
-//		System.out.println("num students: " + this.numStudents);
+
 	}
 	
 	public void addAssignment(String value) throws SQLException{
@@ -175,7 +189,6 @@ public class ProfModel {
 				this.gradeList.get(i).add(newBox);
 				String courseName = controller.courseList.getSelectionModel().getSelectedItem();
 				addAssignmentToDatabase(userID, courseName, name.getText().toString());
-				//database.addAssignment(this.userID, courseName, name.getText().toString());
 				newField.setOnAction(new EventHandler<ActionEvent>() {
 					@Override
 					public void handle(ActionEvent add){
@@ -252,16 +265,14 @@ public class ProfModel {
 		networker.sendServerRequest(request);
 		System.out.println("Successfully added course to database");
 	}
-	
+	//TODO do we really want to do this vvvvvvvv
 	public void removeStudentFromDatabase(String professorName, String studentName, String coursename){
-		String course = controller.courseList.getSelectionModel().getSelectedItem();
 		DatabaseCommand cmd = DatabaseCommand.REMOVE_STUDENT;
 		String[] args = {professorName, studentName, course};
 		ServerRequest request = new ServerRequest(cmd, args);
 		networker.sendServerRequest(request);
 	}
 	
-	//database.addGrade(assignment, studentName, grade, userID, courseName);
 	void addGradeToDatabase(String assignmentName, String studentName, Double grade, String professorName, String courseName){
 		professorName = controller.userID;
 		String course = controller.courseList.getSelectionModel().getSelectedItem();

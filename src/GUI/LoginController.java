@@ -77,6 +77,7 @@ public class LoginController {
 		app_stage.show();
 		ProfModel controller = (ProfModel)loader.getController();
 		controller.setUser(ID);
+		controller.setNetworker(networker);
 	}
 	
 	private void startAdminView() throws IOException{
@@ -90,6 +91,7 @@ public class LoginController {
 		AdminController controller = (AdminController)loader.getController();
 		controller.setUser(ID);
 		controller.setModel(model);
+		controller.setNetworker(networker);
 	}
 	
 	private void startProfView() throws IOException, SQLException{

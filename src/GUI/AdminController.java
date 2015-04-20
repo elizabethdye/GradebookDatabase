@@ -5,6 +5,7 @@ import java.sql.SQLException;
 
 import Model.LoginModel;
 import Model.UserTypes;
+import Networking.Networker;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -66,5 +67,9 @@ public class AdminController {
 	
 	public void setModel(LoginModel model) {
 		this.model = model;
+	}
+
+	public void setNetworker(Networker net){
+		this.model.setNetworker(net);
 	}
 }

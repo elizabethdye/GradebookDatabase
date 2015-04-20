@@ -23,4 +23,8 @@ public class LoginModel {
 	public Networker getNetworker() {
 		return networker;
 	}
+	
+	public void setNetworker(Networker net){
+		networker = net;
+	}
 }

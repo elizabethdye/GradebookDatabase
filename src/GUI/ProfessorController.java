@@ -25,6 +25,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
@@ -57,6 +58,24 @@ public class ProfessorController{
 	public ProfModel model;
 	public Networker networker;
 	public ObservableList<String> courses = FXCollections.observableArrayList();
+	Button studentAdd, studentRem, gradesAdd, gradesRem;
+	@FXML
+	MenuItem logout;
+	@FXML
+	MenuItem newCourse;
+	@FXML
+	public ComboBox courseList;
+	@FXML
+	public Button open;
+	public Button addCourse;
+	
+	public String userID;
+	private String userType = "Professor";
+	private String course;
+	
+	private ProfModel model;
+	
+	Networker networker;
 	
 	
 	@FXML 
@@ -92,7 +111,40 @@ public class ProfessorController{
 			students.setItems(model.getStudentNames());
 			students.setFixedCellSize(30);
 		}
+		assignmentNames.setSpacing(10);
+		scrollpane.setFitToWidth(true);
+		scrollpane.setFitToHeight(true);
+		scrollpane.setContent(constraints);
+		scrollpane.prefViewportHeightProperty().set(constraints.getHeight());
+		scrollpane.prefViewportWidthProperty().set(constraints.getWidth());
+		this.networker = new Networker();
+		this.model = new ProfModel(this);
+		DatabaseCommand cmd = DatabaseCommand.GET_COURSES;
+		String[] args = {userID};
+		ServerRequest request = new ServerRequest (cmd, args);
+		ServerRequestResult ret = networker.sendServerRequest(request);
+		ArrayList<String> courses = (ArrayList<String>)ret.getResult();
+		courseList.setItems(FXCollections.observableArrayList(courses));
+		students.setItems(model.getStudentNames());
+		students.setFixedCellSize(30);
+		System.out.println("Initialized");
+		model.setUser(this.userID);
+		System.out.println("user is " + this.userID);
+		System.out.println("networker: " + this.networker == null);
+
 	}
+	@FXML
+	private void changeCourse(){
+		course = (String) courseList.getSelectionModel().getSelectedItem();
+		model.setCourse(course);
+		//TODO open the correct course
+	}
+	@FXML
+	private void addCourse(){
+		changeCourse();
+		model.dbAddCourse();
+	}
+	
 	
 	public void setUser(String name) throws SQLException, IOException{
 		this.userID = name;
@@ -151,13 +203,6 @@ public class ProfessorController{
     	});
 		selection.getChildren().addAll(okButton, closeButton);
 		root.getChildren().addAll(nameField, courseName, selection);
-
-		Scene stageScene = new Scene(root);
-		VBox.setVgrow(root, Priority.ALWAYS);
-		newStage.setScene(stageScene);
-		newStage.show();
-		newStage.requestFocus();		
-	}
 	
 	@FXML
 	private void newTab(){
@@ -348,6 +393,7 @@ public class ProfessorController{
     			if(!selected.equals(noDelete)){
     				model.getStudentNames().remove(students.getSelectionModel().getSelectedItem());
     				model.removeStudentFromDatabase(userID, selected, courseList.getSelectionModel().getSelectedItem());
+    				model.getStudentNames().remove(students.getSelectionModel().getSelectedItem());
     				System.out.println(selected);
     				System.out.println(index);
     				gradeBox.getChildren().remove(index-1);
