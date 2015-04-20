@@ -34,11 +34,7 @@ public class ClientRequestThread extends Thread {
 			ObjectOutputStream toServerStream = new ObjectOutputStream(s.getOutputStream());
 			ObjectInputStream fromServerStream = new ObjectInputStream(s.getInputStream());
 			toServerStream.writeObject(request);
-			// TODO: Can we really just immediately read from the ObjectInputStream, or do we have to
-			// wait for it to be ready? It seems likes the server might take some time (to process
-			// the database request, etc) before it's ready to return the ServerRequestResult.
 			ServerRequestResult result = (ServerRequestResult) fromServerStream.readObject();
-			// TODO: Not sure if I'm using the channel correctly.
 			channel.put(result);
 		} catch (IOException ioe) {
 			ioe.printStackTrace();
@@ -53,7 +49,6 @@ public class ClientRequestThread extends Thread {
                 System.out.println("error closing socket");
             }
         }
-		//TODO: no idea if this is right, just trying stuff
 		halt();
 	}
 	

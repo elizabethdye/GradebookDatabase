@@ -7,7 +7,7 @@ import javafx.collections.ObservableList;
 import Networking.Networker;
 import Model.DatabaseCommand;
 
-public class ProfessorModelNew {
+public class ProfessorModel {
 	Networker net = new Networker();
 	ObservableList<String> courseList = FXCollections.observableArrayList();
 	

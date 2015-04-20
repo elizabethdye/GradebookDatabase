@@ -166,11 +166,11 @@ public class DatabaseTest {
 		addTwoCourses();
 		db.addStudent("Prof1", "Stu1", "Course1");
 		db.addStudent("Prof1", "Stu1", "Course2");
-		ArrayList<CourseInfo> courses = new ArrayList<CourseInfo>();
-		courses.add(new CourseInfo("Course1", "Prof1"));
-		courses.add(new CourseInfo("Course2", "Prof1"));
-		assertTrue(courses.get(0).isEqual(db.getStudentInfo("Stu1").get(0)));
-		assertTrue(courses.get(1).isEqual(db.getStudentInfo("Stu1").get(1)));
+		ArrayList<String> courses = new ArrayList<String>();
+		courses.add("Course1");
+		courses.add("Course2");
+		assertTrue(courses.get(0).equals(db.getStudentInfo("Stu1").get(0)));
+		assertTrue(courses.get(1).equals(db.getStudentInfo("Stu1").get(1)));
 	}
 	
 	@Test

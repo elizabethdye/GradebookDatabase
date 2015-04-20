@@ -1,7 +1,7 @@
 package GUI;
 
 import java.io.IOException;
-import Model.ProfessorModelNew;
+import Model.ProfessorModel;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -20,7 +20,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class ProfessorControllerNew {
-	ProfessorModelNew model = new ProfessorModelNew();
+	ProfessorModel model = new ProfessorModel();
 	String professorID;
 	String currentCourse;
 	
